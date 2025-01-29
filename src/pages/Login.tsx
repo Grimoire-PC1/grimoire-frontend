@@ -6,7 +6,7 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 import LoginForm from "../components/LoginForm/LoginForm";
-import { HStack, Button } from "@chakra-ui/react";
+import { HStack, Button, Separator, Card, Field, Input, Stack, Heading } from "@chakra-ui/react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -50,11 +50,17 @@ export default function LoginPage() {
 
   return (
     <>
-    <HStack>
-      <Button>Click me</Button>
-      <Button>Click me</Button>
-    </HStack>
-    <div className="text-blue-700">oiiiii</div>
+    <div className="w-1/2">
+      <Card.Root size="sm">
+        <Card.Header>
+          <Heading size="md"> Card - sm</Heading>
+        </Card.Header>
+        <Card.Body color="fg.muted">
+          This is the card body. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit.
+        </Card.Body>
+      </Card.Root>
+    </div>
     </>
   );
 }
