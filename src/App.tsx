@@ -1,5 +1,3 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import {
   createBrowserRouter,
   Navigate,
@@ -19,9 +17,7 @@ function App() {
       element: (
         <Navigate
           to={
-            user ? (user.role === "COORDINATOR" ? "/tcc-match/dashboard" :
-                    user.orienteePaper ? "/tcc-match/papers" :
-                    "/tcc-match/home") : "/tcc-match/"
+            user ? "/grimoire/home" : "/grimoire"
           }
           replace
         />

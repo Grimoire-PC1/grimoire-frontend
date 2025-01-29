@@ -1,4 +1,6 @@
 import { RouteObject } from "react-router-dom";
+import { PrivateRoute } from "./PrivateRoute";
+import LoginPage from "../pages/Login";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -16,27 +18,27 @@ export const PublicRoutes: RouteObject[] = [
     children: [
       {
         path: "/grimoire/home",
-        element: <HomePage />,
+        element: <Home />,
       },
       {
-        path: "/grimoire/campaing",
+        path: "/grimoire/campaign",
         element: <CampaignPage />,
         children: [
             {
-                path: "/grimoire/campaing/system",
-                element: <CampaingSystemPage />
+                path: "/grimoire/campaign/system",
+                element: <CampaignSystemPage />
             },
             {
-                path: "/grimoire/campaing/diary",
-                element: <CampaingDiaryPage />
+                path: "/grimoire/campaign/diary",
+                element: <CampaignDiaryPage />
             },
             {
-                path: "/grimoire/campaing/archive",
-                element: <CampaingArchivePage />
+                path: "/grimoire/campaign/archive",
+                element: <CampaignArchivePage />
             },
             {
-                path: "/grimoire/campaing/dungeon",
-                element: <CampaingDungeonPage />
+                path: "/grimoire/campaign/dungeon",
+                element: <CampaignDungeonPage />
             }
         ]
       },
