@@ -6,6 +6,7 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 import LoginForm from "../components/LoginForm/LoginForm";
+import { HStack, Button } from "@chakra-ui/react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -48,6 +49,12 @@ export default function LoginPage() {
   }
 
   return (
-    <></>
+    <>
+    <HStack>
+      <Button>Click me</Button>
+      <Button>Click me</Button>
+    </HStack>
+    <div className="text-blue-700">oiiiii</div>
+    </>
   );
 }
