@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../../interfaces/Models";
 import { useUserStore } from "../../stores/user/user.store";
 
-export interface LoginFormPayload {
+export interface SignUpFormPayload {
   username: string;
   password: string;
 }
@@ -19,7 +19,7 @@ const formSchema = z.object({
     .min(5, "Senha deve conter ao menos 5 caracteres."),
 });
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,4 +48,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
