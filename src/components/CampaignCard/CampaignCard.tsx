@@ -1,4 +1,4 @@
-import {CardBody, CardFooter, CardRoot, Image, Text } from "@chakra-ui/react"
+import {CardBody, CardRoot, Image, Text } from "@chakra-ui/react"
 
 
 export const CampaignCard = () => {

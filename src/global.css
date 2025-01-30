@@ -30,16 +30,36 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     font-size: 18px;
 }
 
+.text-large{
+    font-size: 24px;
+}
+
 .padding-bottom{
     padding-bottom: 3%;
+}
+
+.padding-dialog{
+    padding: 2% 2%;
+}
+
+.front{
+    z-index: 999999999;
 }
 
 .margin-top{
     margin-top: 6%;
 }
 
+.m-b-s{
+    margin-bottom: 4%;
+}
+
 .margin{
     margin-top: 5%;
+}
+
+.margin-top-s{
+    margin-top:2%;
 }
 
 .margin-sides{

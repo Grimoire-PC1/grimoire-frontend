@@ -6,9 +6,10 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 //import LoginForm from "../components/LoginForm/LoginForm";
-import { Button, Separator, ClientOnly, IconButton, Skeleton, Textarea, Text, Presence, Box } from "@chakra-ui/react";
+import { Button, Separator, ClientOnly, IconButton, Skeleton, Textarea, Text, Presence, Box, Input } from "@chakra-ui/react";
 import { LuSun, LuMoon } from "react-icons/lu";
 import { useColorMode } from "@/components/ui/color-mode";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -100,11 +101,11 @@ export default function LoginPage() {
               animationName={{ _open: "fade-in"}}
               animationDuration="moderate"
             >
-              <div className="margin">
-              <Form>
-                <Textarea resize="none" className="height" placeholder="e-mail" />
+              <div className="margin grid place-items-center">
+              <Form className="grid-cols-1 w-1/3">
+                <Input mb={"2"} resize="none" placeholder="e-mail" />
                 <br></br>
-                <Textarea resize="none" className="height" placeholder="senha" />
+                <PasswordInput resize="none" placeholder="senha"></PasswordInput>
               </Form>
               <br></br>
               <Button onClick={()=>navigateHome()} className="padding-xl margin-sides">Entrar</Button>
