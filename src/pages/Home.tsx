@@ -8,22 +8,28 @@ import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
 import { useColorMode } from "@/components/ui/color-mode";
 import { DialogCloseTrigger, DialogRoot } from "@/components/ui/dialog";
-import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Dialog, DialogContent, DialogTrigger, DialogBody } from "@chakra-ui/react";
+import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
+import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Dialog, DialogContent, DialogTrigger, DialogBody, For } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardRoot, CardTitle } from "@chakra-ui/react/card";
+import { useQuery } from "@tanstack/react-query";
 import { LuSun, LuMoon, LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     const navigate = useNavigate();
-    /*
-    const user = useUserStore((state) => useState(false));
+    
+    //const user = useUserStore((state) => useState(false));
 
-    const {data} = useQuery({
-        queryKey: ["userCreatedCampaigns"]
-        
+    const {data: campanhasCriadas} = useQuery({
+        queryKey: ["userCreatedCampaigns"],
+        queryFn: getAllUserCreatedCampaigns
     })
-    */
+    
+    const {data: campanhasJogadas} = useQuery({
+        queryKey: ["userPlayedCampaigns"],
+        queryFn: getAllUserPlayedCampaigns
+    })
 
     const { toggleColorMode, colorMode } = useColorMode()
     const username = 'User'
@@ -31,11 +37,11 @@ export default function Home() {
 
     function logout(){
         navigate("/grimoire/");
-      }
+    }
 
-      function showUserSettings(){
-        alert('user settings')
-      }
+    function showUserSettings(){
+    alert('user settings')
+    }
 
     return(
         <Presence 
@@ -63,16 +69,18 @@ export default function Home() {
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
                                 <Separator></Separator>
-                                <CampaignCard></CampaignCard> {/*depois mudar pra ser uma lista de CampaignCard*/}
-                                <CampaignCard></CampaignCard> {/*depois mudar pra ser uma lista de CampaignCard*/}
-                                <CampaignCard></CampaignCard> {/*depois mudar pra ser uma lista de CampaignCard*/}
+                                <For each={campanhasCriadas}>
+                                    {(item) => <CampaignCard campaign={item}></CampaignCard>}
+                                </For>
                             </CardBody>
                         </CardRoot>
                         <CardRoot className="h-[75vh]" overflowY={"scroll"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
                                 <Separator></Separator>
-                                <CampaignCard></CampaignCard> {/*depois mudar pra ser uma lista de CampaignCard*/}
+                                <For each={campanhasJogadas}>
+                                    {(item) => <CampaignCard campaign={item}></CampaignCard>}
+                                </For>
                             </CardBody>
                         </CardRoot>
                         <div>

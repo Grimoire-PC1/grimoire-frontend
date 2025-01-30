@@ -9,6 +9,7 @@ export type User = {
 export type Campaign = {
     id: string;
     name: string;
+    image: string;
     system: System;
     description: string;
     players: Player[];
