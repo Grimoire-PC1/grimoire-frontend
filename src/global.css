@@ -30,6 +30,14 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     font-size: 18px;
 }
 
+.padding-bottom{
+    padding-bottom: 3%;
+}
+
+.margin-top{
+    margin-top: 6%;
+}
+
 .margin{
     margin-top: 5%;
 }
@@ -79,4 +87,16 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     height: 40px;
     margin-right: 0.5%;
     margin-left: 0.5%;
+}
+
+.margin-geral{
+    margin: 5%;
+}
+
+.header-title{
+    font-size: 56px;
+}
+
+.content-spacing{
+    margin: 3% 3%;
 }
