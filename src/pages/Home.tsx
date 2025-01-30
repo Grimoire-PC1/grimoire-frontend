@@ -7,9 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
 import { useColorMode } from "@/components/ui/color-mode";
-import { DialogCloseTrigger, DialogRoot } from "@/components/ui/dialog";
 import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
-import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, DialogContent, DialogTrigger, DialogBody, For } from "@chakra-ui/react";
+import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardRoot, CardTitle } from "@chakra-ui/react/card";
 import { useQuery } from "@tanstack/react-query";
@@ -125,8 +124,21 @@ export default function Home() {
                     </div>
                 </Dialog>
 
-                <div className="place-content-around grid grid-cols-3 gap-x-8 content-spacing">
-                        <CardRoot className="h-[75vh]" overflowY={"scroll"}>
+                <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
+                    
+                        <div className="flex col-span-2">
+                            <div className="margin-top w-11/12 overflow-x-hidden">
+                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Nova campanha</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> openDialog()}>Entrar em campanha</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Pesquisar sistemas</Button>
+                            </div>
+                            <div className="w-1/12">
+                                <Separator h={"75vh"} orientation={"vertical"}></Separator>
+                            </div>
+                        </div>
+
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
                                 <Separator></Separator>
@@ -135,7 +147,7 @@ export default function Home() {
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <CardRoot className="h-[75vh]" overflowY={"scroll"}>
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
                                 <Separator></Separator>
@@ -144,14 +156,7 @@ export default function Home() {
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <div>
-                            <div className="h-[15vh] place-content-between content-start grid grid-cols-2 gap-y-2 gap-x-4">
-                                
-                                <Button>CRIAR UMA CAMPANHA</Button>
-                                <Button>CRIAR UM SISTEMA</Button>
-                                <Button onClick={()=> openDialog()}>ENTRAR EM UMA CAMPANHA</Button>
-                                <Button>PESQUISAR SISTEMAS</Button>
-                            </div>
+                        <div className="col-span-3">
 
                             <CardRoot overflowY={"scroll"} className="w-full h-[35vh]">
                                 <CardBody>
