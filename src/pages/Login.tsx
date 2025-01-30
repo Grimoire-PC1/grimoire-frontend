@@ -6,7 +6,7 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 import LoginForm from "../components/LoginForm/LoginForm";
-import { HStack, Button, Separator, Card, Field, Input, Stack, Heading, ClientOnly, IconButton, Skeleton, Textarea } from "@chakra-ui/react";
+import { HStack, Button, Separator, Card, Field, Input, Stack, Heading, ClientOnly, IconButton, Skeleton, Textarea, Text, Presence, Center } from "@chakra-ui/react";
 import { LuSun, LuMoon } from "react-icons/lu";
 import { useColorMode } from "@/components/ui/color-mode";
 
@@ -73,25 +73,53 @@ export default function LoginPage() {
             <p className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum neque ac congue semper. Vestibulum pulvinar eros sit amet nisi eleifend feugiat. Aliquam tristique arcu metus, ac dapibus dui congue vitae. Curabitur consectetur, velit sed iaculis ullamcorper, sapien turpis ullamcorper metus, eget ultrices augue ipsum mattis felis.</p>
           </div>
 
-          
-          {!showSignInForm ?
+          <Presence
+            present={!showSignInForm && !showSignUpForm}
+            animationName={{ _open: "fade-in" }}
+            animationDuration="moderate"
+          >
             <div className="margin">
             <Button onClick={()=>setShowSignInForm(true)} className="padding-xl margin-sides">Entrar</Button>
-            <Button className="padding-xl margin-sides">Cadastrar</Button>
+            <Button onClick={()=>setShowSignUpForm(true)} className="padding-xl margin-sides">Cadastrar</Button>
             </div>
-
-          :
-             <div className="margin">
+          </Presence>
+          <Presence
+            present={showSignInForm}
+            animationName={{ _open: "fade-in"}}
+            animationDuration="moderate"
+          >
+            <div className="margin">
              <Form>
-             <Textarea resize="none" className="height" placeholder="e-mail" />
-             <br></br>
-             <Textarea resize="none" className="height" placeholder="senha" />
+              <Textarea resize="none" className="height" placeholder="e-mail" />
+              <br></br>
+              <Textarea resize="none" className="height" placeholder="senha" />
              </Form>
              <br></br>
              <Button onClick={()=>setShowSignInForm(false)} className="padding-xl margin-sides">Entrar</Button>
             </div> 
+          </Presence>
 
-          }
+          <Presence
+            present={showSignUpForm}
+            animationName={{ _open: "fade-in"}}
+            animationDuration="moderate"
+          >
+                       <div className="margin">
+            <Form>
+              <Textarea resize="none" className="height-l" placeholder="username" />
+              <br></br>
+              <Textarea resize="none" className="height-l" placeholder="e-mail" />
+              <br></br>
+              <Textarea resize="none" className="height" placeholder="senha" />
+              <Textarea resize="none" className="height" placeholder="repita sua senha" />
+             </Form>
+             <br></br>
+             <div className="flex place-content-around margin-sides content-end">
+             <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
+             <Textarea onClick={()=>setShowSignUpForm(false)} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
+              </div>
+            </div> 
+          </Presence>
 
         <div className="text-right right-bottom">
           
