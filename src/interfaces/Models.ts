@@ -42,7 +42,9 @@ export type Character = {
 }
 
 export type System = {
-    
+    image:string;
+    name:string;
+    description:string;
 }
 
 export type CharacterSheet = {

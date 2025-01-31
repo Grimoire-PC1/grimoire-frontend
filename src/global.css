@@ -38,8 +38,12 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     padding-bottom: 3%;
 }
 
-.padding-dialog{
-    padding: 2% 2%;
+.padding-dialog-sm{
+    padding: 5% 5%;
+}
+
+.padding-dialog-lg{
+    padding: 3% 3%;
 }
 
 .front{

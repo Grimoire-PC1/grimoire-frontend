@@ -16,6 +16,7 @@ import { LuSun, LuMoon, LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from "react";
+import { DialogLg } from "@/components/Dialog/DialogLg";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -34,8 +35,9 @@ export default function Home() {
 
     const { toggleColorMode, colorMode } = useColorMode()
     const [openDialogSm, setOpenDialogSm] = useState(false)
+    const [openDialogLg, setOpenDialogLg] = useState(false)
     const [idcampanha, setidcampanha] = useState("")
-    const [idcampanhavalido, setidcampanhavalido] = useState(false)
+    const [idcampanhavalido, setidcampanhavalido] = useState(true)
     const username = 'User'
 
     function logout(){
@@ -46,13 +48,9 @@ export default function Home() {
     alert('user settings')
     }
 
-      function openDialog(){
-        setOpenDialogSm(true)
-      }
-
-      function validateIdCampanha(){
-        setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
-      }
+    function validateIdCampanha(){
+    setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
+    }
 
     return(
         <Presence 
@@ -84,45 +82,49 @@ export default function Home() {
 
                     <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <DialogPanel
-                            transition
-                            className="bg-white padding-dialog relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
-                        >
-                            <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <div className="sm:flex sm:items-start">
-                                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                <DialogTitle className="text-base text-large font-semibold text-gray-900">
-                                    Embarcar em uma nova aventura?
-                                </DialogTitle>
-                                <div className="margin-top-s m-b-s">
-                                    <p className="text text-gray-500">
-                                        Se o Mestre de uma campanha compartilhar o código com você, você poderá participar como jogador.
-                                    </p>
+                        <Box className="rounded-lg" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+                            <DialogPanel
+                                transition
+                                className=" padding-dialog-sm relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+                            >
+                                <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div className="sm:flex sm:items-start">
+                                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <DialogTitle className="text-base text-large font-semibold ">
+                                        Embarcar em uma nova aventura?
+                                    </DialogTitle>
+                                    <div className="margin-top-s m-b-s">
+                                        <p className="text ">
+                                            Se o Mestre de uma campanha compartilhar o código com você, você poderá participar como jogador.
+                                        </p>
+                                    </div>
+                                    </div>
                                 </div>
                                 </div>
-                            </div>
-                            </div>
-                            <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
-                                <Form>
-                                    <Input color={"black"} value={idcampanha} onChange={(e) => setidcampanha(e.target.value)} mb={"2"} required resize="none" className="height" placeholder="Código da campanha"/>
-                                </Form>
-                                <Button color={"white"} bg={"black"} mb={"4"} onClick={()=>validateIdCampanha()} className="margin-top" disabled={!(idcampanha != "")}>Entrar na campanha</Button>
-                            </div>
-                            
-                        <Presence 
-                        animationName={{ _open: "fade-in",_closed:"fade-out" }}
-                        animationDuration="moderate"
-                        present={openDialogSm && !idcampanhavalido}>
-                            <Alert.Root status="error" title="This is the alert title">
-                                <Alert.Indicator />
-                                <Alert.Title>O ID inserido não resultou em nenhuma campanha.</Alert.Title>
-                            </Alert.Root>
-                        </Presence>
+                                <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
+                                    <Form>
+                                        <Input value={idcampanha} onChange={(e) => setidcampanha(e.target.value)} mb={"2"} required resize="none" className="height" placeholder="Código da campanha"/>
+                                    </Form>
+                                    <Button mb={"4"} onClick={()=>validateIdCampanha()} className="margin-top" disabled={!(idcampanha != "")}>Entrar na campanha</Button>
+                                </div>
+                                
+                            <Presence 
+                                animationName={{ _open: "fade-in",_closed:"fade-out" }}
+                                animationDuration="moderate"
+                                present={openDialogSm && !idcampanhavalido}>
+                                <Alert.Root status="error" title="This is the alert title">
+                                    <Alert.Indicator />
+                                    <Alert.Title>O ID inserido não resultou em nenhuma campanha.</Alert.Title>
+                                </Alert.Root>
+                            </Presence>
 
-                        </DialogPanel>
+                            </DialogPanel>
+                        </Box>
                         </div>
                     </div>
                 </Dialog>
+
+                <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
 
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                     
@@ -130,8 +132,8 @@ export default function Home() {
                             <div className="margin-top w-11/12 overflow-x-hidden">
                                 <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Nova campanha</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
-                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> openDialog()}>Entrar em campanha</Button>
-                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Pesquisar sistemas</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
                             <div className="w-1/12">
                                 <Separator h={"75vh"} orientation={"vertical"}></Separator>
