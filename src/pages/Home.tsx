@@ -6,17 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
-import { useColorMode } from "@/components/ui/color-mode";
 import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardRoot, CardTitle } from "@chakra-ui/react/card";
 import { useQuery } from "@tanstack/react-query";
-import { LuSun, LuMoon, LuLogOut } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
+import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -33,7 +33,6 @@ export default function Home() {
         queryFn: getAllUserPlayedCampaigns
     })
 
-    const { toggleColorMode, colorMode } = useColorMode()
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [idcampanha, setidcampanha] = useState("")
@@ -45,11 +44,16 @@ export default function Home() {
     }
 
     function showUserSettings(){
-    alert('user settings')
+        alert('user settings')
     }
 
     function validateIdCampanha(){
-    setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
+        setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
+    }
+
+    function navigateNewCampaign(){
+        //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
+        navigate("/grimoire/campaign/");
     }
 
     return(
@@ -130,8 +134,8 @@ export default function Home() {
                     
                         <div className="flex col-span-2">
                             <div className="margin-top w-11/12 overflow-x-hidden">
-                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Nova campanha</Button>
-                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
+                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
+                                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
@@ -140,7 +144,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"auto"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
                                 <Separator></Separator>
@@ -149,7 +153,7 @@ export default function Home() {
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"auto"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
                                 <Separator></Separator>
@@ -160,7 +164,7 @@ export default function Home() {
                         </CardRoot>
                         <div className="col-span-3">
 
-                            <CardRoot overflowY={"scroll"} className="w-full h-[35vh]">
+                            <CardRoot overflowY={"auto"} className="w-full h-[35vh]">
                                 <CardBody>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
@@ -169,15 +173,7 @@ export default function Home() {
                             
                         </div>
                 </div>
-                <div className="text-right right-bottom">
-                        
-                    <ClientOnly fallback={<Skeleton boxSize="8" />}>
-                    <IconButton onClick={toggleColorMode} variant="outline" size="sm">
-                        {colorMode === "light" ? <LuSun /> : <LuMoon />}
-                    </IconButton>
-                    </ClientOnly>
-                    
-                </div>
+                <ToggleTheme/>
                 
             </Box>
         </Presence>

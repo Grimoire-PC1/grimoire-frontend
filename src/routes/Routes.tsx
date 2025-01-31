@@ -3,6 +3,7 @@ import { PrivateRoute } from "./PrivateRoute";
 import LoginPage from "../pages/Login";
 import SignUpPage from "../pages/Singup";
 import Home from "@/pages/Home";
+import CampaignPage from "@/pages/CampaignPage";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -20,10 +21,18 @@ export const PublicRoutes: RouteObject[] = [
     element: <Home />,
   },
   {
+    path: "/grimoire/campaign",
+    element: <CampaignPage />
+  },
+  {
     element: <PrivateRoute />,
     children: [
       
-      /*
+      /*  
+      {
+        path: "/grimoire/home",
+        element: <Home />,
+      },
       {
         path: "/grimoire/campaign",
         element: <CampaignPage />,
