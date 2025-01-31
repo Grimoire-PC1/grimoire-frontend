@@ -16,8 +16,8 @@ export const SystemListCard = ({
     return(
         <CardRoot className="" cursor={"pointer"} onClick={()=>openSystemDetails()}>
                 <Image
-                src={system.image != '' ? system.image : "bg-linear-to-r from-purple-950 to-slate-500 h-[25vh]"}
-                className={system.image == '' ? "h-[25vh] bg-[#]":"max-h-[25vh]"}
+                src={system.image}
+                className={"max-h-[25vh]"}
                 />
             <CardBody>
                 <Text fontSize={"lg"}>{system.name}</Text>
