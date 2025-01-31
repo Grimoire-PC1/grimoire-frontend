@@ -1,6 +1,5 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
-import { useUserStore } from "../stores/user/user.store";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
 import { Campaign } from "@/interfaces/Models";
 

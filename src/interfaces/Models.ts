@@ -35,9 +35,16 @@ export type Player = {
 }
 
 export type Character = {
-
+    id: string;
+    name: string;
+    image: string;
+    characterSheet: CharacterSheet;
 }
 
 export type System = {
     
+}
+
+export type CharacterSheet = {
+    system: System;
 }
