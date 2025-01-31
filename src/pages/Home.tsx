@@ -146,11 +146,11 @@ export default function Home() {
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
                             <div className="w-1/12">
-                                <Separator h={"75vh"} orientation={"vertical"}></Separator>
+                                <Separator h={"80vh"} orientation={"vertical"}></Separator>
                             </div>
                         </div>
 
-                        <CardRoot className="h-[75vh] col-span-3">
+                        <CardRoot className="h-[80vh] col-span-3">
                                 <CardHeader>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
@@ -161,7 +161,7 @@ export default function Home() {
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <CardRoot className="h-[75vh] col-span-3">
+                        <CardRoot className="h-[80vh] col-span-3">
                                 <CardHeader>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
@@ -174,7 +174,7 @@ export default function Home() {
                         </CardRoot>
                         <div className="col-span-3">
 
-                            <CardRoot className="w-full h-[35vh]">
+                            <CardRoot className="w-full h-[40vh]">
                                 <CardHeader>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>

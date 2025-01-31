@@ -16,17 +16,19 @@ export default function CampaignPage(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slow"
         >
-            <Box className="overflow-y-hidden" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                 {isGameMaster ? //mostre a visão do mestre
                     <div>
                         <CampaignHeader  campaign="minha campanha"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
-                            <div className="col-span-2">
+                            <div className="col-span-2 sticky">
                                 <SidebarGM campaign=""></SidebarGM>
                             </div>
                             <div className="col-span-9">
-                                <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
+                                <div>
+                                    <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
+                                </div>
                                 <ToggleTheme/>
                             </div>
                         </div>

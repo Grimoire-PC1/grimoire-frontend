@@ -33,7 +33,7 @@ export const SidebarGM = ({
                 <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Home</Button>
             </div>
             <div className="w-1/12">
-                <Separator h={"75vh"} orientation={"vertical"}></Separator>
+                <Separator h={"80vh"} orientation={"vertical"}></Separator>
             </div>
         </div>
     )

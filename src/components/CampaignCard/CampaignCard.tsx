@@ -16,7 +16,7 @@ export const CampaignCard = ({
                 className="max-h-[25vh]"
                 />
             <CardBody>
-                <Text fontSize={"lg"}>{campaign.name}</Text>
+                <Text lineClamp={1} fontSize={"lg"}>{campaign.name}</Text>
             </CardBody>
         </CardRoot>
     )

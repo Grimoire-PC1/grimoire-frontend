@@ -133,3 +133,11 @@ p,span,h1,h2,h3,h4,h5,h6,div{
 .content-spacing{
     margin: 3% 3%;
 }
+
+.margin-right{
+    margin-right: 4%;
+}
+
+.padding-left{
+    padding-left: 3%;
+}
