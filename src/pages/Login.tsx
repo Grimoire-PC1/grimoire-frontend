@@ -6,10 +6,9 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 //import LoginForm from "../components/LoginForm/LoginForm";
-import { Button, Separator, ClientOnly, IconButton, Skeleton, Textarea, Text, Presence, Box, Input } from "@chakra-ui/react";
-import { LuSun, LuMoon } from "react-icons/lu";
-import { useColorMode } from "@/components/ui/color-mode";
+import { Button, Separator, Textarea, Text, Presence, Box, Input } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
+import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -41,8 +40,6 @@ export default function LoginPage() {
       getUserFromStorage(payload);
     }
   }, [navigate, setUser, user]);
-
-  const { toggleColorMode, colorMode } = useColorMode()
 
   const [showSignInForm, setShowSignInForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -133,16 +130,7 @@ export default function LoginPage() {
                 </div>
               </div> 
             </Presence>
-
-          <div className="text-right right-bottom">
-            
-            <ClientOnly fallback={<Skeleton boxSize="8" />}>
-              <IconButton onClick={toggleColorMode} variant="outline" size="sm">
-                {colorMode === "light" ? <LuSun /> : <LuMoon />}
-              </IconButton>
-            </ClientOnly>
-            
-          </div>
+            <ToggleTheme/>
           </div>
         </div>
 
