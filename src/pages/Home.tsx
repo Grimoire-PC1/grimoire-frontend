@@ -54,7 +54,12 @@ export default function Home() {
     }
 
     function validateIdCampanha(){
-        setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
+        if(idcampanha == '123456'){
+            setidcampanhavalido(true) //depois mudar pra uma verificação real
+            navigate("/grimoire/campaign/");
+        }else{
+            setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
+        }
     }
 
     function navigateNewCampaign(){
