@@ -8,15 +8,17 @@ import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
 import { useColorMode } from "@/components/ui/color-mode";
 import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
-import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For } from "@chakra-ui/react";
+import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
-import { CardBody, CardRoot, CardTitle } from "@chakra-ui/react/card";
+import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
 import { useQuery } from "@tanstack/react-query";
 import { LuSun, LuMoon, LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
+import { getAllUserCharacters } from "@/services/characterService";
+import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -33,6 +35,11 @@ export default function Home() {
         queryFn: getAllUserPlayedCampaigns
     })
 
+    const {data: characters} = useQuery({
+        queryKey: ["userCharacters"],
+        queryFn: getAllUserCharacters
+    })
+
     const { toggleColorMode, colorMode } = useColorMode()
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)
@@ -45,7 +52,6 @@ export default function Home() {
     }
 
     function showUserSettings(){
-    alert('user settings')
     }
 
     function validateIdCampanha(){
@@ -140,19 +146,23 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
-                            <CardBody>
-                                <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
-                                <Separator></Separator>
+                        <CardRoot className="h-[75vh] col-span-3">
+                                <CardHeader>
+                                    <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                                    <Separator></Separator>
+                                </CardHeader>
+                            <CardBody  overflowY={"auto"}>
                                 <For each={campanhasCriadas}>
                                     {(item) => <CampaignCard campaign={item}></CampaignCard>}
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
-                            <CardBody>
-                                <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
-                                <Separator></Separator>
+                        <CardRoot className="h-[75vh] col-span-3">
+                                <CardHeader>
+                                    <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                                    <Separator></Separator>
+                                </CardHeader>
+                            <CardBody  overflowY={"auto"}>
                                 <For each={campanhasJogadas}>
                                     {(item) => <CampaignCard campaign={item}></CampaignCard>}
                                 </For>
@@ -160,10 +170,19 @@ export default function Home() {
                         </CardRoot>
                         <div className="col-span-3">
 
-                            <CardRoot overflowY={"scroll"} className="w-full h-[35vh]">
-                                <CardBody>
+                            <CardRoot className="w-full h-[35vh]">
+                                <CardHeader>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
+                                </CardHeader>
+                                <CardBody overflowY={"auto"}  className="flex">
+                                    <Center>
+                                        <Flex wrap="wrap" mt='2'>
+                                            <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
+                                                {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
+                                            </For>
+                                        </Flex>
+                                    </Center>
                                 </CardBody>
                             </CardRoot>
                             
