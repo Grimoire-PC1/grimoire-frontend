@@ -66,6 +66,11 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     margin-top:2%;
 }
 
+.margin-top-xs{
+    margin-top:1%;
+}
+
+
 .margin-sides{
     margin-left: 2%;
     margin-right: 2%;
@@ -73,6 +78,10 @@ p,span,h1,h2,h3,h4,h5,h6,div{
 
 .subtitle{
     font-size: 36px;
+}
+
+.subtitle-s{
+    font-size: 30px;
 }
 
 .padding{

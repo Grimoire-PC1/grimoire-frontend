@@ -144,7 +144,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"auto"}>
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
                                 <Separator></Separator>
@@ -153,7 +153,7 @@ export default function Home() {
                                 </For>
                             </CardBody>
                         </CardRoot>
-                        <CardRoot className="h-[75vh] col-span-3" overflowY={"auto"}>
+                        <CardRoot className="h-[75vh] col-span-3" overflowY={"scroll"}>
                             <CardBody>
                                 <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
                                 <Separator></Separator>
@@ -164,7 +164,7 @@ export default function Home() {
                         </CardRoot>
                         <div className="col-span-3">
 
-                            <CardRoot overflowY={"auto"} className="w-full h-[35vh]">
+                            <CardRoot overflowY={"scroll"} className="w-full h-[35vh]">
                                 <CardBody>
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
