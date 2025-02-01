@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image, Separator,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image, Separator, Button,} from "@chakra-ui/react";
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 
@@ -19,7 +19,7 @@ export const CampaignPageGM = ({
             <div className="margin-right">
                 <Text className="subtitle-s">PERSONALIZE SUA HISTÓRIA</Text>
                 <div className="grid grid-cols-2 margin-top-xs">
-                    <div className="">
+                    <div className="content-end">
                         {
                             campaign_image == "" ?
                             <FileUploadRoot alignItems="stretch" maxFiles={1}>
@@ -33,11 +33,12 @@ export const CampaignPageGM = ({
                             <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950"></Image>
                         }
                     </div>
-                    <div className="padding-left">
+                    <div className="padding-left content-end">
                         <Text className="text">Título</Text>
                         <Input></Input>
-                        <Text className="text" mt={"5"}>Descreva sua história</Text>
+                        <Text className="text" mt={"4"}>Descreva sua história</Text>
                         <Textarea resize={"none"}></Textarea>
+                        <Button mt={"4"} disabled>Salvar alterações</Button> {/* habilitar botão quando alguma alteração for feita nos textos ou na imagem */}
                     </div>
                 </div>
                 <div className="grid grid-cols-28 margin-top-s">

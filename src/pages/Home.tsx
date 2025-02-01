@@ -144,20 +144,20 @@ export default function Home() {
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                     
                         <div className="flex col-span-2">
-                            <div className="margin-top w-11/12 overflow-x-hidden">
+                            <div className="margin-top">
                                 <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
                                 <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
-                            <div className="w-1/12">
+                            <div>
                                 <Separator h={"80vh"} orientation={"vertical"}></Separator>
                             </div>
                         </div>
 
                         <CardRoot className="h-[80vh] col-span-3">
                                 <CardHeader>
-                                    <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                                    <CardTitle className="text-center padding-bottom">SUAS CAMPANHAS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
                             <CardBody  overflowY={"auto"}>
@@ -168,7 +168,7 @@ export default function Home() {
                         </CardRoot>
                         <CardRoot className="h-[80vh] col-span-3">
                                 <CardHeader>
-                                    <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                                    <CardTitle className="text-center padding-bottom">SUAS AVENTURAS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
                             <CardBody  overflowY={"auto"}>
@@ -184,7 +184,7 @@ export default function Home() {
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
-                                <CardBody overflowY={"auto"}  className="flex">
+                                <CardBody ml={4} overflowY={"scroll"}  className="flex">
                                     <Center>
                                         <Flex wrap="wrap" mt='2'>
                                             <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>

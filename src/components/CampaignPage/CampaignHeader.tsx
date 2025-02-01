@@ -1,4 +1,4 @@
-import { ClientOnly, IconButton, Separator, Skeleton } from "@chakra-ui/react";
+import { ClientOnly, IconButton, Separator, Skeleton,Text } from "@chakra-ui/react";
 import { LuLogOut } from "react-icons/lu";
 import { Avatar } from "../ui/avatar";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ export const CampaignHeader = ({
     return(
         <div>
             <div className="header margin-sides flex place-content-between items-center" >
-                    <span className="header-title agreloy">{campaign}'s Grimoire</span>
+                    <Text className="header-title agreloy" lineClamp={1}>{campaign}'s Grimoire</Text>
                     <div className="grid grid-cols-2 gap-x-4">
                         <Avatar className="cursor-pointer" onClick={()=>showUserSettings()} size={"lg"} name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
 
