@@ -185,7 +185,7 @@ export default function Home() {
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
-                                <CardBody ml={4} overflowY={"scroll"}  className="flex">
+                                <CardBody overflowY={"scroll"}  className="flex">
                                     <Center>
                                         <Flex wrap="wrap" mt='2'>
                                             <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
