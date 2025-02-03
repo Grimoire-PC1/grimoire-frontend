@@ -2,6 +2,7 @@ import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
 import { Campaign } from "@/interfaces/Models";
+import { CreateNewCampaignPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
 
@@ -28,4 +29,13 @@ export const getAllUserPlayedCampaigns = async () => {
     }) 
 
     return arrayedCampaigns;
+}
+
+export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) => {
+    const { data } = await axiosInstace.post<GetCampaigsResponse>(
+        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`,
+        newCampaign
+    )
+
+    return data;
 }

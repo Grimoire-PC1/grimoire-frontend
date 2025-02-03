@@ -8,12 +8,12 @@ import { User } from "../../interfaces/Models";
 import { useUserStore } from "../../stores/user/user.store";
 
 export interface LoginFormPayload {
-  username: string;
+  email: string;
   password: string;
 }
 
 const formSchema = z.object({
-  username: z.string({ required_error: "Informe uma matrícula válida." }),
+  email: z.string({ required_error: "Informe um email" }),
   password: z
     .string({ required_error: "Informe uma senha." })
     .min(5, "Senha deve conter ao menos 5 caracteres."),
