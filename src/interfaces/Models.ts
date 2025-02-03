@@ -31,7 +31,8 @@ export type Session = {
 }
 
 export type Player = {
-
+    id: string;
+    characters: Character[]
 }
 
 export type Character = {

@@ -1,10 +1,12 @@
-import { Input, Text, Textarea, Image, Separator, Button,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For,} from "@chakra-ui/react";
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
+import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
+import { Campaign, Character } from "@/interfaces/Models";
 
 export interface CampaignPageGMProps {
     user: string;
-    campaign: string; //depois mudar pra Campaign
+    campaign: Campaign; //depois mudar pra Campaign
 }
 
 export const CampaignPageGM = ({
@@ -13,6 +15,13 @@ export const CampaignPageGM = ({
 }: CampaignPageGMProps) => {
 
     const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
+
+    const players = campaign.players;
+    var characters: Character[][] = [];
+
+    for(let i = 0; i < players.length; i++) {
+        characters.push(players[i].characters);
+    }
 
     return(
         <div className="h-[80vh] overflow-y-auto">
@@ -55,6 +64,16 @@ export const CampaignPageGM = ({
                     <Separator orientation={"vertical"} className="col-span-1"></Separator>
                     <div className="col-span-11">
                         <Text className="subtitle-s text-center">PERSONAGENS DOS JOGADORES</Text>
+                        <Center>
+                            <Flex wrap="wrap" mt='2'>
+                                <For each={characters}>
+                                    {(itemPlayer) => 
+                                    <For each={itemPlayer}>
+                                        {(itemCharacter) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={itemCharacter}></CharacterProfile>}
+                                    </For>}
+                                </For>
+                            </Flex>
+                        </Center>
                         {/* aqui vem uma lista de avatares dos jogadores. clicar neles leva à ficha do personagem*/}
                     </div>
                 </div>

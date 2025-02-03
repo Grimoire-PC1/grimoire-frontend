@@ -19,6 +19,7 @@ import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
+import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -190,6 +191,7 @@ export default function Home() {
                                             <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
                                                 {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                             </For>
+                                            <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                         </Flex>
                                     </Center>
                                 </CardBody>

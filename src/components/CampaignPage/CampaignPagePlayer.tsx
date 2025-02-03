@@ -6,6 +6,7 @@ import { SidebarPlayer } from "../SidebarPlayer/SidebarPlayer";
 import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
 import { CampaignCard } from "../CampaignCard/CampaignCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
+import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
 
 export interface CampaignPagePlayerProps {
     user: string;
@@ -39,6 +40,7 @@ export const CampaignPagePlayer = ({
                                     <For each={['','',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
+                                    <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                 </Flex>
                             </Center>
                         </CardBody>
