@@ -8,6 +8,7 @@ export type User = {
 
 export type Campaign = {
     id: string;
+    gameMasterId: string;
     name: string;
     image: string;
     system: System;
