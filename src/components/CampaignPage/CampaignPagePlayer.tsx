@@ -1,31 +1,45 @@
 
 import { Input, Text, Textarea, Image, Separator, Button, Box, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
-import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
-import { SidebarPlayer } from "../SidebarPlayer/SidebarPlayer";
-import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
-import { CampaignCard } from "../CampaignCard/CampaignCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
+import { Campaign, Character, Player, User } from "@/interfaces/Models";
 
 export interface CampaignPagePlayerProps {
-    user: string;
-    campaign: string; //depois mudar pra Campaign
+    user: User | undefined;
+    campaign: Campaign | undefined; //depois mudar pra Campaign
 }
 
 export const CampaignPagePlayer = ({
     user,
     campaign,
 }: CampaignPagePlayerProps) => {
-    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
+    const campaign_image = campaign?.image //depois mudar pra pegar a imagem cadastrada na campanha
+
+    var players: Player | any[]
+    if(!campaign) {
+        players = []
+    } else {
+        players = campaign.players;
+    }
+
+    var yourCharacters: Character[][] = [];
+    var otherCharacters: Character[][] = [];
+
+    for(let i = 0; i < players.length; i++) {
+        if(players[i].id == user?.id) {
+            yourCharacters.push(players[i].characters);
+        } else {
+            otherCharacters.push(players[i].characters)
+        }
+    }
 
     return(
         <div>
 
             <div className="grid grid-cols-3 gap-x-8 content-padding">
                 <div className="col-span-1">
-                    {/* aqui vem a descrição da campanha */}
-                    <Text className="text" textAlign={"justify"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum ipsum ex, at ullamcorper dolor maximus vitae. Suspendisse potenti. Phasellus ultrices erat eu magna iaculis dapibus. Sed placerat augue nibh, ut convallis nulla iaculis a. Praesent turpis velit, bibendum vulputate posuere quis, fringilla sed est. Nunc volutpat nunc ac volutpat tempor. Sed ac orci faucibus, interdum eros in, elementum arcu.</Text>
+                    <Text className="text" textAlign={"justify"}>{campaign?.description}</Text>
                 </div>
                 <div className="col-span-1 max-h-[80vh]">
 
@@ -37,8 +51,11 @@ export const CampaignPagePlayer = ({
                         <CardBody ml={4} overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
-                                    <For each={['','',]}>
-                                        {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
+                                    <For each={yourCharacters}>
+                                        {(itemPlayer) => 
+                                        <For each={itemPlayer}>
+                                            {(itemCharacter) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={itemCharacter}></CharacterProfile>}
+                                        </For>}
                                     </For>
                                     <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                 </Flex>
@@ -54,8 +71,11 @@ export const CampaignPagePlayer = ({
                         <CardBody ml={4} overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
-                                    <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
-                                        {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
+                                    <For each={otherCharacters}>
+                                        {(itemPlayer) => 
+                                        <For each={itemPlayer}>
+                                            {(itemCharacter) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={itemCharacter}></CharacterProfile>}
+                                        </For>}
                                     </For>
                                 </Flex>
                             </Center>

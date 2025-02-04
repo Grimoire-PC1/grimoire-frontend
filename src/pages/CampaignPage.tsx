@@ -9,8 +9,21 @@ import {Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
+import { useQuery } from "@tanstack/react-query";
+import { getCampaignById } from "@/services/campaignService";
+import { useUserStore } from "@/stores/user/user.store";
 
 export default function CampaignPage(){
+
+    const user = useUserStore((state) => state.user);
+
+    const urlLength = window.location.href.split('/').length
+    const campaignId = window.location.href.split('/')[urlLength-1]
+
+    var {data: campaign} = useQuery({
+        queryKey: ["campaignById", campaignId],
+        queryFn: ({ queryKey }) => getCampaignById(queryKey[1]),
+    })
 
     const isGameMaster = false; //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
@@ -31,7 +44,7 @@ export default function CampaignPage(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
+                                    <CampaignPageGM user={user} campaign={campaign}></CampaignPageGM>
                                 </div>
                                 <ToggleTheme/>
                             </div>
@@ -54,7 +67,7 @@ export default function CampaignPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus manos'}></CampaignPagePlayer>
+                                            <CampaignPagePlayer user={user} campaign={campaign}></CampaignPagePlayer>
                                         </div>
                                     </div>
                                 </div>

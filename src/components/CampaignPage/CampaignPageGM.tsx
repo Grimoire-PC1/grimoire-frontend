@@ -2,21 +2,24 @@ import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For,} fr
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { Campaign, Character } from "@/interfaces/Models";
+import { Campaign, Character, Player, User } from "@/interfaces/Models";
 
 export interface CampaignPageGMProps {
-    user: string;
-    campaign: Campaign; //depois mudar pra Campaign
+    user: User | undefined;
+    campaign: Campaign | undefined; //depois mudar pra Campaign
 }
 
 export const CampaignPageGM = ({
     user,
     campaign,
 }: CampaignPageGMProps) => {
-
-    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
-
-    const players = campaign.players;
+    const campaign_image = campaign?.image //depois mudar pra pegar a imagem cadastrada na campanha
+    var players: Player | any[]
+    if(!campaign) {
+        players = []
+    } else {
+        players = campaign.players;
+    }
     var characters: Character[][] = [];
 
     for(let i = 0; i < players.length; i++) {
@@ -74,7 +77,6 @@ export const CampaignPageGM = ({
                                 </For>
                             </Flex>
                         </Center>
-                        {/* aqui vem uma lista de avatares dos jogadores. clicar neles leva à ficha do personagem*/}
                     </div>
                 </div>
             </div>
