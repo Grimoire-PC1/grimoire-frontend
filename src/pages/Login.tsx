@@ -100,7 +100,7 @@ export default function LoginPage() {
             >
               <div className="margin grid place-items-center">
               <Form className="grid-cols-1 w-1/3">
-                <Input mb={"2"} resize="none" placeholder="e-mail" />
+                <Input mb={"2"} resize="none" placeholder="username" />
                 <br></br>
                 <PasswordInput resize="none" placeholder="senha"></PasswordInput>
               </Form>
@@ -116,7 +116,8 @@ export default function LoginPage() {
             >
                         <div className="margin">
               <Form>
-                <Textarea resize="none" className="height-l" placeholder="username" />
+                <Textarea resize="none" className="height" placeholder="nome" />
+                <Textarea resize="none" className="height" placeholder="username" />
                 <br></br>
                 <Textarea resize="none" className="height-l" placeholder="e-mail" />
                 <br></br>
