@@ -26,7 +26,7 @@ export const CampaignHeader = ({
             <div className="header margin-sides flex place-content-between items-center" >
                     <Text className="header-title agreloy" lineClamp={1}>{campaign}'s Grimoire</Text>
                     <div className="grid grid-cols-2 gap-x-4">
-                        <Avatar className="cursor-pointer" onClick={()=>showUserSettings()} size={"lg"} name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+                        <Avatar className="cursor-pointer" onClick={()=>showUserSettings()} size={"lg"} name="Usuário"/>
 
                         <ClientOnly fallback={<Skeleton boxSize="8" />}>
                             <IconButton onClick={()=>logout()} variant="ghost" size="lg">

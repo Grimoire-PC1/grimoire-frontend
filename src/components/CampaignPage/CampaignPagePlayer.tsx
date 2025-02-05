@@ -29,7 +29,7 @@ export const CampaignPagePlayer = ({
                 </div>
                 <div className="col-span-1 max-h-[80vh]">
 
-                    <CardRoot className="w-full h-[38vh]">
+                    <CardRoot className="w-full h-[36vh]">
                         <CardHeader>
                             <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
@@ -37,7 +37,7 @@ export const CampaignPagePlayer = ({
                         <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
-                                    <For each={['','',]}>
+                                    <For each={['',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
                                     <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
@@ -46,15 +46,15 @@ export const CampaignPagePlayer = ({
                         </CardBody>
                     </CardRoot>
 
-                    <CardRoot className="w-full h-[38vh]">
+                    <CardRoot mt={"4"} className="w-full h-[36vh]">
                         <CardHeader>
-                            <CardTitle className="text-center padding-bottom">OUTROS JOGADORES</CardTitle>
+                            <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
                         <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
-                                    <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
+                                    <For each={['','','',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
                                 </Flex>
