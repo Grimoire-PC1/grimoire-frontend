@@ -17,7 +17,7 @@ export const CampaignPagePlayer = ({
     user,
     campaign,
 }: CampaignPagePlayerProps) => {
-    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
+    const campaign_image = campaign //depois mudar pra pegar a imagem cadastrada na campanha
 
     return(
         <div>

@@ -87,7 +87,7 @@ export default function Home() {
 
                     <MenuRoot>
                         <MenuTrigger asChild>
-                        <Avatar className="cursor-pointer" size={"lg"} name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+                        <Avatar className="cursor-pointer" size={"lg"} name="Usuário" />
                         </MenuTrigger>
                         <MenuContent mt={14} mr={4} position={"absolute"}>
                             <MenuItem onClick={()=>userSettings('nome')} cursor={"pointer"} value="nome">Mudar nome</MenuItem>
@@ -215,10 +215,9 @@ export default function Home() {
                                 <CardBody overflowY={"scroll"}  className="flex">
                                     <Center>
                                         <Flex wrap="wrap" mt='2'>
-                                            <For each={['','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]}>
+                                            <For each={['','','','','']}>
                                                 {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                             </For>
-                                            <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                         </Flex>
                                     </Center>
                                 </CardBody>

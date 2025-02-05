@@ -12,7 +12,7 @@ import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 
 export default function CampaignPage(){
 
-    const isGameMaster = false; //depois mudar pra uma verificação com o id do mestre e o id do usuario
+    const isGameMaster = true; //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
     return(
         <Presence 

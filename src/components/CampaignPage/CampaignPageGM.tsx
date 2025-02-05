@@ -6,7 +6,7 @@ import { Campaign, Character } from "@/interfaces/Models";
 
 export interface CampaignPageGMProps {
     user: string;
-    campaign: Campaign; //depois mudar pra Campaign
+    campaign: string; //depois mudar pra Campaign
 }
 
 export const CampaignPageGM = ({
@@ -14,13 +14,13 @@ export const CampaignPageGM = ({
     campaign,
 }: CampaignPageGMProps) => {
 
-    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
+    const campaign_image = campaign //depois mudar pra pegar a imagem cadastrada na campanha
 
-    const players = campaign.players;
-    var characters: Character[][] = [];
+    const players = [[''],[''],['','']];
+    var characters: string[][] = [];
 
     for(let i = 0; i < players.length; i++) {
-        characters.push(players[i].characters);
+        characters.push(players[i]);
     }
 
     return(
