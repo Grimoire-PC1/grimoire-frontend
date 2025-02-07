@@ -57,7 +57,7 @@ export default function Home() {
     function validateIdCampanha(){
         if(idcampanha == '123456'){
             setidcampanhavalido(true) //depois mudar pra uma verificação real
-            navigate("/grimoire/campaign/");
+            navigate("/grimoire/campaign");
         }else{
             setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
         }
@@ -65,7 +65,12 @@ export default function Home() {
 
     function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
-        navigate("/grimoire/campaign/");
+        navigate("/grimoire/campaign");
+    }
+
+    function navigateNewSystem(){
+        //fazer com que essa função crie um novo objeto sistema associado ao usuário como mestre. por padrão o sistema é privado
+        navigate("/grimoire/system/");
     }
 
     function userSettings(campo:string){
@@ -174,7 +179,7 @@ export default function Home() {
                         <div className="flex col-span-2">
                             <div className="margin-top">
                                 <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
-                                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewSystem()}>Novo sistema</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>

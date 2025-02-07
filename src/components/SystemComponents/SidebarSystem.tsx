@@ -5,27 +5,25 @@ import { LuCornerDownLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 
-export interface SidebarPlayerProps {
-    campaign: string; //depois mudar pra Campaign
+export interface SidebarSystemProps {
+    system: string;
 }
 
-export const SidebarPlayer = ({
-    campaign,
-}: SidebarPlayerProps) => {
+export const SidebarSystem = ({
+    system,
+}: SidebarSystemProps) => {
     const navigate = useNavigate();
     
     return(
         <div className="flex col-span-2">
             <div className="margin-top w-11/12 overflow-x-hidden">
-                <Button onClick={()=>navigate("/grimoire/campaign")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
+                <Button onClick={()=>navigate("/grimoire/system")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
+                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Regras</Button>
                 <br></br>
                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
-                <br></br>
-                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
             </div>

@@ -4,6 +4,8 @@ import LoginPage from "../pages/Login";
 import SignUpPage from "../pages/Singup";
 import Home from "@/pages/Home";
 import CampaignPage from "@/pages/CampaignPage";
+import CampaignSystemPage from "@/pages/CampaignSystemPage";
+import SystemPage from "@/pages/SystemPage";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -23,6 +25,14 @@ export const PublicRoutes: RouteObject[] = [
   {
     path: "/grimoire/campaign",
     element: <CampaignPage />
+  },
+  {
+      path: "/grimoire/campaign/system",
+      element: <CampaignSystemPage />
+  },
+  {
+      path: "/grimoire/system",
+      element: <SystemPage />
   },
   {
     element: <PrivateRoute />,

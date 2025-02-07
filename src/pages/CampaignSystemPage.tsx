@@ -1,6 +1,4 @@
 import { CampaignHeader } from "@/components/CampaignPage/CampaignHeader";
-import { CampaignPageGM } from "@/components/CampaignPage/CampaignPageGM";
-import { CampaignPagePlayer } from "@/components/CampaignPage/CampaignPagePlayer";
 import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
@@ -11,8 +9,10 @@ import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPl
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
+import { CampaignSystemPageGM } from "@/components/CampaignSystemPage/CampaignSystemPageGM";
+import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/CampaignSystemPagePlayer";
 
-export default function CampaignPage(){
+export default function CampaignSystemPage(){
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
@@ -24,7 +24,7 @@ export default function CampaignPage(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
-                {isGameMaster ? //mostre a visão do mestre
+                {isGameMaster ?
                     <div>
                         <CampaignHeader  campaign="minha campanha"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -33,7 +33,7 @@ export default function CampaignPage(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
+                                    <CampaignSystemPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignSystemPageGM>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
@@ -60,7 +60,7 @@ export default function CampaignPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignPagePlayer>
+                                            <CampaignSystemPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignSystemPagePlayer>
                                         </div>
                                     </div>
                                 </div>
