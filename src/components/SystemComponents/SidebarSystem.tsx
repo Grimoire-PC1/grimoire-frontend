@@ -19,9 +19,9 @@ export const SidebarSystem = ({
             <div className="margin-top w-11/12 overflow-x-hidden">
                 <Button onClick={()=>navigate("/grimoire/system")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Regras</Button>
+                <Button onClick={()=>navigate("/grimoire/system/rules")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Regras</Button>
                 <br></br>
-                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
+                <Button onClick={()=>navigate("/grimoire/system/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>

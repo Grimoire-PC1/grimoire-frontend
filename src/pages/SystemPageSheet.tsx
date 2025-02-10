@@ -3,9 +3,9 @@ import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
 import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
-import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
+import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 
-export default function SystemPageRules(){
+export default function SystemPageSheet(){
 
     return(
         <Presence 
@@ -22,7 +22,7 @@ export default function SystemPageRules(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <SystemPageRulesComponent system={"meu sistema"}/>
+                                    <SystemPageSheetComponent system={"meu sistema"}/>
                                 </div>
                                 <ToggleTheme/>
                             </div>

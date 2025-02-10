@@ -6,6 +6,8 @@ import Home from "@/pages/Home";
 import CampaignPage from "@/pages/CampaignPage";
 import CampaignSystemPage from "@/pages/CampaignSystemPage";
 import SystemPage from "@/pages/SystemPage";
+import SystemPageRules from "@/pages/SystemPageRules";
+import SystemPageSheet from "@/pages/SystemPageSheet";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -33,6 +35,14 @@ export const PublicRoutes: RouteObject[] = [
   {
       path: "/grimoire/system",
       element: <SystemPage />
+  },
+  {
+      path: "/grimoire/system/rules",
+      element: <SystemPageRules />
+  },
+  {
+      path: "/grimoire/system/sheet",
+      element: <SystemPageSheet />
   },
   {
     element: <PrivateRoute />,
