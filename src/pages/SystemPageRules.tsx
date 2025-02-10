@@ -22,7 +22,9 @@ export default function SystemPageRules(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <SystemPageRulesComponent system={"meu sistema"}/>
+                                    <SystemPageRulesComponent   title="COMO SEU SISTEMA CONTA UMA HISTÓRIA?" 
+                                                                subtitle="Adicione regras para situar o mestre e os jogadores de como utilizar seu sistema" 
+                                                                system={"meu sistema"}/>
                                 </div>
                                 <ToggleTheme/>
                             </div>

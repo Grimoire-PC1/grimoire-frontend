@@ -1,5 +1,5 @@
-import {Box, Button, CardBody, CardRoot,defineStyle,FieldLabel,FieldRoot,Flex, Grid, Image, Input, NumberInput, Text, Textarea } from "@chakra-ui/react"
-import { LuChevronDown, LuDices } from "react-icons/lu";
+import {Box, Button, CardBody, CardRoot,defineStyle,FieldLabel,FieldRoot,Flex, Grid, IconButton, Image, Input, NumberInput, Text, Textarea } from "@chakra-ui/react"
+import { LuChevronDown, LuDices, LuPencil, LuPlus, LuTrash2 } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { Field } from "../ui/field";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
@@ -40,11 +40,15 @@ export const CharacterSheetField = ({
     fieldId,
 }: CharacterSheetFieldProps) => {
     return(
-        <div className="grid grid-cols-4 place-items-around gap-x-4">
+        <div className="grid grid-cols-6 place-items-around gap-x-4">
+                <Flex alignItems={"center"} gapX={2}>
+                    <IconButton size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
+                    <IconButton size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
+                </Flex>
                 <Text alignSelf={"center"} textAlign={"end"}>
                     {fieldTitle}
                 </Text>
-                <div className="col-span-3">
+                <div className="col-span-4">
                     {
                         fieldType === 'StringLonga' ?
                             <div>

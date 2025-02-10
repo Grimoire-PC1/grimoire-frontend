@@ -21,9 +21,9 @@ export const SidebarGM = ({
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
+                <Button onClick={()=>navigate("/grimoire/campaign/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
-                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
+                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>
                 <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
                 <br></br>

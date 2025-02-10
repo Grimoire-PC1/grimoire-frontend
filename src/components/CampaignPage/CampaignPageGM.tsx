@@ -14,7 +14,7 @@ export const CampaignPageGM = ({
     campaign,
 }: CampaignPageGMProps) => {
 
-    const campaign_image = campaign //depois mudar pra pegar a imagem cadastrada na campanha
+    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
 
     const players = [[''],[''],['','']];
     var characters: string[][] = [];

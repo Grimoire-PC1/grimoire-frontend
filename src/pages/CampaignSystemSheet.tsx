@@ -14,10 +14,11 @@ import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/Campai
 import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
+import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 
-export default function CampaignSystemPage(){
+export default function CampaignSystemSheet(){
 
-    const system = "";
+    const system = "meu sistema";
     const campaign = "minha campanha";
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
@@ -42,30 +43,14 @@ export default function CampaignSystemPage(){
                                     {
                                         system == "" ?
                                         <div className="margin-right">
-                                            <Flex placeContent={"space-between"}>
-                                                <div>
-                                                    <Text className="subtitle-s">COMO SE JOGA {campaign.toUpperCase()}?</Text>
-                                                    <Text className="text">Selecione um dos seus sistemas ou pesquise sistemas disponíveis no Grimoire para contar sua história</Text>         
-                                                </div>
-                                                <Button onClick={()=> setOpenDialogLg(true)} mt={4}>Escolher sistema</Button>
-                                            </Flex>
+                                            <Text className="subtitle-s">ESCOLHA OU CRIE UM SISTEMA PARA {campaign.toUpperCase()} PRIMEIRO!</Text>
+                                            <Text className="text">A ficha de um personagem deve estar de acordo com as regras do seu sistema. Antes de pensar no modelo da ficha, crie ou escolha um sistema.</Text>         
                                         </div>
                                         :
-                                        <div className="margin-right">
-                                            <Flex placeContent={"space-between"}>
-                                                <div>
-                                                    <Text className="subtitle-s">{campaign.toUpperCase()} SE JOGA COM {system.toUpperCase()}!</Text>
-                                                    <Text className="text">Meu sistema é muito legal e essa é a descrição dele {/* depois mudar isso pra descrição do sistema */}</Text>         
-                                                </div>
-                                            </Flex>
-                                        </div>
+                                        <SystemPageSheetComponent   title="CRIE PERSONAGENS ÚNICOS!" 
+                                                                    subtitle="Crie ou modifique um modelo de ficha para dar vida aos personagens dentro da sua história" 
+                                                                    system={"meu sistema"}/>
                                     }
-                                    <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
-                                    <Box mt={8}>
-                                        <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
-                                                                    subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 
-                                                                    system={""}/>
-                                    </Box>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">

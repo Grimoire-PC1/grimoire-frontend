@@ -1,5 +1,5 @@
-import {Button, CardBody, CardRoot, Flex, Image, Text } from "@chakra-ui/react"
-import { LuUserRoundPen } from "react-icons/lu";
+import {Button, CardBody, CardRoot, Flex, IconButton, Image, Text } from "@chakra-ui/react"
+import { LuPlus, LuTrash2, LuUserRoundPen } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
 import { Avatar } from "../ui/avatar";
@@ -32,8 +32,13 @@ export const CharacterSheetSection = ({
                         <CharacterSheetField fieldId="3" fieldTitle="Idade" fieldType="Numerico"/>
                         <CharacterSheetField fieldId="4" fieldTitle="Carisma" fieldType="Dado"/>
                         <CharacterSheetField fieldId="4" fieldTitle="Foto" fieldType="Arquivo"/>
-                        <div className="grid place-content-end">
-                            <Avatar className="cursor-pointer" size='md' name="+" /> 
+                        <div className="flex place-content-end">
+                            <IconButton rounded={"full"} size={"md"} variant={"outline"} aria-label="Novo Campo"> 
+                                <LuPlus strokeWidth={1.25} />
+                            </IconButton>
+                            <IconButton ml={2} rounded={"full"} size={"md"} variant={"outline"} aria-label="Novo Campo"> 
+                                <LuTrash2 strokeWidth={1.25} />
+                            </IconButton>
                         </div>
                     </AccordionItemContent>
                     </AccordionItem>

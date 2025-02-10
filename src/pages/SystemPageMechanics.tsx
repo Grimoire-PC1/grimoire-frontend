@@ -5,7 +5,7 @@ import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 
-export default function SystemPageSheet(){
+export default function SystemPageMechanics(){
 
     return(
         <Presence 
@@ -22,9 +22,7 @@ export default function SystemPageSheet(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <SystemPageSheetComponent   title="COMO SEUS JOGADORES PODEM CONSTRUIR PERSONAGENS ÚNICOS?" 
-                                                                subtitle="Crie um modelo de ficha para dar vida aos personagens dentro do seu sistema" 
-                                                                system={"meu sistema"}/>
+                                    
                                 </div>
                                 <ToggleTheme/>
                             </div>
