@@ -4,8 +4,14 @@ import { Presence } from "@chakra-ui/react/presence";
 import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
+import { IconButton } from "@chakra-ui/react";
+import { LuArrowRightLeft } from "react-icons/lu";
+import { useState } from "react";
+import { SystemPageSheetNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageSheetNoEditComponent";
 
 export default function SystemPageSheet(){
+
+    const [isOwner, setIsOwner] = useState(true);
 
     return(
         <Presence 
@@ -22,15 +28,27 @@ export default function SystemPageSheet(){
                             </div>
                             <div className="col-span-9">
                                 <div>
+                                    {
+                                        isOwner ?
                                     <SystemPageSheetComponent   title="COMO SEUS JOGADORES PODEM CONSTRUIR PERSONAGENS ÚNICOS?" 
                                                                 subtitle="Crie um modelo de ficha para dar vida aos personagens dentro do seu sistema" 
                                                                 system={"meu sistema"}/>
+
+                                                                :
+                                                                
+                                    <SystemPageSheetNoEditComponent   title="DESCUBRA COMO CRIAR PERSONAGENS ÚNICOS"
+                                                                system={"sistema de outra pessoa"}/>                                    
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
             </Box>
             <ToggleTheme/>
+                                                        
+            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsOwner(!isOwner)} variant="outline" size="sm">
+                {<LuArrowRightLeft />}
+            </IconButton>
         </Presence>
     )
 }

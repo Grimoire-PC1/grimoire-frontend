@@ -14,10 +14,11 @@ import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/Campai
 import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
+import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
 
 export default function CampaignSystemPage(){
 
-    const system = "";
+    const system = "sistema externo";
     const campaign = "minha campanha";
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
@@ -28,10 +29,10 @@ export default function CampaignSystemPage(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} maxH={"100vh"} overflowY={"hidden"} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}>
 
                 {isGameMaster ?
-                    <div>
+                    <div className="max-h-[100vh] overflow-y-hidden">
                         <CampaignHeader  campaign="minha campanha"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
@@ -94,7 +95,12 @@ export default function CampaignSystemPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignSystemPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignSystemPagePlayer>
+                                                <SystemPageRulesNoEditComponent   
+                                                                            title="REGRAS DO SISTEMA"
+                                                                            subtitle={campaign+" utiliza o sistema "+system}
+                                                                            system={""}
+                                                                            maxHeight="67vh"
+                                                                            />
                                         </div>
                                     </div>
                                 </div>

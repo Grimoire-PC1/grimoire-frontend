@@ -1,7 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import {Alert, Box, Button, createListCollection, Input, Textarea} from "@chakra-ui/react";
-import { Form } from 'react-router-dom';
-import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
+import {Alert, Box, Button} from "@chakra-ui/react";
 
 
 export interface UserSettingsDialogSmProps {
@@ -18,15 +16,6 @@ export const CharacterSheetDeleteFieldDialog = ({
     fieldName,
 }: UserSettingsDialogSmProps) => {
 
-    const types = createListCollection({
-        items: [
-          { label: "Texto curto (30 caracteres)", value: "StringCurta" },
-          { label: "Texto longo (500 caracteres)", value: "StringLonga" },
-          { label: "Número", value: "Numerico" },
-          { label: "Dado (quantidade - tipo de dado - bônus)", value: "Dado" },
-        ],
-      })
-    
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop

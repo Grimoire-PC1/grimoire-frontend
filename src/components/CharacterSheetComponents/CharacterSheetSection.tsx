@@ -1,8 +1,6 @@
-import {Button, CardBody, CardRoot, Flex, IconButton, Image, Text } from "@chakra-ui/react"
+import {CardBody, CardRoot,IconButton, } from "@chakra-ui/react"
 import { LuPencil, LuPlus, LuTrash2, LuUserRoundPen } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
-import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
-import { Avatar } from "../ui/avatar";
 import { CharacterSheetField } from "./CharacterSheetField";
 import { CharacterSheetEditSectionDialog } from "./CharacterSheetEditSectionDialog";
 import { useState } from "react";

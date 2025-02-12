@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For,  } from "@chakra-ui/react";
+import { Input, Text, Textarea, Image,Button,} from "@chakra-ui/react";
 import { FileUploadRoot, FileUploadDropzone,FileUploadList } from "../ui/file-upload";
 import {RadioGroup, Radio } from "../ui/radio";
 

@@ -3,7 +3,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {Button, Flex, IconButton, Text} from "@chakra-ui/react"
+import {Avatar, Button, Flex, For, IconButton, Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -15,6 +15,9 @@ import { SystemPageComponent } from "@/components/SystemComponents/SystemPageCom
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
+import { SystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/SystemPagePlayerSheetComponent";
+import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
+import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 
 export default function CampaignSystemSheet(){
 
@@ -22,6 +25,7 @@ export default function CampaignSystemSheet(){
     const campaign = "minha campanha";
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+    const [characterId,setCharacterId] = useState("");
 
     return(
         <Presence 
@@ -29,10 +33,10 @@ export default function CampaignSystemSheet(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}  maxH={"100vh"} overflowY={"hidden"} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}  >
 
                 {isGameMaster ?
-                    <div>
+                    <div className="max-h-[100vh] overflow-y-hidden">
                         <CampaignHeader  campaign="minha campanha"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
@@ -77,7 +81,16 @@ export default function CampaignSystemSheet(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignSystemPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignSystemPagePlayer>
+                                            <div>
+                                                <Text className="subtitle-s">SEUS PERSONAGENS</Text>
+                                                    <Flex mb={8} wrap="wrap" mt='1'>
+                                                        <For each={['um','dois','tres',]}>
+                                                            {(item) => <Box onClick={()=>setCharacterId(item)}><CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile></Box>}
+                                                        </For>
+                                                        <Box onClick={()=>setCharacterId("")}><AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile></Box>
+                                                    </Flex>
+                                            </div>
+                                            <SystemPagePlayerSheetComponent characterId={characterId} title="CRIE UM PERSONAGEM!" system={''}/>
                                         </div>
                                     </div>
                                 </div>
