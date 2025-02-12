@@ -58,6 +58,10 @@ p,span,h1,h2,h3,h4,h5,h6,div{
     margin-bottom: 4%;
 }
 
+.m-b{
+    margin-bottom: 8%;
+}
+
 .margin{
     margin-top: 5%;
 }
@@ -97,6 +101,12 @@ p,span,h1,h2,h3,h4,h5,h6,div{
 .right-bottom{
     position: absolute;
     left: 1%;
+    bottom: 2%;
+}
+
+.left-bottom{
+    position: absolute;
+    right: 1%;
     bottom: 2%;
 }
 

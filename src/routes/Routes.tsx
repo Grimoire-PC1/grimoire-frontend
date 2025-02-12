@@ -4,6 +4,12 @@ import LoginPage from "../pages/Login";
 import SignUpPage from "../pages/Singup";
 import Home from "@/pages/Home";
 import CampaignPage from "@/pages/CampaignPage";
+import CampaignSystemPage from "@/pages/CampaignSystemPage";
+import SystemPage from "@/pages/SystemPage";
+import SystemPageRules from "@/pages/SystemPageRules";
+import SystemPageSheet from "@/pages/SystemPageSheet";
+import SystemPageMechanics from "@/pages/SystemPageMechanics";
+import CampaignSystemSheet from "@/pages/CampaignSystemSheet";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -23,6 +29,30 @@ export const PublicRoutes: RouteObject[] = [
   {
     path: "/grimoire/campaign/:id",
     element: <CampaignPage />
+  },
+  {
+      path: "/grimoire/campaign/system",
+      element: <CampaignSystemPage />
+  },
+  {
+      path: "/grimoire/campaign/sheet",
+      element: <CampaignSystemSheet />
+  },
+  {
+      path: "/grimoire/system",
+      element: <SystemPage />
+  },
+  {
+      path: "/grimoire/system/rules",
+      element: <SystemPageRules />
+  },
+  {
+      path: "/grimoire/system/sheet",
+      element: <SystemPageSheet />
+  },
+  {
+      path: "/grimoire/system/mechanics",
+      element: <SystemPageMechanics />
   },
   {
     element: <PrivateRoute />,

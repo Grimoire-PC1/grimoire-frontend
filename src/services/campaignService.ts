@@ -39,7 +39,6 @@ export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) =
 
     return data[0];
 }
-
 export const getCampaignById = async(id: string) => {
     const { data } = await axiosInstace.get<GetCampaigsResponse>(
         `/${ENDPOINT.GET_CAMPAIGN_BY_ID}`, {
@@ -48,6 +47,5 @@ export const getCampaignById = async(id: string) => {
             }
         }
     );
-
     return data[0];
 }

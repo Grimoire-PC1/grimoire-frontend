@@ -15,17 +15,17 @@ export const CampaignPagePlayer = ({
     campaign,
 }: CampaignPagePlayerProps) => {
     const campaign_image = campaign?.image //depois mudar pra pegar a imagem cadastrada na campanha
-
+    
     var players: Player | any[]
     if(!campaign) {
         players = []
     } else {
         players = campaign.players;
     }
-
+    
     var yourCharacters: Character[][] = [];
     var otherCharacters: Character[][] = [];
-
+    
     for(let i = 0; i < players.length; i++) {
         if(players[i].id == user?.id) {
             yourCharacters.push(players[i].characters);
@@ -39,16 +39,17 @@ export const CampaignPagePlayer = ({
 
             <div className="grid grid-cols-3 gap-x-8 content-padding">
                 <div className="col-span-1">
+                    {/* aqui vem a descrição da campanha */}
                     <Text className="text" textAlign={"justify"}>{campaign?.description}</Text>
                 </div>
                 <div className="col-span-1 max-h-[80vh]">
 
-                    <CardRoot className="w-full h-[38vh]">
+                    <CardRoot className="w-full h-[36vh]">
                         <CardHeader>
                             <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody ml={4} overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
                                     <For each={yourCharacters}>
@@ -63,12 +64,12 @@ export const CampaignPagePlayer = ({
                         </CardBody>
                     </CardRoot>
 
-                    <CardRoot mt={6} className="w-full h-[38vh]">
+                    <CardRoot mt={"4"} className="w-full h-[36vh]">
                         <CardHeader>
-                            <CardTitle className="text-center padding-bottom">OUTROS JOGADORES</CardTitle>
+                            <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody ml={4} overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
                                     <For each={otherCharacters}>

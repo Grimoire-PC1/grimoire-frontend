@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
 import { createNewCampaigns, getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
-import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex } from "@chakra-ui/react";
+import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -21,9 +21,9 @@ import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 import { useUserStore } from "@/stores/user/user.store";
+import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 
 export default function Home() {
-
     const navigate = useNavigate();
     
     const user = useUserStore((state) => state.user);
@@ -47,19 +47,18 @@ export default function Home() {
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [idcampanha, setidcampanha] = useState("")
     const [idcampanhavalido, setidcampanhavalido] = useState(true)
+    const [showUserSettings, setShowUserSettings] = useState(false);
+    const [selectedField, setSelectedField] = useState('')
+
     const username = 'User'
 
     function logout(){
         navigate("/grimoire/");
     }
-
-    function showUserSettings(){
-    }
-
     function validateIdCampanha(){
         if(idcampanha == '123456'){
             setidcampanhavalido(true) //depois mudar pra uma verificação real
-            navigate("/grimoire/campaign/");
+            navigate("/grimoire/campaign");
         }else{
             setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
         }
@@ -72,8 +71,8 @@ export default function Home() {
             const campaign = data
             navigate(`/grimoire/campaign/${campaign.id}`)
         }
-    }) 
-
+    })
+     
     const navigateNewCampaign = () => {
         const campaignPayload = {
             name: '',
@@ -82,6 +81,16 @@ export default function Home() {
             description: '',
         }
         createCampaignMutation.mutate(campaignPayload);
+    }
+
+    function navigateNewSystem(){
+        //fazer com que essa função crie um novo objeto sistema associado ao usuário como mestre. por padrão o sistema é privado
+        navigate("/grimoire/system/");
+    }
+
+    function userSettings(campo:string){
+        setSelectedField(campo);
+        setShowUserSettings(true);
     }
 
     return(
@@ -95,7 +104,21 @@ export default function Home() {
                 <div className="header margin-sides flex place-content-between items-center" >
                     <span className="header-title agreloy">{username}'s Grimoire</span>
                     <div className="grid grid-cols-2 gap-x-4">
-                        <Avatar className="cursor-pointer" onClick={()=>showUserSettings()} size={"lg"} name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+
+                    <MenuRoot>
+                        <MenuTrigger asChild>
+                        <Avatar className="cursor-pointer" size={"lg"} name="Usuário" />
+                        </MenuTrigger>
+                        <MenuContent mt={14} mr={4} position={"absolute"}>
+                            <MenuItem onClick={()=>userSettings('nome')} cursor={"pointer"} value="nome">Mudar nome</MenuItem>
+                            <MenuItem onClick={()=>userSettings('username')} cursor={"pointer"} value="username">Mudar username</MenuItem>
+                            <MenuItem onClick={()=>userSettings('senha')} cursor={"pointer"} value="senha">Mudar senha</MenuItem>
+                            <MenuItem onClick={()=>userSettings('e-mail')} cursor={"pointer"} value="e-mail">Mudar e-mail</MenuItem>
+                            <MenuItem onClick={()=>userSettings('foto')} cursor={"pointer"} value="foto">Mudar foto de perfil</MenuItem>
+                            <MenuItem onClick={()=>userSettings('deletar')} color="fg.error" _hover={{ bg: "bg.error", color: "fg.error" }} cursor={"pointer"} value="deletar">Deletar conta</MenuItem>
+                        </MenuContent>
+                    </MenuRoot>
+                        
 
                         <ClientOnly fallback={<Skeleton boxSize="8" />}>
                             <IconButton onClick={()=>logout()} variant="ghost" size="lg">
@@ -156,6 +179,14 @@ export default function Home() {
                     </div>
                 </Dialog>
 
+                <Presence   present={showUserSettings}
+                            animationName={{ _open: "fade-in", _closed: "fade-out" }}
+                            animationDuration="slow">
+
+                            <UserSettingsDialogSm open={showUserSettings} handleClose={setShowUserSettings} /*user=User*/ campo={selectedField}></UserSettingsDialogSm>
+
+                </Presence>
+
                 <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
 
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -163,7 +194,7 @@ export default function Home() {
                         <div className="flex col-span-2">
                             <div className="margin-top">
                                 <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign}>Nova campanha</Button>
-                                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Novo sistema</Button>
+                                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewSystem()}>Novo sistema</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
@@ -201,13 +232,12 @@ export default function Home() {
                                     <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
-                                <CardBody ml={4} overflowY={"scroll"}  className="flex">
+                                <CardBody overflowY={"scroll"}  className="flex">
                                     <Center>
                                         <Flex wrap="wrap" mt='2'>
                                             <For each={characters}>
                                                 {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                             </For>
-                                            <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                         </Flex>
                                     </Center>
                                 </CardBody>

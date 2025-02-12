@@ -17,11 +17,11 @@ export const SidebarPlayer = ({
     return(
         <div className="flex col-span-2">
             <div className="margin-top w-11/12 overflow-x-hidden">
-                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
+                <Button onClick={()=>navigate("/grimoire/campaign")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
                 <br></br>
-                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
+                <Button onClick={()=>navigate("/grimoire/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
+                <Button onClick={()=>navigate("/grimoire/campaign/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
                 <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>

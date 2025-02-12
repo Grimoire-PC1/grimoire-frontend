@@ -6,24 +6,26 @@ import { Campaign, Character, Player, User } from "@/interfaces/Models";
 
 export interface CampaignPageGMProps {
     user: User | undefined;
-    campaign: Campaign | undefined; //depois mudar pra Campaign
+    campaign: Campaign | undefined;
 }
 
 export const CampaignPageGM = ({
     user,
     campaign,
 }: CampaignPageGMProps) => {
-    const campaign_image = campaign?.image //depois mudar pra pegar a imagem cadastrada na campanha
+
+    const campaign_image = campaign?.image
     var players: Player | any[]
     if(!campaign) {
         players = []
     } else {
         players = campaign.players;
     }
-    var characters: Character[][] = [];
+
+    var characters: string[][] = [];
 
     for(let i = 0; i < players.length; i++) {
-        characters.push(players[i].characters);
+        characters.push(players[i]);
     }
 
     return(
@@ -77,6 +79,7 @@ export const CampaignPageGM = ({
                                 </For>
                             </Flex>
                         </Center>
+                        {/* aqui vem uma lista de avatares dos jogadores. clicar neles leva à ficha do personagem*/}
                     </div>
                 </div>
             </div>

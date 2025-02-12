@@ -3,13 +3,13 @@ import { LuLogOut } from "react-icons/lu";
 import { Avatar } from "../ui/avatar";
 import { useNavigate } from "react-router-dom";
 
-export interface CampaignHeaderProps {
-    campaign: string; //depois mudar pra Campaign
+export interface SystemHeaderProps {
+    system: string; //depois mudar pra System
 }
 
-export const CampaignHeader = ({
-    campaign,
-}: CampaignHeaderProps) => {
+export const SystemHeader = ({
+    system,
+}: SystemHeaderProps) => {
     const navigate = useNavigate();
 
     function logout(){
@@ -19,7 +19,7 @@ export const CampaignHeader = ({
     return(
         <div>
             <div className="header margin-sides flex place-content-between items-center" >
-                    <Text className="header-title agreloy" lineClamp={1}>{campaign}'s Grimoire</Text>
+                    <Text className="header-title agreloy" lineClamp={1}>{system}'s Grimoire</Text>
                     <div className="grid grid-cols-2 gap-x-4">
                         <Avatar className="cursor-pointer" size={"lg"} name="Usuário"/>
 
