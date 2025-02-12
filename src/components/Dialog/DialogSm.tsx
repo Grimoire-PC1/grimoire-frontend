@@ -84,7 +84,7 @@ export const UserSettingsDialogSm = ({
                                 animationName={{ _open: "fade-in",_closed:"fade-out" }}
                                 animationDuration="moderate"
                                 present={false}>
-                                <Alert.Root status="error" title="This is the alert title">
+                                <Alert.Root  maxW={"360px"}  status="error" title="This is the alert title">
                                     <Alert.Indicator />
                                     <Alert.Title>Confirme com sua senha para alterar suas informações.</Alert.Title>
                                 </Alert.Root>

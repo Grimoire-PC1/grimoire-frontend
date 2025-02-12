@@ -4,6 +4,8 @@ import {RadioGroup, Radio } from "../ui/radio";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
 import { RulesCard } from "../RulesCard/RulesCard";
 import { LuPlus } from "react-icons/lu";
+import { useState } from "react";
+import { RulesCardDialog } from "../RulesCard/RulesCardDialog";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -19,6 +21,8 @@ export const SystemPageRulesComponent = ({
     maxHeight
 }: SystemPageComponentProps) => {
     const system_image = "";
+    const [addNewRule,setAddNewRule] = useState(false);
+
 
     return(
         <div className="overflow-y-hidden">
@@ -29,7 +33,7 @@ export const SystemPageRulesComponent = ({
                         <Text className="text">{subtitle}</Text>
                     </div>
                     
-                    <IconButton rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Regra"> 
+                    <IconButton onClick={()=>setAddNewRule(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Regra"> 
                         <LuPlus />
                     </IconButton>
                                             
@@ -56,6 +60,8 @@ export const SystemPageRulesComponent = ({
                         <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente. Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
 
                     </Grid>
+
+                    <RulesCardDialog open={addNewRule} handleClose={setAddNewRule} campaign=""></RulesCardDialog>
             
             </div>
         </div>

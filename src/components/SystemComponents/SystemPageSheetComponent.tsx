@@ -6,6 +6,8 @@ import { RulesCard } from "../RulesCard/RulesCard";
 import { CharacterSheetSection } from "../CharacterSheetComponents/CharacterSheetSection";
 import { Avatar } from "../ui/avatar";
 import { LuPlus } from "react-icons/lu";
+import { useState } from "react";
+import { CharacterSheetDialog } from "../CharacterSheetComponents/CharacterSheetDialog";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -20,6 +22,8 @@ export const SystemPageSheetComponent = ({
 }: SystemPageComponentProps) => {
     const system_image = "";
 
+    const [newSection,setNewSection] = useState(false);
+
     return(
         <div className="">
             <div className="margin-right">
@@ -29,7 +33,7 @@ export const SystemPageSheetComponent = ({
                         <Text className="text">{subtitle}</Text>
                     </div>
                                         
-                    <IconButton rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Regra"> 
+                    <IconButton onClick={()=>setNewSection(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Aba"> 
                         <LuPlus />
                     </IconButton>
                 </Flex>
@@ -65,6 +69,8 @@ export const SystemPageSheetComponent = ({
                     </Grid>
             
             </div>
+
+            <CharacterSheetDialog open={newSection} handleClose={setNewSection} sheet=""></CharacterSheetDialog>
         </div>
     )
 }

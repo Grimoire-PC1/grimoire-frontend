@@ -1,6 +1,9 @@
-import {CardBody, CardRoot, Flex, IconButton, Image, Text } from "@chakra-ui/react"
-import { LuChevronDown, LuDices, LuPencil, LuTrash2 } from "react-icons/lu";
+import {CardBody, CardRoot, Flex, IconButton, Text } from "@chakra-ui/react"
+import { LuDices, LuPencil, LuTrash2 } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
+import { useState } from "react";
+import { RulesCardEditDialog } from "./RulesCardEditDialog";
+import { RulesCardDeleteDialog } from "./RulesCardDeleteDialog";
 
 
 export interface RulesCardProps {
@@ -14,24 +17,34 @@ export const RulesCard = ({
     ruleDesc,
     ruleId
 }: RulesCardProps) => {
+
+    const [editDialog,setEditDialog] = useState(false);
+    const [deleteDialog,setDeleteDialog] = useState(false);
+
     return(
-        <CardRoot size={"sm"} cursor={"pointer"}>
-            <CardBody>
-                <AccordionRoot collapsible cursor={"pointer"}>
-                    <AccordionItem cursor={"pointer"} key={ruleId} value={ruleId}>
-                    <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
-                        <LuDices /> {ruleTitle}
-                    </AccordionItemTrigger>
-                    <AccordionItemContent cursor={"pointer"}>
-                        <Text>{ruleDesc}</Text>
-                        <Flex placeContent={"flex-end"} gapX={2}>
-                            <IconButton size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
-                            <IconButton size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
-                        </Flex>
-                        </AccordionItemContent>
-                    </AccordionItem>
-                </AccordionRoot>
-            </CardBody>
-        </CardRoot>
+        <div>
+            <CardRoot size={"sm"} cursor={"pointer"}>
+                <CardBody>
+                    <AccordionRoot collapsible cursor={"pointer"}>
+                        <AccordionItem cursor={"pointer"} key={ruleId} value={ruleId}>
+                        <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
+                            <LuDices /> {ruleTitle}
+                        </AccordionItemTrigger>
+                        <AccordionItemContent cursor={"pointer"}>
+                            <Text>{ruleDesc}</Text>
+                            <Flex placeContent={"flex-end"} gapX={2}>
+                                <IconButton onClick={()=>setEditDialog(true)} size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
+                                <IconButton onClick={()=>setDeleteDialog(true)} size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
+                            </Flex>
+                            </AccordionItemContent>
+                        </AccordionItem>
+                    </AccordionRoot>
+                </CardBody>
+            </CardRoot>
+
+            <RulesCardEditDialog open={editDialog} handleClose={setEditDialog} ruleId="" ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
+            <RulesCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} ruleId=""  ruleName={ruleTitle}></RulesCardDeleteDialog>
+
+        </div>
     )
 }
