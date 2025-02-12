@@ -179,12 +179,15 @@ export default function Home() {
                         <div className="flex col-span-2">
                             <div className="margin-top">
                                 <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewSystem()}>Novo sistema</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
                             <div>
-                                <Separator h={"80vh"} orientation={"vertical"}></Separator>
+                                <Separator ml={2} h={"80vh"} orientation={"vertical"}></Separator>
                             </div>
                         </div>
 

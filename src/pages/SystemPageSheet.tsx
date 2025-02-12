@@ -13,7 +13,7 @@ export default function SystemPageSheet(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}  maxH={"100vh"} overflowY={"hidden"} >
                     <div>
                         <SystemHeader  system="meu sistema"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -26,11 +26,11 @@ export default function SystemPageSheet(){
                                                                 subtitle="Crie um modelo de ficha para dar vida aos personagens dentro do seu sistema" 
                                                                 system={"meu sistema"}/>
                                 </div>
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
             </Box>
+            <ToggleTheme/>
         </Presence>
     )
 }

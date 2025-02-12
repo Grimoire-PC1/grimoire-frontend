@@ -13,7 +13,7 @@ export default function SystemPageRules(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} maxH={"100vh"} overflowY={"hidden"} >
                     <div>
                         <SystemHeader  system="meu sistema"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -24,13 +24,15 @@ export default function SystemPageRules(){
                                 <div>
                                     <SystemPageRulesComponent   title="COMO SEU SISTEMA CONTA UMA HISTÓRIA?" 
                                                                 subtitle="Adicione regras para situar o mestre e os jogadores de como utilizar seu sistema" 
-                                                                system={"meu sistema"}/>
+                                                                system={"meu sistema"}
+                                                                maxHeight="66vh"
+                                                                />
                                 </div>
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
             </Box>
+            <ToggleTheme/>
         </Presence>
     )
 }

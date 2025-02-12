@@ -21,7 +21,7 @@ export const SystemPageSheetComponent = ({
     const system_image = "";
 
     return(
-        <div className="h-[80vh] overflow-y-auto">
+        <div className="">
             <div className="margin-right">
                 <Flex placeContent={"space-between"}>
                     <div>
@@ -33,7 +33,31 @@ export const SystemPageSheetComponent = ({
                         <LuPlus />
                     </IconButton>
                 </Flex>
-                    <Grid className="grid-cols-2 margin-top-s" mb={12} gap={4}>
+                    <Grid maxH={"66vh"} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
+                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
+                        <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
+                        <CharacterSheetSection sectionTitle="Magias" sectionId="4" fields=""/>
                         <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
                         <CharacterSheetSection sectionTitle="História" sectionId="2" fields=""/>
                         <CharacterSheetSection sectionTitle="Atributos" sectionId="3" fields=""/>
