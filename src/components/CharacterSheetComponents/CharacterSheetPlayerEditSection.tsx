@@ -1,7 +1,6 @@
 import {CardBody, CardRoot, } from "@chakra-ui/react"
 import {LuUserRoundPen } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
-import { CharacterSheetNoEditField } from "./CharacterSheetNoEditField";
 import { CharacterSheetPlayerEditField } from "./CharacterSheetPlayerEditField";
 
 export interface CharacterSheetSectionProps {
@@ -29,11 +28,11 @@ export const CharacterSheetPlayerEditSection = ({
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
                             {fields /* fazer um For e criar componentes CharacterSheetFields para cada field em fields*/}
-                            <CharacterSheetPlayerEditField fieldId="2" fieldTitle="Aparência" fieldType="StringLonga" characterId={characterId}/>
-                            <CharacterSheetPlayerEditField fieldId="1" fieldTitle="Espécie" fieldType="StringCurta" characterId={characterId}/>
-                            <CharacterSheetPlayerEditField fieldId="3" fieldTitle="Idade" fieldType="Numerico" characterId={characterId}/>
-                            <CharacterSheetPlayerEditField fieldId="4" fieldTitle="Carisma" fieldType="Dado" characterId={characterId}/>
-                            <CharacterSheetPlayerEditField fieldId="4" fieldTitle="Foto" fieldType="Arquivo" characterId={characterId}/>
+                            <CharacterSheetPlayerEditField fieldId="field1" fieldTitle="Aparência" fieldType="StringLonga" characterId={characterId}/>
+                            <CharacterSheetPlayerEditField fieldId="field2" fieldTitle="Espécie" fieldType="StringCurta" characterId={characterId}/>
+                            <CharacterSheetPlayerEditField fieldId="field3" fieldTitle="Idade" fieldType="Numerico" characterId={characterId}/>
+                            <CharacterSheetPlayerEditField fieldId="field4" fieldTitle="Carisma" fieldType="Dado" characterId={characterId}/>
+                            <CharacterSheetPlayerEditField fieldId="field5" fieldTitle="Foto" fieldType="Arquivo" characterId={characterId}/>
                         </AccordionItemContent>
                         </AccordionItem>
                     </AccordionRoot>

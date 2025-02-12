@@ -2,6 +2,7 @@ import {Button, Input, Text, Textarea, } from "@chakra-ui/react"
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { HiUpload } from "react-icons/hi";
+import { useState } from "react";
 
 
 export interface CharacterSheetFieldProps {
@@ -20,6 +21,8 @@ export const CharacterSheetPlayerEditField = ({
 
     const previousValue = "" //pegar isso da ficha do personagem, pegar o field id e casar com o character id pra pegar o valor anterior caso o jogador esteja atualizando sua ficha
 
+    const [fieldValue,setFieldValue] = useState(previousValue);
+
     return(
         <div>
             <div className="grid grid-cols-6 place-items-around gap-x-4">
@@ -30,18 +33,18 @@ export const CharacterSheetPlayerEditField = ({
                         {
                             fieldType === 'StringLonga' ?
                                 <div>
-                                    <Textarea defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
+                                    <Textarea onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
                             :
                             fieldType === 'StringCurta' ?
                                 <div>
-                                    <Input defaultValue={previousValue}></Input>
+                                    <Input onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></Input>
                                 </div>
                             :
                             fieldType === 'Numerico' ?
                                 <div>
                                     <NumberInputRoot>
-                                        <NumberInputField defaultValue={previousValue}></NumberInputField>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></NumberInputField>
                                     </NumberInputRoot>
                                 </div>
                             :
@@ -60,15 +63,15 @@ export const CharacterSheetPlayerEditField = ({
                             
                             <div className="flex gap-x-2 items-center">
                                     <NumberInputRoot>
-                                        <NumberInputField defaultValue={previousValue} placeholder="qtd"></NumberInputField>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="qtd"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>d</Text>
                                     <NumberInputRoot>
-                                        <NumberInputField defaultValue={previousValue} placeholder="dado"></NumberInputField>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="dado"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>+</Text>
                                     <NumberInputRoot>
-                                        <NumberInputField defaultValue={previousValue} placeholder="bonus"></NumberInputField>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="bonus"></NumberInputField>
                                     </NumberInputRoot>
                             </div>
                         }
