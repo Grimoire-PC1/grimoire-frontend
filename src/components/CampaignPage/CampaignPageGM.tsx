@@ -2,11 +2,11 @@ import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For,} fr
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { Campaign, Character, Player, User } from "@/interfaces/Models";
+import { Campaign, Character } from "@/interfaces/Models";
 
 export interface CampaignPageGMProps {
-    user: User | undefined;
-    campaign: Campaign | undefined;
+    user: string;
+    campaign: string; //depois mudar pra Campaign
 }
 
 export const CampaignPageGM = ({
@@ -14,14 +14,9 @@ export const CampaignPageGM = ({
     campaign,
 }: CampaignPageGMProps) => {
 
-    const campaign_image = campaign?.image
-    var players: Player | any[]
-    if(!campaign) {
-        players = []
-    } else {
-        players = campaign.players;
-    }
+    const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
 
+    const players = [[''],[''],['','']];
     var characters: string[][] = [];
 
     for(let i = 0; i < players.length; i++) {

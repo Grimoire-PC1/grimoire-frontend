@@ -3,7 +3,6 @@ import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
 import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
-import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 
 export default function SystemPageMechanics(){
 

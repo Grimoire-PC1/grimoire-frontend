@@ -27,7 +27,7 @@ export const PublicRoutes: RouteObject[] = [
     element: <Home />,
   },
   {
-    path: "/grimoire/campaign/:id",
+    path: "/grimoire/campaign",
     element: <CampaignPage />
   },
   {

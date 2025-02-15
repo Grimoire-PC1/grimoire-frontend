@@ -6,11 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
-import { createNewCampaigns, getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
+import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
@@ -20,13 +20,12 @@ import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
-import { useUserStore } from "@/stores/user/user.store";
 import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 
 export default function Home() {
     const navigate = useNavigate();
     
-    const user = useUserStore((state) => state.user);
+    //const user = useUserStore((state) => useState(false));
 
     const {data: campanhasCriadas} = useQuery({
         queryKey: ["userCreatedCampaigns"],
@@ -64,23 +63,9 @@ export default function Home() {
         }
     }
 
-    const createCampaignMutation = useMutation({
-        mutationKey: ["newCampaign"],
-        mutationFn: createNewCampaigns,
-        onSuccess: (data) => {
-            const campaign = data
-            navigate(`/grimoire/campaign/${campaign.id}`)
-        }
-    })
-     
-    const navigateNewCampaign = () => {
-        const campaignPayload = {
-            name: '',
-            image: '',
-            systemId: '',
-            description: '',
-        }
-        createCampaignMutation.mutate(campaignPayload);
+    function navigateNewCampaign(){
+        //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
+        navigate("/grimoire/campaign");
     }
 
     function navigateNewSystem(){
@@ -193,13 +178,16 @@ export default function Home() {
                     
                         <div className="flex col-span-2">
                             <div className="margin-top">
-                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign}>Nova campanha</Button>
+                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewSystem()}>Novo sistema</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
+                                <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
                             </div>
                             <div>
-                                <Separator h={"80vh"} orientation={"vertical"}></Separator>
+                                <Separator ml={2} h={"80vh"} orientation={"vertical"}></Separator>
                             </div>
                         </div>
 
@@ -235,7 +223,7 @@ export default function Home() {
                                 <CardBody overflowY={"scroll"}  className="flex">
                                     <Center>
                                         <Flex wrap="wrap" mt='2'>
-                                            <For each={characters}>
+                                            <For each={['','','','','']}>
                                                 {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                             </For>
                                         </Flex>

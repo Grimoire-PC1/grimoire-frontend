@@ -4,8 +4,14 @@ import { Presence } from "@chakra-ui/react/presence";
 import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
 import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
+import { useState } from "react";
+import { IconButton } from "@chakra-ui/react";
+import { LuArrowRightLeft } from "react-icons/lu";
+import { SystemPageNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageNoEditComponent";
 
 export default function SystemPage(){
+
+    const [isOwner, setIsOwner] = useState(true);
 
     return(
         <Presence 
@@ -14,6 +20,7 @@ export default function SystemPage(){
             animationDuration="slower"
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+
                     <div>
                         <SystemHeader  system="meu sistema"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -22,9 +29,19 @@ export default function SystemPage(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <SystemPageComponent system={"meu sistema"}/>
+                                    {
+                                        isOwner ?
+                                        <SystemPageComponent system={"meu sistema"}/>
+                                        :
+                                        <SystemPageNoEditComponent system={"sistema de outra pessoa"}/>
+
+                                    }
                                 </div>
                                 <ToggleTheme/>
+                                
+                                <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsOwner(!isOwner)} variant="outline" size="sm">
+                                    {<LuArrowRightLeft />}
+                                </IconButton>
                             </div>
                         </div>
                     </div>

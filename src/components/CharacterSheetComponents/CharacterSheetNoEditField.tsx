@@ -1,11 +1,7 @@
-import {Button, Flex, IconButton,Input, Text, Textarea, useStatStyles } from "@chakra-ui/react"
-import { LuPencil, LuTrash2 } from "react-icons/lu";
+import {Button, Input, Text, Textarea, } from "@chakra-ui/react"
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { HiUpload } from "react-icons/hi";
-import { useState } from "react";
-import { CharacterSheetDeleteFieldDialog } from "./CharacterSheetDeleteFieldDialog";
-import { CharacterSheetEditFieldDialog } from "./CharacterSheetEditFieldDialog";
 
 
 export interface CharacterSheetFieldProps {
@@ -14,26 +10,19 @@ export interface CharacterSheetFieldProps {
     fieldId: string;
 }
 
-export const CharacterSheetField = ({
+export const CharacterSheetNoEditField = ({
     fieldTitle,
     fieldType,
     fieldId,
 }: CharacterSheetFieldProps) => {
 
-    const [editField,setEditField] = useState(false);
-    const [deleteField,setDeleteField] = useState(false);
-
     return(
         <div>
             <div className="grid grid-cols-6 place-items-around gap-x-4">
-                    <Flex alignItems={"center"} gapX={2}>
-                        <IconButton onClick={()=>setEditField(true)} size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
-                        <IconButton onClick={()=>setDeleteField(true)} size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
-                    </Flex>
                     <Text alignSelf={"center"} textAlign={"end"}>
                         {fieldTitle}
                     </Text>
-                    <div className="col-span-4">
+                    <div className="col-span-5">
                         {
                             fieldType === 'StringLonga' ?
                                 <div>
@@ -81,9 +70,6 @@ export const CharacterSheetField = ({
                         }
                     </div>
             </div>
-
-            <CharacterSheetEditFieldDialog open={editField} handleClose={setEditField} fieldId="" fieldName={fieldTitle}/>
-            <CharacterSheetDeleteFieldDialog open={deleteField} handleClose={setDeleteField} fieldId="" fieldName={fieldTitle}/>
         </div>
     )
 }

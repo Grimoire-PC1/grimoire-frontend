@@ -1,54 +1,50 @@
-import {Button, Flex, IconButton,Input, Text, Textarea, useStatStyles } from "@chakra-ui/react"
-import { LuPencil, LuTrash2 } from "react-icons/lu";
+import {Button, Input, Text, Textarea, } from "@chakra-ui/react"
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { HiUpload } from "react-icons/hi";
 import { useState } from "react";
-import { CharacterSheetDeleteFieldDialog } from "./CharacterSheetDeleteFieldDialog";
-import { CharacterSheetEditFieldDialog } from "./CharacterSheetEditFieldDialog";
 
 
 export interface CharacterSheetFieldProps {
     fieldTitle: string; // mudar para o tipo Rule depois. O tipo rule contém título e descrição, e talvez tag também 
     fieldType: string; //mudar para FieldType depois. O tipo FieldType pode ser string curta, string longa, numérico ou dado.
     fieldId: string;
+    characterId:string;
 }
 
-export const CharacterSheetField = ({
+export const CharacterSheetPlayerEditField = ({
     fieldTitle,
     fieldType,
     fieldId,
+    characterId
 }: CharacterSheetFieldProps) => {
 
-    const [editField,setEditField] = useState(false);
-    const [deleteField,setDeleteField] = useState(false);
+    const previousValue = "" //pegar isso da ficha do personagem, pegar o field id e casar com o character id pra pegar o valor anterior caso o jogador esteja atualizando sua ficha
+
+    const [fieldValue,setFieldValue] = useState(previousValue);
 
     return(
         <div>
             <div className="grid grid-cols-6 place-items-around gap-x-4">
-                    <Flex alignItems={"center"} gapX={2}>
-                        <IconButton onClick={()=>setEditField(true)} size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
-                        <IconButton onClick={()=>setDeleteField(true)} size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
-                    </Flex>
                     <Text alignSelf={"center"} textAlign={"end"}>
                         {fieldTitle}
                     </Text>
-                    <div className="col-span-4">
+                    <div className="col-span-5">
                         {
                             fieldType === 'StringLonga' ?
                                 <div>
-                                    <Textarea disabled maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
+                                    <Textarea onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
                             :
                             fieldType === 'StringCurta' ?
                                 <div>
-                                    <Input disabled></Input>
+                                    <Input onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></Input>
                                 </div>
                             :
                             fieldType === 'Numerico' ?
                                 <div>
-                                    <NumberInputRoot disabled>
-                                        <NumberInputField disabled></NumberInputField>
+                                    <NumberInputRoot>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></NumberInputField>
                                     </NumberInputRoot>
                                 </div>
                             :
@@ -56,7 +52,7 @@ export const CharacterSheetField = ({
                                 <div>
                                     <FileUploadRoot>
                                     <FileUploadTrigger asChild>
-                                        <Button disabled variant="outline" size="sm">
+                                        <Button variant="outline" size="sm">
                                         <HiUpload /> Upload file
                                         </Button>
                                     </FileUploadTrigger>
@@ -66,24 +62,21 @@ export const CharacterSheetField = ({
                             : //tipo dado
                             
                             <div className="flex gap-x-2 items-center">
-                                    <NumberInputRoot disabled>
-                                        <NumberInputField disabled placeholder="qtd"></NumberInputField>
+                                    <NumberInputRoot>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="qtd"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>d</Text>
-                                    <NumberInputRoot disabled>
-                                        <NumberInputField disabled placeholder="dado"></NumberInputField>
+                                    <NumberInputRoot>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="dado"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>+</Text>
-                                    <NumberInputRoot disabled>
-                                        <NumberInputField disabled placeholder="bonus"></NumberInputField>
+                                    <NumberInputRoot>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId+"_1"} value={fieldValue} defaultValue={previousValue} placeholder="bonus"></NumberInputField>
                                     </NumberInputRoot>
                             </div>
                         }
                     </div>
             </div>
-
-            <CharacterSheetEditFieldDialog open={editField} handleClose={setEditField} fieldId="" fieldName={fieldTitle}/>
-            <CharacterSheetDeleteFieldDialog open={deleteField} handleClose={setDeleteField} fieldId="" fieldName={fieldTitle}/>
         </div>
     )
 }

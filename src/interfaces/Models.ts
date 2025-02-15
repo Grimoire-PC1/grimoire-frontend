@@ -11,7 +11,7 @@ export type Campaign = {
     gameMasterId: string;
     name: string;
     image: string;
-    system: string;
+    system: System;
     description: string;
     players: Player[];
     diary: Diary;

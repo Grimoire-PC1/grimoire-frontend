@@ -12,14 +12,11 @@ export interface RulesCardProps {
     ruleId: string;
 }
 
-export const RulesCard = ({
+export const RulesNoEditCard = ({
     ruleTitle,
     ruleDesc,
     ruleId
 }: RulesCardProps) => {
-
-    const [editDialog,setEditDialog] = useState(false);
-    const [deleteDialog,setDeleteDialog] = useState(false);
 
     return(
         <div>
@@ -32,18 +29,11 @@ export const RulesCard = ({
                         </AccordionItemTrigger>
                         <AccordionItemContent cursor={"pointer"}>
                             <Text>{ruleDesc}</Text>
-                            <Flex placeContent={"flex-end"} gapX={2}>
-                                <IconButton onClick={()=>setEditDialog(true)} size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
-                                <IconButton onClick={()=>setDeleteDialog(true)} size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
-                            </Flex>
                             </AccordionItemContent>
                         </AccordionItem>
                     </AccordionRoot>
                 </CardBody>
             </CardRoot>
-
-            <RulesCardEditDialog open={editDialog} handleClose={setEditDialog} ruleId="" ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
-            <RulesCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} ruleId=""  ruleName={ruleTitle}></RulesCardDeleteDialog>
 
         </div>
     )

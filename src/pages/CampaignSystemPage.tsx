@@ -14,10 +14,11 @@ import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/Campai
 import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
+import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
 
 export default function CampaignSystemPage(){
 
-    const system = "";
+    const system = "sistema externo";
     const campaign = "minha campanha";
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
@@ -28,24 +29,24 @@ export default function CampaignSystemPage(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}>
 
                 {isGameMaster ?
-                    <div>
+                    <div className="max-h-[100vh] overflow-y-hidden">
                         <CampaignHeader  campaign="minha campanha"/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
                                 <SidebarGM campaign=""></SidebarGM>
                             </div>
                             <div className="col-span-9">
-                                <div>
+                                <div className="grid h-[85vh] grid-cols-1 content-between">
                                     {
                                         system == "" ?
                                         <div className="margin-right">
                                             <Flex placeContent={"space-between"}>
                                                 <div>
                                                     <Text className="subtitle-s">COMO SE JOGA {campaign.toUpperCase()}?</Text>
-                                                    <Text className="text">Selecione um dos seus sistemas ou pesquise sistemas disponíveis no Grimoire para contar sua história</Text>         
+                                                    <Text className="text">Selecione um dos seus sistemas ou pesquise sistemas disponíveis no Grimoire para contar sua história!</Text>         
                                                 </div>
                                                 <Button onClick={()=> setOpenDialogLg(true)} mt={4}>Escolher sistema</Button>
                                             </Flex>
@@ -55,7 +56,7 @@ export default function CampaignSystemPage(){
                                             <Flex placeContent={"space-between"}>
                                                 <div>
                                                     <Text className="subtitle-s">{campaign.toUpperCase()} SE JOGA COM {system.toUpperCase()}!</Text>
-                                                    <Text className="text">Meu sistema é muito legal e essa é a descrição dele {/* depois mudar isso pra descrição do sistema */}</Text>         
+                                                    <Text className="text">Meu sistema é muito legal e essa é a descrição dele muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito {/* depois mudar isso pra descrição do sistema, limitar a descrição do sistema a 250 caracteres */}</Text>         
                                                 </div>
                                             </Flex>
                                         </div>
@@ -64,7 +65,9 @@ export default function CampaignSystemPage(){
                                     <Box mt={8}>
                                         <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
                                                                     subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 
-                                                                    system={""}/>
+                                                                    system={""}
+                                                                    maxHeight="48.3vh"
+                                                                    />
                                     </Box>
                                 </div>
                                 
@@ -92,7 +95,12 @@ export default function CampaignSystemPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignSystemPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignSystemPagePlayer>
+                                                <SystemPageRulesNoEditComponent   
+                                                                            title="REGRAS DO SISTEMA"
+                                                                            subtitle={campaign+" utiliza o sistema "+system}
+                                                                            system={""}
+                                                                            maxHeight="67vh"
+                                                                            />
                                         </div>
                                     </div>
                                 </div>

@@ -11,19 +11,8 @@ import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPl
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getCampaignById } from "@/services/campaignService";
-import { useUserStore } from "@/stores/user/user.store";
 
 export default function CampaignPage(){
-
-    const user = useUserStore((state) => state.user);
-    const urlLength = window.location.href.split('/').length
-    const campaignId = window.location.href.split('/')[urlLength-1]
-    var {data: campaign} = useQuery({
-        queryKey: ["campaignById", campaignId],
-        queryFn: ({ queryKey }) => getCampaignById(queryKey[1]),
-    })
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
@@ -44,7 +33,7 @@ export default function CampaignPage(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <CampaignPageGM user={user} campaign={campaign}></CampaignPageGM>
+                                    <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
@@ -71,7 +60,7 @@ export default function CampaignPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignPagePlayer user={user} campaign={campaign}></CampaignPagePlayer>
+                                            <CampaignPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignPagePlayer>
                                         </div>
                                     </div>
                                 </div>

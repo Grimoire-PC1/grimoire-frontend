@@ -37,15 +37,5 @@ export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) =
         newCampaign
     )
 
-    return data[0];
-}
-export const getCampaignById = async(id: string) => {
-    const { data } = await axiosInstace.get<GetCampaigsResponse>(
-        `/${ENDPOINT.GET_CAMPAIGN_BY_ID}`, {
-            params: {
-                id: id
-            }
-        }
-    );
-    return data[0];
+    return data;
 }
