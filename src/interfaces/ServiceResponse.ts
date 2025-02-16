@@ -1,4 +1,4 @@
-import { Campaign, Character } from "./Models";
+import { Campaign, Character, System } from "./Models";
 
 export type SignInResponse = {
     id: string;
@@ -10,3 +10,5 @@ export type SignInResponse = {
 export type GetCampaigsResponse = Campaign[];
 
 export type GetCharactersResponse = Character[];
+
+export type GetSystemsResponse = System[];

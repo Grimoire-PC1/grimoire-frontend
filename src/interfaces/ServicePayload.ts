@@ -27,3 +27,18 @@ export type CreateNewSession = {
     date: string;
     presentPlayersIds: string
 }
+
+export type UpdateCampaignPayload = {
+    campaignId: string;
+    name?: string;
+    image?: string;
+    systemId?: string;
+    description?: string;
+}
+
+export type UpdateSystemPayload = {
+    systemId: string;
+    image: string;
+    name: string;
+    description: string;
+}

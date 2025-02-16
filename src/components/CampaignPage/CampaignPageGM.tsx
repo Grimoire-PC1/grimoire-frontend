@@ -3,6 +3,10 @@ import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-u
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { Campaign, Character } from "@/interfaces/Models";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { updateCampaign } from "@/services/campaignService";
+import { UpdateCampaignPayload } from "@/interfaces/ServicePayload";
 
 export interface CampaignPageGMProps {
     user: string;
@@ -15,6 +19,70 @@ export const CampaignPageGM = ({
 }: CampaignPageGMProps) => {
 
     const campaign_image = "" //depois mudar pra pegar a imagem cadastrada na campanha
+
+    const [modifiedCampaign, setModifiedCampaign] = useState(false);
+
+    const [campaignTilte, setCampaignTilte] = useState({});
+
+    const [campaignDescription, setCampaignDecription] = useState({});
+
+    function mudancaNaCampanha() {
+        /* 
+        ---- BACKEND PENDING ----
+
+        if(campaignTilte['value'] != campaign.name || campaignDescription['value'] != campaign.description) {
+            setModifiedCampaign(true)
+        } else {
+            setModifiedCampaign(false)
+        }
+        */
+        setModifiedCampaign(true)
+    }
+
+    const titleChange = (e: any) => {
+        const value = e.target.value;
+        setCampaignTilte({
+          ...campaignTilte,
+          'value': value
+        });
+        mudancaNaCampanha()
+    };
+    
+    const descriptionChange = (e: any) => {
+        const value = e.target.value;
+        setCampaignDecription({
+          ...campaignDescription,
+          'value': value
+        });
+        mudancaNaCampanha()
+    };
+
+    const onClickTest = () => {
+        const title = campaignTilte['value'];
+        const description = campaignDescription['value'];
+        console.log("title ---->", title, "description --->", description); 
+        const updateCampaignPayload: UpdateCampaignPayload = {
+            campaignId: campaign.id,
+            name: title,
+            description: description,
+            systemId: campaign.systemId,
+            image: ''
+        }
+        console.log(updateCampaignPayload)
+        mutation.mutate(updateCampaignPayload);
+     };
+
+    const mutation = useMutation({
+        mutationKey: ["submitPaper"],
+        mutationFn: updateCampaign,
+        onSuccess: () => {
+          
+        },
+        onError: (error) => {
+          console.log(error);
+          
+        },
+      });
 
     const players = [[''],[''],['','']];
     var characters: string[][] = [];
@@ -44,15 +112,28 @@ export const CampaignPageGM = ({
                     </div>
                     <div className="padding-left content-end">
                         <Text className="text">Título</Text>
-                        <Input></Input>
+                        <Input onChange={titleChange} id="TituloCampanha"></Input>
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
-                        <Textarea resize={"none"}></Textarea>
-                        <Button mt={"4"} disabled>Salvar alterações</Button> {/* habilitar botão quando alguma alteração for feita nos textos ou na imagem */}
+                        <Textarea resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
+                        {!modifiedCampaign ?
+                            <Button mt={"4"} disabled>Salvar alterações</Button> 
+                            :
+                            <Button mt={"4"} onClick={onClickTest}>Salvar alterações</Button>
+                        }
                     </div>
                 </div>
                 <div className="grid grid-cols-28 margin-top-s">
                     <div className="col-span-16 margin-right">
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
+                        {/*
+                        ---- BACKEND PENDING ----
+
+                        <For each={campaign.diary.fixedSessions}>
+                            {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
+                            }
+                        </For>
+                        */}
+                        
                         <PinnedDiaryListCard/>
                         <PinnedDiaryListCard/>
                         <PinnedDiaryListCard/>

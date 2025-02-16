@@ -16,3 +16,11 @@ export const getAllUserCharacters = async () => {
 
     return arrayedCampaigns;
 }
+
+export const getCharacterById = async (characterId: string) => {
+    const { data } = await axiosInstace.get<Character>(
+        `/${ENDPOINT.GET_SYSTEM_BY_ID}/${characterId}`
+    )
+
+    return data
+}

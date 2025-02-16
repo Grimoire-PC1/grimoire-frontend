@@ -2,7 +2,7 @@ import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
 import { Campaign } from "@/interfaces/Models";
-import { CreateNewCampaignPayload } from "@/interfaces/ServicePayload";
+import { CreateNewCampaignPayload, UpdateCampaignPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
 
@@ -31,6 +31,14 @@ export const getAllUserPlayedCampaigns = async () => {
     return arrayedCampaigns;
 }
 
+export const getCampaignById = async (campaignId: string) => {
+    const { data } = await axiosInstace.get<Campaign>(
+        `/${ENDPOINT.GET_CAMPAIGN_BY_ID}/${campaignId}`
+    )
+
+    return data
+}
+
 export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) => {
     const { data } = await axiosInstace.post<GetCampaigsResponse>(
         `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`,
@@ -39,3 +47,19 @@ export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) =
 
     return data;
 }
+
+export const updateCampaign = async (updatedCampaign: UpdateCampaignPayload) => {
+  
+    const { data } = await axiosInstace.put(
+      `/${ENDPOINT.UPDATE_CAMPAIGN}/${updatedCampaign.campaignId}`,
+      {
+        campaignId: updatedCampaign.campaignId,
+        name: updatedCampaign.name,
+        image: updatedCampaign.image,
+        systemId: updatedCampaign.systemId,
+        description: updatedCampaign.description
+      }
+    );
+  
+    return data;
+  };

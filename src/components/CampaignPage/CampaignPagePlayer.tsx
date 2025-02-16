@@ -68,6 +68,14 @@ export const CampaignPagePlayer = ({
                         <Separator></Separator>
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
+                        {/*
+                        ---- BACKEND PENDING ----
+
+                        <For each={campaign.diary.fixedSessions}>
+                            {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
+                            }
+                        </For>
+                        */}
                         <PinnedDiaryListCard/>
                         <PinnedDiaryListCard/>
                         <PinnedDiaryListCard/>
