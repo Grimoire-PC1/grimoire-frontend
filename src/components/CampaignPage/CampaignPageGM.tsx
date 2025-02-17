@@ -3,6 +3,8 @@ import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-u
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { Campaign, Character } from "@/interfaces/Models";
+import { useState } from "react";
+import { DialogCampaignCode } from "../Dialog/DialogCampaignCode";
 
 export interface CampaignPageGMProps {
     user: string;
@@ -22,6 +24,8 @@ export const CampaignPageGM = ({
     for(let i = 0; i < players.length; i++) {
         characters.push(players[i]);
     }
+
+    const [openCampaignCode,setOpenCampaignCode] = useState(false);
 
     return(
         <div className="h-[80vh] overflow-y-auto">
@@ -48,7 +52,8 @@ export const CampaignPageGM = ({
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
                         <Textarea resize={"none"}></Textarea>
                         <Button mt={"4"} disabled>Salvar alterações</Button> {/* habilitar botão quando alguma alteração for feita nos textos ou na imagem */}
-                    </div>
+                        <Button onClick={()=>setOpenCampaignCode(true)} w={"max"} mt={"4"}>Compartilhar código da campanha</Button>
+                        </div>
                 </div>
                 <div className="grid grid-cols-28 margin-top-s">
                     <div className="col-span-16 margin-right">
@@ -78,6 +83,8 @@ export const CampaignPageGM = ({
                     </div>
                 </div>
             </div>
+
+            <DialogCampaignCode open={openCampaignCode} handleClose={setOpenCampaignCode} campaignId={campaign}/>
         </div>
     )
 }
