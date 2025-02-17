@@ -34,14 +34,14 @@ export const getAllPublicSystems = async () => {
 
 export const createNewSystem = async(newSystem: CreateNewSystemPayload) => {
     const { data } = await axiosInstace.post<System>(
-        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`,
+        `/${ENDPOINT.CREATE_NEW_SYSTEM}`,
         newSystem
     )
 
     return data;
 }
 
-export const updateCampaign = async (updatedSystem: UpdateSystemPayload) => {
+export const updateSystem = async (updatedSystem: UpdateSystemPayload) => {
   
     const { data } = await axiosInstace.put<GetSystemsResponse>(
       `/${ENDPOINT.UPDATE_SYSTEM}/${updatedSystem.systemId}`,

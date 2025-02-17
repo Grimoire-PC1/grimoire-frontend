@@ -47,7 +47,10 @@ export type System = {
     image:string;
     name:string;
     description:string;
+    systemType: SystemType
 }
+
+export type SystemType = "PUBLICO" | "PRIVADO"
 
 export type CharacterSheet = {
     system: System;

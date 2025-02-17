@@ -73,7 +73,7 @@ export const CampaignPageGM = ({
      };
 
     const mutation = useMutation({
-        mutationKey: ["submitPaper"],
+        mutationKey: ["updateCampaign"],
         mutationFn: updateCampaign,
         onSuccess: () => {
           
