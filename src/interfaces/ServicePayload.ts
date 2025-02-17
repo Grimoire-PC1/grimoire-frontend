@@ -1,6 +1,9 @@
-export type ServicePayload = {
+export type SignInPayload = {
+    login: string;
     email: string;
-    password: string;
+    senha: string;
+    nome: string;
+    foto_url: string;
 };
 
 export type CreateNewCampaignPayload = {
@@ -41,4 +44,8 @@ export type UpdateSystemPayload = {
     image: string;
     name: string;
     description: string;
+}
+
+export type UpdateUserPayload = {
+
 }

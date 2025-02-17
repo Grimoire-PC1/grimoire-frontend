@@ -9,6 +9,9 @@ import axiosInstace from "../services/axios";
 import { Button, Separator, Textarea, Text, Presence, Box, Input } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
+import { useMutation } from "@tanstack/react-query";
+import { createUser } from "@/services/userService";
+import { SignInPayload } from "@/interfaces/ServicePayload";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -43,6 +46,80 @@ export default function LoginPage() {
 
   const [showSignInForm, setShowSignInForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
+  const [signUpForm, setSignUpForm] = useState({});
+
+  const nameSignUpChange = (e: any) => {
+    const value = e.target.value;
+    setSignUpForm({
+      ...signUpForm,
+      'nome': value
+    });
+  };
+
+  const usernameSignUpChange = (e: any) => {
+    const value = e.target.value;
+    setSignUpForm({
+      ...signUpForm,
+      'login': value
+    });
+  };
+
+  const passwordSignUpChange = (e: any) => {
+    const value = e.target.value;
+    setSignUpForm({
+      ...signUpForm,
+      'senha': value
+    })
+  }
+
+  const passwordConfirmationSignUpChange = (e: any) => {
+    const value = e.target.value;
+    setSignUpForm({
+      ...signUpForm,
+      'senha-repetida': value
+    })
+  }
+
+  const emailSignUpChange = (e: any) => {
+    const value = e.target.value;
+    setSignUpForm({
+      ...signUpForm,
+      'email': value
+    })
+  }
+
+  const usernameSigning = (e: any) => {
+    const value = e.target.value;
+    console.log(value)
+    console.log(signUpForm['login'])
+    if(value == signUpForm['login']) {
+      const signInPayload: SignInPayload = {
+        login: signUpForm['login'],
+        senha: signUpForm['senha'],
+        email: signUpForm['email'],
+        nome: signUpForm['nome'],
+        foto_url: "string"
+      }
+      console.log(signInPayload)
+      signInForm.mutate(signInPayload)
+    } else {
+      console.log('ainda não')
+    }
+  }
+
+  function checkSignInParameters
+
+  const signInForm = useMutation({
+    mutationKey: ["createUser"],
+    mutationFn: createUser,
+    onSuccess: () => {
+      
+    },
+    onError: (error) => {
+      console.log(error);
+      
+    },
+  });
 
   function navigateHome(){
     navigate("/grimoire/home");
@@ -116,18 +193,18 @@ export default function LoginPage() {
             >
                         <div className="margin">
               <Form>
-                <Textarea resize="none" className="height" placeholder="nome" />
-                <Textarea resize="none" className="height" placeholder="username" />
+                <Textarea resize="none" className="height" placeholder="nome" onChange={nameSignUpChange}/>
+                <Textarea resize="none" className="height" placeholder="username" onChange={usernameSignUpChange}/>
                 <br></br>
-                <Textarea resize="none" className="height-l" placeholder="e-mail" />
+                <Textarea resize="none" className="height-l" placeholder="e-mail" onChange={emailSignUpChange}/>
                 <br></br>
-                <Textarea resize="none" className="height" placeholder="senha" />
-                <Textarea resize="none" className="height" placeholder="repita sua senha" />
+                <Textarea resize="none" className="height" placeholder="senha" onChange={passwordSignUpChange}/>
+                <Textarea resize="none" className="height" placeholder="repita sua senha" onChange={passwordConfirmationSignUpChange}/>
               </Form>
               <br></br>
               <div className="flex place-content-around margin-sides content-end">
               <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
-              <Textarea onClick={()=>setShowSignUpForm(false)} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
+              <Textarea onChange={usernameSigning} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
                 </div>
               </div> 
             </Presence>

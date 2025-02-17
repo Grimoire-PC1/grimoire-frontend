@@ -1,13 +1,15 @@
 import { useUserStore } from "../stores/user/user.store";
 import axios, { AxiosError } from "axios";
 
-const api_url = import.meta.env.VITE_API_URL ?? "https://grimoire/grimoire-backend/api/"; // "http://localhost:8080/api" // 
+const api_url = import.meta.env.VITE_API_URL ??  "http://localhost:8082/" // "https://grimoire/grimoire-backend/api/"; //
 
 const axiosInstace = axios.create({
   baseURL: api_url,
   withCredentials: true,
   headers: {
-    "ngrok-skip-browser-warning": "any"
+    "ngrok-skip-browser-warning": "any",
+    "Content-Type": "application/json",
+    
   }
 });
 
