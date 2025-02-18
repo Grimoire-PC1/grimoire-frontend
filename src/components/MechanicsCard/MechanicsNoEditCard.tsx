@@ -1,8 +1,6 @@
 import {CardBody, CardRoot, Flex, Tag, Text } from "@chakra-ui/react"
 import { LuDices, } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
-import { useState } from "react";
-import { PlayableMechanicCard } from "./PlayableMechanicCard";
 
 
 export interface MechanicsCardProps {
@@ -18,11 +16,6 @@ export const MechanicsNoEditCard = ({
     const mechanicDesc = "Descricao da minha mecanica muito legal, ela serve pra guiar a história pra tal coisa e tal coisa e tal coisa";
     const rollAtEveryXTurns = 9;
 
-    const playerActions = ["Atacar","Defender","Esconder"]
-    const playerReactions = ["Machucado","Desmaiado","Enfeitiçado"]
-
-    const [openPlayableMechanic,setOpenPlayableMechanic] = useState(false);
-
     return(
         <div>
             <CardRoot size={"sm"} cursor={"pointer"}>
@@ -32,7 +25,7 @@ export const MechanicsNoEditCard = ({
                         <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
                             <LuDices /> {mechanicTitle}
                         </AccordionItemTrigger>
-                        <AccordionItemContent cursor={"pointer"} onClick={()=>setOpenPlayableMechanic(true)}>
+                        <AccordionItemContent cursor={"pointer"}>
 
                             <Text>{mechanicDesc}</Text>
 
@@ -116,8 +109,7 @@ export const MechanicsNoEditCard = ({
                     </AccordionRoot>
                 </CardBody>
             </CardRoot>
-
-            <PlayableMechanicCard open={openPlayableMechanic} handleClose={setOpenPlayableMechanic} mechanicId={mechanicId} mechanicName={mechanicTitle} campaign={null} mechanicActions={playerActions} mechanicReactions={playerReactions} mechanicRoundCounter={rollAtEveryXTurns}/>
+            
         </div>
     )
 }

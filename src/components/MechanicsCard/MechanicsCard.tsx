@@ -1,9 +1,10 @@
 import {CardBody, CardRoot, Flex, IconButton, Tag, Text } from "@chakra-ui/react"
-import { LuDices, LuPencil, LuTrash2 } from "react-icons/lu";
+import { LuDices, LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { useState } from "react";
 import { MechanicCardEditDialog } from "./MechanicCardEditDialog";
 import { MechanicCardDeleteDialog } from "./MechanicCardDeleteDialog";
+import { PlayableMechanicCard } from "./PlayableMechanicCard";
 
 
 export interface MechanicsCardProps {
@@ -25,6 +26,8 @@ export const MechanicsCard = ({
 
     const playerActions = ["Atacar","Defender","Esconder"]
     const playerReactions = ["Machucado","Desmaiado","Enfeitiçado"]
+
+    const [openPlayableMechanic,setOpenPlayableMechanic] = useState(false);
 
     return(
         <div>
@@ -118,7 +121,7 @@ export const MechanicsCard = ({
                             <Flex placeContent={"flex-end"} gapX={2}>
                                 <IconButton onClick={()=>setEditDialog(true)} size={"xs"} variant={"outline"} aria-label="Editar"> <LuPencil/> </IconButton>
                                 <IconButton onClick={()=>setDeleteDialog(true)} size={"xs"} variant={"outline"} aria-label="Apagar"> <LuTrash2/> </IconButton>
-                                {/*<IconButton onClick={()=>setPlayDialog(true)} size={"xs"} variant={"outline"} aria-label="Jogar"> <LuPlay /> </IconButton>*/}
+                                <IconButton onClick={()=>setOpenPlayableMechanic(true)} size={"xs"} variant={"outline"} aria-label="Jogar"> <LuPlay /> </IconButton>
                             </Flex>
                             </AccordionItemContent>
                         </AccordionItem>
@@ -128,7 +131,9 @@ export const MechanicsCard = ({
 
             <MechanicCardEditDialog open={editDialog} handleClose={setEditDialog} mechanicId="" mechanicDesc={mechanicDesc} mechanicName={mechanicTitle} mechanicRoundCounter={rollAtEveryXTurns} mechanicActions={playerActions} mechanicReactions={playerReactions}></MechanicCardEditDialog>
             <MechanicCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} mechanicId=""  mechanicName={mechanicTitle}></MechanicCardDeleteDialog>
-
+            
+            <PlayableMechanicCard open={openPlayableMechanic} handleClose={setOpenPlayableMechanic} mechanicId={mechanicId} mechanicName={mechanicTitle} campaign={null} mechanicActions={playerActions} mechanicReactions={playerReactions} mechanicRoundCounter={rollAtEveryXTurns}/>
+        
         </div>
     )
 }
