@@ -23,7 +23,7 @@ export const SidebarSystem = ({
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/system/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
-                <Button disabled onClick={()=>navigate("/grimoire/system/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
+                <Button onClick={()=>navigate("/grimoire/system/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
             </div>

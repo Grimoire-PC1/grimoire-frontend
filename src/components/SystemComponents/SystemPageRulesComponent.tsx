@@ -38,7 +38,7 @@ export const SystemPageRulesComponent = ({
                     </IconButton>
                                             
                 </Flex>
-                    <Grid maxH={maxHeight} overflowY={"scroll"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
+                    <Grid maxH={maxHeight} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
                         <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
                         <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
                         <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>

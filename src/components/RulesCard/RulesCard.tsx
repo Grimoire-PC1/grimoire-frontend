@@ -1,5 +1,5 @@
 import {CardBody, CardRoot, Flex, IconButton, Text } from "@chakra-ui/react"
-import { LuDices, LuPencil, LuTrash2 } from "react-icons/lu";
+import { LuPencil, LuScrollText, LuTrash2 } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { useState } from "react";
 import { RulesCardEditDialog } from "./RulesCardEditDialog";
@@ -28,7 +28,7 @@ export const RulesCard = ({
                     <AccordionRoot collapsible cursor={"pointer"}>
                         <AccordionItem cursor={"pointer"} key={ruleId} value={ruleId}>
                         <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
-                            <LuDices /> {ruleTitle}
+                            <LuScrollText /> {ruleTitle}
                         </AccordionItemTrigger>
                         <AccordionItemContent cursor={"pointer"}>
                             <Text>{ruleDesc}</Text>
