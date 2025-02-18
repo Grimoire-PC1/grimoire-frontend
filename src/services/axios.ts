@@ -9,7 +9,6 @@ const axiosInstace = axios.create({
   headers: {
     "ngrok-skip-browser-warning": "any",
     "Content-Type": "application/json",
-    
   }
 });
 
@@ -21,7 +20,9 @@ axiosInstace.interceptors.request.use((config) => {
       token = sessionToken;
     }
   }
-  config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
   return config;
 });

@@ -1,15 +1,17 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { SignInResponse } from "../interfaces/ServiceResponse";
-import { SignInPayload } from "@/interfaces/ServicePayload";
+import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
 
-export const authenticateUser = async () => {
+export const authenticateUser = async (credentials: SignInPayload) => {
+    console.log(credentials)
     const { data } = await axiosInstace.post<string>(
-        `/${ENDPOINT.SIGN_IN}`
+        `/${ENDPOINT.SIGN_IN}`,
+        credentials
     )
 }
 
-export const createUser = async (body: SignInPayload) => {
+export const createUser = async (body: SignUpPayload) => {
 
     const { data } = await axiosInstace.post<string>(
         `/${ENDPOINT.CREATE_NEW_USER}`,

@@ -8,7 +8,7 @@ export const ENDPOINT = {
     DELETE_USER: "user/delete",
 
     CREATE_NEW_CAMPAIGN: "campaign/register",
-    GET_USER_CREATED_CAMPAIGNS: "createdCampaigns",
+    GET_USER_CREATED_CAMPAIGNS: "campaign/get",
     GET_USER_PLAYED_CAMPAIGNS: "playedCampaigns",
     GET_CAMPAIGN_BY_ID: "campaign/get",
     UPDATE_CAMPAIGN: "campaign/update",

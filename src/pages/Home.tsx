@@ -6,11 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
-import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
+import { createNewCampaign, getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
@@ -21,6 +21,9 @@ import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
+import { CreateNewCampaignPayload, CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
+import { createNewSystem } from "@/services/systemService";
+import { SystemType } from "@/interfaces/Models";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -65,13 +68,56 @@ export default function Home() {
 
     function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
-        navigate("/grimoire/campaign");
+        //navigate("/grimoire/campaign");
+        const newCampaignPayload: CreateNewCampaignPayload = {
+            titulo: '',
+            foto_url: '',
+            id_sistema: 1,
+            descricao: '',
+        }
+        newCampaign.mutate(newCampaignPayload)
     }
 
+    const newCampaign = useMutation({
+        mutationKey: ["createNewCampaign"],
+        mutationFn: createNewCampaign,
+        onSuccess: (data) => {
+            console.log(data)
+            //navigate("/grimoire/campaign");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
+
     function navigateNewSystem(){
-        //fazer com que essa função crie um novo objeto sistema associado ao usuário como mestre. por padrão o sistema é privado
-        navigate("/grimoire/system/");
+        const newSystemPayload: CreateNewSystemPayload = {
+            foto_url: '',
+            nome: '',
+            descricao: ''
+        }
+        const systemType: SystemType =  'PUBLICO';
+        const temporaryJson: TemporarySystemPayload = {
+            payload: newSystemPayload,
+            systemType: systemType
+        }
+
+        newSystem.mutate(temporaryJson)
+        //navigate("/grimoire/system/");
     }
+
+    const newSystem = useMutation({
+        mutationKey: ["createNewSystem"],
+        mutationFn: createNewSystem,
+        onSuccess: (data) => {
+            console.log(data)
+            //navigate("/grimoire/campaign");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
+
 
     function userSettings(campo:string){
         setSelectedField(campo);

@@ -39,9 +39,10 @@ export const getCampaignById = async (campaignId: string) => {
     return data
 }
 
-export const createNewCampaigns = async(newCampaign: CreateNewCampaignPayload) => {
+export const createNewCampaign = async(newCampaign: CreateNewCampaignPayload) => {
+    console.log(newCampaign)
     const { data } = await axiosInstace.post<GetCampaigsResponse>(
-        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`,
+        `/${ENDPOINT.CREATE_NEW_CAMPAIGN}`,
         newCampaign
     )
 

@@ -10,8 +10,8 @@ import { Button, Separator, Textarea, Text, Presence, Box, Input } from "@chakra
 import { PasswordInput } from "@/components/ui/password-input";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { useMutation } from "@tanstack/react-query";
-import { createUser } from "@/services/userService";
-import { SignInPayload } from "@/interfaces/ServicePayload";
+import { authenticateUser, createUser } from "@/services/userService";
+import { SignUpPayload } from "@/interfaces/ServicePayload";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -46,7 +46,48 @@ export default function LoginPage() {
 
   const [showSignInForm, setShowSignInForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
+  const [signInForm, setSignInForm] = useState({});
   const [signUpForm, setSignUpForm] = useState({});
+
+  const usernameSignInChange = (e: any) => {
+    const value = e.target.value;
+    setSignInForm({
+      ...signInForm,
+      'login': value
+    });
+  };
+
+  const passwordSignInChange = (e: any) => {
+    const value = e.target.value;
+    setSignInForm({
+      ...signInForm,
+      'senha': value
+    });
+  };
+
+  const submitLogin = (e:any) => {
+    if(signInForm['login'] != undefined && signUpForm['login'] != ""
+    && signInForm['senha'] != undefined && signInForm['senha'] != "") {
+      const signInPayload: SignInPayload = {
+        login: signInForm['login'],
+        senha: signInForm['senha'],
+      }
+      sendSignInForm.mutate(signInPayload)
+    } else {
+      console.log('campos inválidos')
+    }
+  }
+
+  const sendSignInForm = useMutation({
+    mutationKey: ["authenticateUser"],
+    mutationFn: authenticateUser,
+    onSuccess: () => {
+      navigate("/grimoire/home");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const nameSignUpChange = (e: any) => {
     const value = e.target.value;
@@ -88,42 +129,54 @@ export default function LoginPage() {
     })
   }
 
-  const usernameSigning = (e: any) => {
+  const usernameConfirmation = (e: any) => {
     const value = e.target.value;
     console.log(value)
     console.log(signUpForm['login'])
-    if(value == signUpForm['login']) {
-      const signInPayload: SignInPayload = {
+    if(value == signUpForm['login'] && checkSignUpParameters() && checkEqualPassword()) {
+      const signUpPayload: SignUpPayload = {
         login: signUpForm['login'],
         senha: signUpForm['senha'],
         email: signUpForm['email'],
         nome: signUpForm['nome'],
         foto_url: "string"
       }
-      console.log(signInPayload)
-      signInForm.mutate(signInPayload)
+      console.log(signUpPayload)
+      sendSignUnForm.mutate(signUpPayload)
     } else {
       console.log('ainda não')
     }
   }
 
-  function checkSignInParameters
+  function checkSignUpParameters() {
+    if (signUpForm['login'] == undefined || signUpForm['login'] == ""
+    || signUpForm['senha'] == undefined || signUpForm['senha'] == ""
+    || signUpForm['email'] == undefined || signUpForm['email'] == ""
+    || signUpForm['nome'] == undefined || signUpForm['nome'] == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-  const signInForm = useMutation({
+  function checkEqualPassword() {
+    if (signUpForm['senha'] == signUpForm['senha-repetida']) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const sendSignUnForm = useMutation({
     mutationKey: ["createUser"],
     mutationFn: createUser,
     onSuccess: () => {
-      
+      console.log('Yay')
     },
     onError: (error) => {
       console.log(error);
-      
     },
   });
-
-  function navigateHome(){
-    navigate("/grimoire/home");
-  }
 
   /*
   if (user) {
@@ -177,12 +230,12 @@ export default function LoginPage() {
             >
               <div className="margin grid place-items-center">
               <Form className="grid-cols-1 w-1/3">
-                <Input mb={"2"} resize="none" placeholder="username" />
+                <Input mb={"2"} resize="none" placeholder="username" onChange={usernameSignInChange}/>
                 <br></br>
-                <PasswordInput resize="none" placeholder="senha"></PasswordInput>
+                <PasswordInput resize="none" placeholder="senha" onChange={passwordSignInChange}></PasswordInput>
               </Form>
               <br></br>
-              <Button onClick={()=>navigateHome()} className="padding-xl margin-sides">Entrar</Button>
+              <Button onClick={submitLogin} className="padding-xl margin-sides">Entrar</Button>
               </div> 
             </Presence>
 
@@ -204,7 +257,7 @@ export default function LoginPage() {
               <br></br>
               <div className="flex place-content-around margin-sides content-end">
               <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
-              <Textarea onChange={usernameSigning} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
+              <Textarea onChange={usernameConfirmation} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
                 </div>
               </div> 
             </Presence>

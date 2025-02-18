@@ -1,4 +1,6 @@
-export type SignInPayload = {
+import { SystemType } from "./Models";
+
+export type SignUpPayload = {
     login: string;
     email: string;
     senha: string;
@@ -6,17 +8,27 @@ export type SignInPayload = {
     foto_url: string;
 };
 
+export type SignInPayload = {
+    login: string;
+    senha: string;
+};
+
 export type CreateNewCampaignPayload = {
-    name: string;
-    image: string;
-    systemId: string;
-    description: string;
+    titulo: string;
+    foto_url: string;
+    id_sistema: number;
+    descricao: string;
 };
 
 export type CreateNewSystemPayload = {
-    image: string;
-    name: string;
-    description: string;
+    foto_url: string;
+    nome: string;
+    descricao: string;
+}
+
+export type TemporarySystemPayload = {
+    payload: CreateNewSystemPayload;
+    systemType: SystemType;
 }
 
 export type CreateNewCharacter = {
@@ -32,15 +44,15 @@ export type CreateNewSession = {
 }
 
 export type UpdateCampaignPayload = {
-    campaignId: string;
+    campaignId: number;
     name?: string;
     image?: string;
-    systemId?: string;
+    systemId?: number;
     description?: string;
 }
 
 export type UpdateSystemPayload = {
-    systemId: string;
+    systemId: number;
     image: string;
     name: string;
     description: string;

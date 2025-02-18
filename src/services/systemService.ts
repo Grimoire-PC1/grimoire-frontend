@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
-import { System } from "@/interfaces/Models";
-import { CreateNewSystemPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
+import { System, SystemType } from "@/interfaces/Models";
+import { CreateNewSystemPayload, TemporarySystemPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
 
@@ -32,10 +32,11 @@ export const getAllPublicSystems = async () => {
     return arrayedSystems;
 }
 
-export const createNewSystem = async(newSystem: CreateNewSystemPayload) => {
+export const createNewSystem = async(temporarySystemPayload: TemporarySystemPayload) => {
     const { data } = await axiosInstace.post<System>(
         `/${ENDPOINT.CREATE_NEW_SYSTEM}`,
-        newSystem
+        temporarySystemPayload.payload,
+        { params: { tipo_sistema: temporarySystemPayload.systemType} }
     )
 
     return data;
