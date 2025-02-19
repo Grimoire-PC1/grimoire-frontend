@@ -171,7 +171,7 @@ export default function LoginPage() {
     mutationKey: ["createUser"],
     mutationFn: createUser,
     onSuccess: () => {
-      console.log('Yay')
+      navigate("/grimoire");
     },
     onError: (error) => {
       console.log(error);

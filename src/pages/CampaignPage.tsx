@@ -11,10 +11,13 @@ import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPl
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
+import { useUserStore } from "@/stores/user/user.store";
 
 export default function CampaignPage(){
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+
+    console.log(useUserStore.getState().createdCampaigns)
 
     return(
         <Presence 

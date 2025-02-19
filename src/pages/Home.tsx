@@ -24,6 +24,7 @@ import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 import { CreateNewCampaignPayload, CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
 import { createNewSystem } from "@/services/systemService";
 import { SystemType } from "@/interfaces/Models";
+import { useUserStore } from "@/stores/user/user.store";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function Home() {
 
     const {data: campanhasCriadas} = useQuery({
         queryKey: ["userCreatedCampaigns"],
-        queryFn: getAllUserCreatedCampaigns
+        queryFn: getAllUserCreatedCampaigns,
     })
     
     const {data: campanhasJogadas} = useQuery({
@@ -82,8 +83,12 @@ export default function Home() {
         mutationKey: ["createNewCampaign"],
         mutationFn: createNewCampaign,
         onSuccess: (data) => {
+            useUserStore
+            .getState()
+            .setCreatedCampaigns([...useUserStore.getState().createdCampaigns, data]);
             console.log(data)
-            //navigate("/grimoire/campaign");
+            sessionStorage.setItem('currentCampaignId', data.id);
+            navigate("/grimoire/campaign");
         },
         onError: (error) => {
           console.log(error);
