@@ -24,7 +24,7 @@ export default function CampaignSystemMechanics(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <SystemPageMechanicsComponent   title="COMO SE JOGA A SUA HISTÓRIA??" 
+                                    <SystemPageMechanicsComponent   title="COMO SE JOGA A SUA HISTÓRIA?" 
                                         subtitle="Crie ou modifique mecânicas para diferentes situações que os jogadores podem vir a enfrentar." 
                                         system={"meu sistema"}
                                         maxHeight="66vh"

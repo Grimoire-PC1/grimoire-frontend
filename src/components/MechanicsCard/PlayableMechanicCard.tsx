@@ -66,9 +66,11 @@ export const PlayableMechanicCard = ({
     const [chosenReaction,setChosenReaction] = useState<string[]>([]);
 
     function close(){
+        console.log(characters);
         setCharacters(['P1','P2','P3','NPC1','NPC2']);
+        console.log(characters);
         setChosenAction([]);
-        setChosenReaction([])
+        setChosenReaction([]);
         handleClose(false);
     }
 
@@ -159,52 +161,52 @@ export const PlayableMechanicCard = ({
                                                     </For>
                                                 </StepsList>
 
-                                                <Box display={"grid"} className={'grid-cols-'+(characters.length)} w={"100%"}>
-                                                <For each={characters}>
-                                                        {(item,index) => 
-                                                        chosenAction[index] ?
-                                                        <Box className={'col-start-'+index+' col-end-'+index}>
-                                                            <StepsContent placeSelf={"center"} index={index}>
-                                                                <Tag.Root>
-                                                                    <Tag.Label>{chosenAction[index]}</Tag.Label>
-                                                                </Tag.Root>
-                                                                <br></br>
-                                                                <Tag.Root>
-                                                                    <Tag.Label>{chosenReaction[index]}</Tag.Label>
-                                                                </Tag.Root>
+                                                <Box display={"grid"} className={'grid-cols-'+(characters.length)}>
+                                                    <For each={characters}>
+                                                            {(item,index) => 
+                                                            chosenAction[index] ?
+                                                            <Box className={'col-start-'+index+' col-end-'+index}>
+                                                                <StepsContent placeSelf={"center"} index={index}>
+                                                                    <Tag.Root>
+                                                                        <Tag.Label>{chosenAction[index]}</Tag.Label>
+                                                                    </Tag.Root>
+                                                                    <br></br>
+                                                                    <Tag.Root>
+                                                                        <Tag.Label>{chosenReaction[index]}</Tag.Label>
+                                                                    </Tag.Root>
 
+                                                                </StepsContent>
+
+                                                            </Box>
+                                                            :
+                                                            <StepsContent className={'col-span-'+(characters.length)} index={index}>
+                                                                <SelectRoot w={"200px"} collection={allActions} placeSelf={"center"}>
+                                                                <SelectTrigger>
+                                                                <SelectValueText placeholder="Ação do jogador" />
+                                                                </SelectTrigger>
+                                                                <SelectContent  w={"200px"} maxH={"200px"}>
+                                                                    {allActions.items.map((character) => (
+                                                                    <SelectItem onClick={()=>chosenAction.push(character)} cursor={"pointer"} item={character} key={character}>
+                                                                        {character}
+                                                                    </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                                </SelectRoot>
+                                                                <SelectRoot mt={2} w={"200px"} collection={allReactions} placeSelf={"center"}>
+                                                                <SelectTrigger>
+                                                                <SelectValueText placeholder="Efeito sobre o jogador" />
+                                                                </SelectTrigger>
+                                                                <SelectContent  w={"200px"} maxH={"200px"}>
+                                                                    {allReactions.items.map((character) => (
+                                                                    <SelectItem onClick={()=>chosenReaction.push(character)} cursor={"pointer"} item={character} key={character}>
+                                                                        {character}
+                                                                    </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                                </SelectRoot>
                                                             </StepsContent>
-
-                                                        </Box>
-                                                        :
-                                                        <StepsContent className={'col-span-'+(characters.length)} index={index}>
-                                                            <SelectRoot w={"200px"} collection={allActions} placeSelf={"center"}>
-                                                            <SelectTrigger>
-                                                            <SelectValueText placeholder="Ação do jogador" />
-                                                            </SelectTrigger>
-                                                            <SelectContent  w={"200px"} maxH={"200px"}>
-                                                                {allActions.items.map((character) => (
-                                                                <SelectItem onClick={()=>chosenAction.push(character)} cursor={"pointer"} item={character} key={character}>
-                                                                    {character}
-                                                                </SelectItem>
-                                                                ))}
-                                                            </SelectContent>
-                                                            </SelectRoot>
-                                                            <SelectRoot mt={2} w={"200px"} collection={allReactions} placeSelf={"center"}>
-                                                            <SelectTrigger>
-                                                            <SelectValueText placeholder="Efeito sobre o jogador" />
-                                                            </SelectTrigger>
-                                                            <SelectContent  w={"200px"} maxH={"200px"}>
-                                                                {allReactions.items.map((character) => (
-                                                                <SelectItem onClick={()=>chosenReaction.push(character)} cursor={"pointer"} item={character} key={character}>
-                                                                    {character}
-                                                                </SelectItem>
-                                                                ))}
-                                                            </SelectContent>
-                                                            </SelectRoot>
-                                                        </StepsContent>
-                                                        }
-                                                </For>
+                                                            }
+                                                    </For>
                                                 </Box>
                                                 <StepsCompletedContent>Rodada concluída!</StepsCompletedContent>
 
