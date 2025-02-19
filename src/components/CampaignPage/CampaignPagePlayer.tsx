@@ -1,12 +1,8 @@
 
-import { Input, Text, Textarea, Image, Separator, Button, Box, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
-import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
-import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
-import { SidebarPlayer } from "../SidebarPlayer/SidebarPlayer";
-import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
-import { CampaignCard } from "../CampaignCard/CampaignCard";
+import { Text, Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
+import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 
 export interface CampaignPagePlayerProps {
     user: string;
@@ -68,11 +64,11 @@ export const CampaignPagePlayer = ({
                         <Separator></Separator>
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
                     </CardBody>
                 </CardRoot>
             </div>

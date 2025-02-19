@@ -5,6 +5,7 @@ import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { Campaign, Character } from "@/interfaces/Models";
 import { useState } from "react";
 import { DialogCampaignCode } from "../Dialog/DialogCampaignCode";
+import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 
 export interface CampaignPageGMProps {
     user: string;
@@ -58,12 +59,12 @@ export const CampaignPageGM = ({
                 <div className="grid grid-cols-28 margin-top-s">
                     <div className="col-span-16 margin-right">
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
+                        <PinnedDiaryListCardNoEdit/>
                         {/* aqui vem uma lista de PinnedDiaryListCard. clicar em um card abre a entrada do diário para aquela sessão*/}
                     </div>
                     <Separator orientation={"vertical"} className="col-span-1"></Separator>

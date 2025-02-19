@@ -25,7 +25,7 @@ export const SidebarGM = ({
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/campaign/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>
-                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
+                <Button onClick={()=>navigate("/grimoire/campaign/journal")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
                 <br></br>
                 <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
                 <br></br>
