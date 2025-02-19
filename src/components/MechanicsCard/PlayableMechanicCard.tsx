@@ -1,13 +1,9 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import {Box, Button, createListCollection, Flex, For, Group, IconButton, Input, Presence,Tag,Text, Textarea} from "@chakra-ui/react";
-import { Form } from 'react-router-dom';
-import { NumberInputField, NumberInputRoot } from '../ui/number-input';
+import {Box, Button, createListCollection, Flex, For, Group, IconButton,Tag,Text,} from "@chakra-ui/react";
 import { useMemo, useState } from 'react';
-import { Radio, RadioGroup } from '../ui/radio';
 import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
 import { LuPlus,LuUser } from 'react-icons/lu';
-import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
-import { Avatar } from '../ui/avatar';
+import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
 import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsNextTrigger, StepsPrevTrigger, StepsRoot } from '../ui/steps';
 
 
@@ -54,6 +50,15 @@ export const PlayableMechanicCard = ({
             itemToValue: (item) => item,
           })
         }, [mechanicActions]
+    )
+
+    const allReactions = useMemo(()=>{
+        return createListCollection({
+            items: mechanicReactions,
+            itemToString: (item) => item,
+            itemToValue: (item) => item,
+          })
+        }, [mechanicReactions]
     )
 
     const [characters,setCharacters] = useState<string[]>(['P1','P2','P3','NPC1','NPC2']); //inicia vazio na prática
@@ -154,24 +159,44 @@ export const PlayableMechanicCard = ({
                                                     </For>
                                                 </StepsList>
 
+                                                <Box display={"grid"} className={'grid-cols-'+(characters.length)} w={"100%"}>
                                                 <For each={characters}>
                                                         {(item,index) => 
                                                         chosenAction[index] ?
-                                                        <StepsContent index={index}>
-                                                        <Tag.Root>
-                                                            <Tag.Label>{chosenAction[index]}</Tag.Label>
-                                                        </Tag.Root>
+                                                        <Box className={'col-start-'+index+' col-end-'+index}>
+                                                            <StepsContent placeSelf={"center"} index={index}>
+                                                                <Tag.Root>
+                                                                    <Tag.Label>{chosenAction[index]}</Tag.Label>
+                                                                </Tag.Root>
+                                                                <br></br>
+                                                                <Tag.Root>
+                                                                    <Tag.Label>{chosenReaction[index]}</Tag.Label>
+                                                                </Tag.Root>
 
-                                                        </StepsContent>
+                                                            </StepsContent>
+
+                                                        </Box>
                                                         :
-                                                        <StepsContent index={index}>
-                                                            <SelectRoot collection={allActions} placeSelf={"center"}>
+                                                        <StepsContent className={'col-span-'+(characters.length)} index={index}>
+                                                            <SelectRoot w={"200px"} collection={allActions} placeSelf={"center"}>
                                                             <SelectTrigger>
                                                             <SelectValueText placeholder="Ação do jogador" />
                                                             </SelectTrigger>
-                                                            <SelectContent  w={"320px"} maxH={"200px"}>
+                                                            <SelectContent  w={"200px"} maxH={"200px"}>
                                                                 {allActions.items.map((character) => (
                                                                 <SelectItem onClick={()=>chosenAction.push(character)} cursor={"pointer"} item={character} key={character}>
+                                                                    {character}
+                                                                </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                            </SelectRoot>
+                                                            <SelectRoot mt={2} w={"200px"} collection={allReactions} placeSelf={"center"}>
+                                                            <SelectTrigger>
+                                                            <SelectValueText placeholder="Efeito sobre o jogador" />
+                                                            </SelectTrigger>
+                                                            <SelectContent  w={"200px"} maxH={"200px"}>
+                                                                {allReactions.items.map((character) => (
+                                                                <SelectItem onClick={()=>chosenReaction.push(character)} cursor={"pointer"} item={character} key={character}>
                                                                     {character}
                                                                 </SelectItem>
                                                                 ))}
@@ -180,16 +205,17 @@ export const PlayableMechanicCard = ({
                                                         </StepsContent>
                                                         }
                                                 </For>
+                                                </Box>
                                                 <StepsCompletedContent>Rodada concluída!</StepsCompletedContent>
 
                                                 <Group justifyContent={"center"}>
                                                     <StepsPrevTrigger asChild>
-                                                    <Button variant="outline" size="sm">
+                                                    <Button onClick={()=>setRound(round-1)} variant="outline" size="sm">
                                                         Turno anterior
                                                     </Button>
                                                     </StepsPrevTrigger>
                                                     <StepsNextTrigger asChild>
-                                                    <Button variant="outline" size="sm">
+                                                    <Button onClick={()=>setRound(round+1)} variant="outline" size="sm">
                                                         Próximo turno
                                                     </Button>
                                                     </StepsNextTrigger>
@@ -202,7 +228,7 @@ export const PlayableMechanicCard = ({
                                     }
 
                                     <Flex justifyContent={"end"}>
-                                        <Button>{round <= 0 ? "Iniciar "+mechanicName : "Próxima rodada"}</Button>
+                                        <Button disabled={!(round == 0 || (round % characters.length == 0))}>{round <= 0 ? "Iniciar "+mechanicName : "Próxima rodada"}</Button>
                                     </Flex>
                                 </div>
 
