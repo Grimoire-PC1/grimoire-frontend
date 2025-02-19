@@ -64,6 +64,7 @@ export const PlayableMechanicCard = ({
     const [characters,setCharacters] = useState<string[]>(['P1','P2','P3','NPC1','NPC2']); //inicia vazio na prática
     const [chosenAction,setChosenAction] = useState<string[]>([]);
     const [chosenReaction,setChosenReaction] = useState<string[]>([]);
+    const [chosenCharacter,setCharacter] = useState<string[]>([]);
 
     function close(){
         console.log(characters);
@@ -73,6 +74,15 @@ export const PlayableMechanicCard = ({
         setChosenReaction([]);
         handleClose(false);
     }
+
+    const charactersCollection = useMemo(()=>{
+        return createListCollection({
+            items: characters,
+            itemToString: (item) => item,
+            itemToValue: (item) => item,
+          })
+        }, [characters]
+    )
 
     return(
     <Dialog open={open} onClose={close} className="relative z-10">
@@ -88,10 +98,13 @@ export const PlayableMechanicCard = ({
                                 className=" padding-dialog-sm relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 w-[70vw] data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                             >
                                 <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div className="sm:flex sm:items-start">
+                                <div className="">
                                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                     <DialogTitle className="text-base text-large font-semibold">
-                                        {mechanicName}
+                                        <Flex placeContent={"space-between"}>
+                                            <Text>{mechanicName}</Text>
+                                            <Button disabled={round == 0 || !(round % characters.length == 0)}>{"Encerrar "+mechanicName}</Button>
+                                        </Flex>
                                     </DialogTitle>
                                     </div>
                                 </div>
@@ -168,11 +181,15 @@ export const PlayableMechanicCard = ({
                                                             <Box className={'col-start-'+index+' col-end-'+index}>
                                                                 <StepsContent placeSelf={"center"} index={index}>
                                                                     <Tag.Root>
-                                                                        <Tag.Label>{chosenAction[index]}</Tag.Label>
+                                                                        <Tag.Label>Ação: {chosenAction[index]}</Tag.Label>
                                                                     </Tag.Root>
                                                                     <br></br>
                                                                     <Tag.Root>
-                                                                        <Tag.Label>{chosenReaction[index]}</Tag.Label>
+                                                                        <Tag.Label>Alvo: {chosenCharacter[index]}</Tag.Label>
+                                                                    </Tag.Root>
+                                                                    <br></br>
+                                                                    <Tag.Root>
+                                                                        <Tag.Label>Efeito: {chosenReaction[index]}</Tag.Label>
                                                                     </Tag.Root>
 
                                                                 </StepsContent>
@@ -187,6 +204,18 @@ export const PlayableMechanicCard = ({
                                                                 <SelectContent  w={"200px"} maxH={"200px"}>
                                                                     {allActions.items.map((character) => (
                                                                     <SelectItem onClick={()=>chosenAction.push(character)} cursor={"pointer"} item={character} key={character}>
+                                                                        {character}
+                                                                    </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                                </SelectRoot>
+                                                                <SelectRoot mt={2} w={"200px"} collection={charactersCollection} placeSelf={"center"}>
+                                                                <SelectTrigger>
+                                                                <SelectValueText placeholder="Alvo da ação" />
+                                                                </SelectTrigger>
+                                                                <SelectContent  w={"200px"} maxH={"200px"}>
+                                                                    {charactersCollection.items.map((character) => (
+                                                                    <SelectItem onClick={()=>chosenCharacter.push(character)} cursor={"pointer"} item={character} key={character}>
                                                                         {character}
                                                                     </SelectItem>
                                                                     ))}
@@ -228,11 +257,11 @@ export const PlayableMechanicCard = ({
                                         <div>
                                         </div>
                                     }
-
-                                    <Flex justifyContent={"end"}>
-                                        <Button disabled={!(round == 0 || (round % characters.length == 0))}>{round <= 0 ? "Iniciar "+mechanicName : "Próxima rodada"}</Button>
-                                    </Flex>
                                 </div>
+
+                                <Flex placeContent={"end"}>
+                                    <Button disabled={!(round == 0 || (round % characters.length == 0))}>{round <= 0 ? "Iniciar "+mechanicName : "Próxima rodada"}</Button>
+                                </Flex>
 
                             </DialogPanel>
                         </Box>
