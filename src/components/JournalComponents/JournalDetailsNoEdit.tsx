@@ -1,11 +1,7 @@
-import {System } from "@/interfaces/Models"
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { SystemListCard } from "../system/SystemListCard";
-import { Box,Button,createListCollection,Editable,Flex,For,IconButton,Text } from "@chakra-ui/react";
+import { Dialog, DialogBackdrop, DialogPanel} from '@headlessui/react'
+import { Box,Flex,For,Text } from "@chakra-ui/react";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { LuPlus, LuTrash2 } from "react-icons/lu";
-import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from "../ui/select";
-import { useMemo } from "react";
+import { withMask } from 'use-mask-input';
 
 
 export interface DialogLgProps {
@@ -14,7 +10,7 @@ export interface DialogLgProps {
     campaignId:string;
     journalEntryId:string;
     journalEntryTitle:string;
-    journalEntryDate:Date;
+    journalEntryDate:string;
     journalEntryContent:string;
     journalEntryCharacters:string[]; //mudar para Character[]
 }
@@ -58,7 +54,7 @@ export const JournalDetailsNoEdit = ({
                                 <div className="">
                                         <Flex mb={4} placeContent={"space-between"} alignItems={"center"}>
                                             <Text fontSize={"2xl"}>{journalEntryTitle}</Text>
-                                            <Text fontSize={"2xl"}>{formatDate(journalEntryDate)}</Text>
+                                            <Text ref={withMask("99/99/9999")} fontSize={"2xl"}>{journalEntryDate}</Text>
                                         </Flex>
                                 </div>
                             </div>

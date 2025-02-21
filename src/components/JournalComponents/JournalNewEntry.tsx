@@ -6,6 +6,7 @@ import { useMemo, useReducer, useState } from 'react';
 import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '../ui/select';
 import { LuPlus } from 'react-icons/lu';
+import { withMask } from "use-mask-input"
 
 export interface DialogLgProps {
     open:boolean,
@@ -32,12 +33,22 @@ export const JournalNewEntry = ({
     const [characters, setCharacters] = useState<string[]>([]);
 
     function updateCharacters(c:string){
+        if(!(characters.find((character) => character === c))){
+            const newCharacterList = characters;
+            newCharacterList.push(c);
+            setCharacters(newCharacterList);
+            forceUpdate();
+        }
+    }
+
+    function updateRemoveCharacter(c:string){
         const newCharacterList = characters;
-        newCharacterList.push(c);
+        newCharacterList.forEach( (item, index) => {
+            if(item === c) newCharacterList.splice(index,1);
+          });
         setCharacters(newCharacterList);
         forceUpdate();
     }
-
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -58,7 +69,10 @@ export const JournalNewEntry = ({
                         <Box m={2} maxH={"74vh"} overflowY={"auto"}>
 
                             <Form>
-                                <Input mt={4} placeholder='Título da sessão'></Input>
+                                <Flex gapX={2}>
+                                    <Input mt={4} placeholder='Título da sessão'></Input>
+                                    <Input textAlign={"center"} w={"20%"} mt={4} placeholder='Data da sessão' ref={withMask("99/99/9999")}></Input>
+                                </Flex>
                                 <Text className='text' mt={4}>Esta sessão já foi jogada?</Text>
                                 <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue="sim">
                                     <Radio value="sim">Sim, estou registrando uma sessão passada</Radio>
@@ -69,7 +83,7 @@ export const JournalNewEntry = ({
 
                                 <Flex mt={2} flexWrap={"wrap"} gap={1}>
                                     <For each={characters}>
-                                        {(character)=><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile>}
+                                        {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
                                     </For>
                                     <SelectRoot collection={allCharacters} placeSelf={"center"} w={"47px"} size="xs" variant={"ghost"}>
                                     <SelectTrigger>

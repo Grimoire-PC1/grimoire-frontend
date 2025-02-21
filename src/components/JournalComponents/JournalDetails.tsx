@@ -1,11 +1,10 @@
-import {System } from "@/interfaces/Models"
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { SystemListCard } from "../system/SystemListCard";
+import { Dialog, DialogBackdrop, DialogPanel} from '@headlessui/react'
 import { Box,Button,createListCollection,Editable,Flex,For,IconButton,Text } from "@chakra-ui/react";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from "../ui/select";
-import { useMemo } from "react";
+import { useMemo, useReducer, useState} from "react";
+import { withMask } from "use-mask-input"
 
 
 export interface DialogLgProps {
@@ -14,7 +13,7 @@ export interface DialogLgProps {
     campaignId:string;
     journalEntryId:string;
     journalEntryTitle:string;
-    journalEntryDate:Date;
+    journalEntryDate:string;
     journalEntryContent:string;
     journalEntryCharacters:string[]; //mudar para Character[]
 }
@@ -29,22 +28,35 @@ export const JournalDetails = ({
     journalEntryContent,
     journalEntryCharacters,
 }: DialogLgProps) => {
+    
+    const [,forceUpdate] = useReducer(x=>x+1,0);
 
-        const allCharacters = useMemo(() => {
-            return createListCollection({
-              items: ['P1','P2','NPC1','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21',], //pegar todos os personagens da campanha
-              itemToString: (item) => item,
-              itemToValue: (item) => item,
-            })
-          }, [])
+    const allCharacters = useMemo(() => {
+        return createListCollection({
+            items: ['P1','P2','NPC1','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21',], //pegar todos os personagens da campanha
+            itemToString: (item) => item,
+            itemToValue: (item) => item,
+        })
+        }, [])
 
-    function formatDate(d:Date){
-       const date_String = d.getFullYear() +
-            "/" +
-            (d.getMonth() + 1) +
-            "/" +
-            +d.getDate()
-        return date_String;
+    const [characters, setCharacters] = useState(journalEntryCharacters);
+
+    function updateCharacters(c:string){
+        if(!(characters.find((character) => character === c))){
+            const newCharacterList = characters;
+            newCharacterList.push(c);
+            setCharacters(newCharacterList);
+            forceUpdate();
+        }
+    }
+
+    function updateRemoveCharacter(c:string){
+        const newCharacterList = characters;
+        newCharacterList.forEach( (item, index) => {
+            if(item === c) newCharacterList.splice(index,1);
+          });
+        setCharacters(newCharacterList);
+        forceUpdate();
     }
 
     return(
@@ -64,9 +76,15 @@ export const JournalDetails = ({
                         <div className="">
                             <div className="">
                                 <div className="">
-                                        <Flex mb={4} placeContent={"space-between"} alignItems={"center"}>
-                                            <Text fontSize={"2xl"}>{journalEntryTitle}</Text>
-                                            <Text fontSize={"2xl"}>{formatDate(journalEntryDate)}</Text>
+                                        <Flex mb={4} gapX={4} placeItems={"space-between"} alignItems={"center"}>
+                                            <Editable.Root fontSize={"2xl"} defaultValue={journalEntryTitle}>
+                                                <Editable.Preview />
+                                                <Editable.Input  />
+                                            </Editable.Root>
+                                            <Editable.Root ref={withMask("99/99/9999")} w={"160px"} fontSize={"2xl"} defaultValue={journalEntryDate}>
+                                                <Editable.Preview />
+                                                <Editable.Input ref={withMask("99/99/9999")} />
+                                            </Editable.Root>
                                         </Flex>
                                 </div>
                             </div>
@@ -85,8 +103,8 @@ export const JournalDetails = ({
                                 <Box w={"1/2"}>
                                     <Text mt={4} fontSize={"2xl"}>Personagens presentes</Text>
                                     <Flex mt={2} flexWrap={"wrap"} gap={1}>
-                                        <For each={journalEntryCharacters}>
-                                            {(character)=><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile>}
+                                        <For each={characters}>
+                                            {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
                                         </For>
                                         <SelectRoot collection={allCharacters} placeSelf={"center"} w={"47px"} size="xs" variant={"ghost"}>
                                         <SelectTrigger>
@@ -94,7 +112,7 @@ export const JournalDetails = ({
                                         </SelectTrigger>
                                         <SelectContent  w={"320px"} maxH={"200px"}>
                                             {allCharacters.items.map((character) => (
-                                            <SelectItem onClick={()=>console.log(character)} cursor={"pointer"} item={character} key={character}>
+                                            <SelectItem onClick={()=>updateCharacters(character)} cursor={"pointer"} item={character} key={character}>
                                                 {character}
                                             </SelectItem>
                                             ))}
@@ -110,8 +128,6 @@ export const JournalDetails = ({
                                 </Flex>
                                 
                             </Flex>
-                            
-
                         </Box>
 
                     </DialogPanel>
