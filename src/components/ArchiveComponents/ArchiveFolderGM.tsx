@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { DeleteSubFolderDialog } from "./DeleteSubFolderDialog";
 import { EditSubFolderDialog } from "./EditSubFolderDialog";
 import { NewTxtFileDialog } from "./NewTxtFileDialog";
+import { NewImgFileDialog } from "./NewImgFileDialog";
+import { NewItemFileDialog } from "./NewItemFileDialog";
+import { NewSheetFileDialog } from "./NewSheetFileDialog";
 
 export interface ArchiveGMProps {
     campaign: string; //depois mudar pra Campaign
@@ -37,7 +40,6 @@ export const ArchiveFolderGM = ({
         }else{
             navigate(`/grimoire/campaign/archive`)
         }
-        
     }
 
     const [showNewFolder,setShowNewFolder] = useState(false);
@@ -73,7 +75,7 @@ export const ArchiveFolderGM = ({
                             <MenuItem onClick={()=>setShowNewTXT(true)} cursor={"pointer"} value="txt">Texto</MenuItem>
                             <MenuItem onClick={()=>setShowNewIMG(true)} cursor={"pointer"} value="img">Imagem</MenuItem>
                             <MenuItem onClick={()=>setShowNewItem(true)} cursor={"pointer"} value="item">Item</MenuItem>
-                            <MenuItem onClick={()=>setShowNewSheet(true)} cursor={"pointer"} value="ficha">Ficha</MenuItem>
+                            <MenuItem onClick={()=>setShowNewSheet(true)} cursor={"pointer"} value="ficha">Personagem</MenuItem>
                         </MenuContent>
                         </MenuRoot>
                         <MenuItem onClick={()=>setShowEditFolder(true)} cursor={"pointer"} value="editarPasta">Editar pasta</MenuItem>
@@ -110,6 +112,9 @@ export const ArchiveFolderGM = ({
             <EditSubFolderDialog open={showEditFolder} handleClose={setShowEditFolder} campaignId={campaign} pastaId={folder.nome /* mudar para id depois */} pastaNome={folder.nome}/>
         
             <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} pastaId={folder.name /* mudar para id depois */}/>
+            <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} pastaId={folder.name /* mudar para id depois */}/>
+            <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} pastaId={folder.name /* mudar para id depois */}/>
+            <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={folder.name /* mudar para id depois */}/>
         </div>
     )
 }

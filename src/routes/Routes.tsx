@@ -14,6 +14,7 @@ import CampaignSystemMechanics from "@/pages/CampaignSystemMechanics";
 import CampaignJournal from "@/pages/CampaignJournal";
 import CampaignArchive from "@/pages/CampaignArchive";
 import CampaignArchiveFolder from "@/pages/CampaignArchiveFolder";
+import CampaignCharacterSheet from "@/pages/CampaignCharacterSheet";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -41,6 +42,10 @@ export const PublicRoutes: RouteObject[] = [
   {
       path: "/grimoire/campaign/sheet",
       element: <CampaignSystemSheet />
+  },
+  {
+      path: "/grimoire/campaign/sheet/:id",
+      element: <CampaignCharacterSheet/>
   },
   {
       path: "/grimoire/campaign/mechanics",

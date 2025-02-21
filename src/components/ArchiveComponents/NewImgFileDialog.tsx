@@ -1,7 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
-import { Box,Button,Flex,Input,Text, Textarea } from "@chakra-ui/react";
+import { Box,Button,Flex,Input,Text} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
-import { Radio, RadioGroup } from '../ui/radio';
+import { FileUploadDropzone, FileUploadList, FileUploadRoot } from '../ui/file-upload';
 
 export interface DialogLgProps {
     open:boolean,
@@ -9,7 +9,7 @@ export interface DialogLgProps {
     pastaId:string;
 }
 
-export const NewTxtFileDialog = ({
+export const NewImgFileDialog = ({
     open,
     handleClose,
     pastaId,
@@ -30,11 +30,17 @@ export const NewTxtFileDialog = ({
                         className=" max-h-[90vh] padding-dialog-lg relative transform overflow-y-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 w-[70vw] data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                     >
                         <Box m={2} maxH={"74vh"} overflowY={"auto"}>
-                            <Text fontSize={"2xl"}>Novo arquivo de texto</Text>
+                        <Text fontSize={"2xl"}>Novo arquivo de imagem</Text>
 
                             <Form>
                                 <Input mt={4} placeholder='Nome do arquivo'></Input>
-                                <Textarea minH={"40px"} mt={4} resize={"vertical"} maxH={"40vh"} placeholder='Conteúdo do arquivo'></Textarea>
+                                <FileUploadRoot mt={4} alignItems="stretch" maxFiles={1}>
+                                    <FileUploadDropzone w={"full"} h={"36vh"}
+                                        label="Faça o upload da imagem"
+                                        description=".png ou .jpg de até 5MB"
+                                    />
+                                    <FileUploadList />
+                                </FileUploadRoot>
 
                             </Form>
                             

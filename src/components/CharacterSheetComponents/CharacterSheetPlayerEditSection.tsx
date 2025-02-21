@@ -27,7 +27,7 @@ export const CharacterSheetPlayerEditSection = ({
                             <LuUserRoundPen /> {sectionTitle}
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
-                            {fields /* fazer um For e criar componentes CharacterSheetFields para cada field em fields*/}
+                            {/* fazer um For e criar componentes CharacterSheetFields para cada field em fields*/}
                             <CharacterSheetPlayerEditField fieldId="field1" fieldTitle="Aparência" fieldType="StringLonga" characterId={characterId}/>
                             <CharacterSheetPlayerEditField fieldId="field2" fieldTitle="Espécie" fieldType="StringCurta" characterId={characterId}/>
                             <CharacterSheetPlayerEditField fieldId="field3" fieldTitle="Idade" fieldType="Numerico" characterId={characterId}/>
