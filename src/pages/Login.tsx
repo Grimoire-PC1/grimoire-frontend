@@ -6,7 +6,7 @@ import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
 //import LoginForm from "../components/LoginForm/LoginForm";
-import { Button, Separator, Textarea, Text, Presence, Box, Input } from "@chakra-ui/react";
+import { Button, Separator, Textarea, Text, Presence, Box, Input, Image } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 
@@ -67,9 +67,10 @@ export default function LoginPage() {
       <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
         
       <div className="flex w-full h-full">
-        <div className="w-2/5 h-[100vh] bg-linear-to-r from-purple-950 to-slate-500">
-
+        <div className="w-2/5 h-[100vh]">
+          <Image height={"100vh"} w={"40vw"} src="src/assets/login_image.png"></Image>
         </div>
+
         <Separator orientation="vertical" size={"md"} height={"100"} />
         <div className="w-3/5 padding">
 
