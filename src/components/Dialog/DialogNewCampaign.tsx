@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Alert, Box, Button, createListCollection, Flex, Input, } from "@chakra-ui/react";
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
 
 
@@ -13,6 +13,7 @@ export const DialogNewCampaign = ({
     open,
     handleClose
 }: DialogCampaignCodeProps) => {
+    const navigate = useNavigate();
 
     const types = createListCollection({
     items: [
@@ -22,6 +23,10 @@ export const DialogNewCampaign = ({
         { label: "Dado (quantidade - tipo de dado - bônus)", value: "Dado" },
     ],
     })
+
+    function createCampaign(){
+        navigate("/grimoire/campaign");
+    }
 
     return(
         <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -73,7 +78,7 @@ export const DialogNewCampaign = ({
                                     </Alert.Root>
 
                         <Flex justifyContent={"center"}>
-                            <Button mb={"4"} className="margin-top" >Criar campanha</Button>
+                            <Button mb={"4"} className="margin-top" onClick={()=>createCampaign()} >Criar campanha</Button>
                         </Flex>
 
                 </DialogPanel>

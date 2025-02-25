@@ -10,6 +10,7 @@ import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { ArchiveFolderGM } from "@/components/ArchiveComponents/ArchiveFolderGM";
+import { ArchiveFolderPlayer } from "@/components/ArchiveComponents/ArchiveFolderPlayer";
 
 export default function CampaignArchiveFolder(){
 
@@ -60,9 +61,7 @@ export default function CampaignArchiveFolder(){
                                         <SidebarPlayer campaign=""></SidebarPlayer>
                                     </div>
                                     <div className="col-span-9">
-                                        <div className="h-[80vh]">
-                                            
-                                        </div>
+                                        <ArchiveFolderPlayer folder={folder} campaign="minha campanha"/>
                                     </div>
                                 </div>
                                 

@@ -10,6 +10,7 @@ import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { ArchiveGM } from "@/components/ArchiveComponents/ArchiveGM";
+import { ArchivePlayer } from "@/components/ArchiveComponents/ArchivePlayer";
 
 export default function CampaignArchive(){
 
@@ -58,9 +59,7 @@ export default function CampaignArchive(){
                                         <SidebarPlayer campaign=""></SidebarPlayer>
                                     </div>
                                     <div className="col-span-9">
-                                        <div className="h-[80vh]">
-                                            
-                                        </div>
+                                            <ArchivePlayer campaign="minha campanha"/>
                                     </div>
                                 </div>
                                 
