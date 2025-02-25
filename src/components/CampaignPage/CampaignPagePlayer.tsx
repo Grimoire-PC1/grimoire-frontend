@@ -27,7 +27,7 @@ export const CampaignPagePlayer = ({
 
                     <CardRoot className="w-full h-[36vh]">
                         <CardHeader>
-                            <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
+                            <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
                         <CardBody overflowY={"auto"}  className="flex">
@@ -36,7 +36,6 @@ export const CampaignPagePlayer = ({
                                     <For each={['',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
-                                    <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                 </Flex>
                             </Center>
                         </CardBody>

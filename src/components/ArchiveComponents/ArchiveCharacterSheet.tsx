@@ -64,15 +64,15 @@ export const ArchiveCharacterSheet = ({
             {
                 is_creator ?
                 <div className="margin-right">
-                    <Flex placeContent={"space-between"}>
+                    <Flex align={"center"} placeContent={"space-between"}>
                         <Flex gapX={4} alignItems={"center"}>
                             <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
                                 <LuChevronLeft />
                             </IconButton>
                             <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                            <Avatar size={"2xl"} src=""></Avatar>
                         </Flex>
-                        <Flex gapX={2} align={"center"}>
+                        <Flex  gapX={2} align={"end"}>
+                            <Avatar m={6} scale={1.5} size={"2xl"} src=""></Avatar>
                             <IconButton disabled={disableSaveButton} onClick={()=>saveCharacter()}><LuSave /></IconButton>
                         </Flex>
                     </Flex>

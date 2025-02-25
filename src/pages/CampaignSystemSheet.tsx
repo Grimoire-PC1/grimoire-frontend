@@ -3,21 +3,17 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {Avatar, Button, Flex, For, IconButton, Text} from "@chakra-ui/react"
+import { Button, Flex, For, IconButton, Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
-import { LuArrowRightLeft } from "react-icons/lu";
+import { LuArrowRightLeft, LuPlus } from "react-icons/lu";
 import { useState } from "react";
-import { CampaignSystemPageGM } from "@/components/CampaignSystemPage/CampaignSystemPageGM";
-import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/CampaignSystemPagePlayer";
-import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
-import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
-import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 import { SystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/SystemPagePlayerSheetComponent";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
-import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
+import { Avatar } from "@/components/ui/avatar";
+import { NewCharacterDialog } from "@/components/Dialog/NewCharacterDialog";
 
 export default function CampaignSystemSheet(){
 
@@ -26,6 +22,12 @@ export default function CampaignSystemSheet(){
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
     const [characterId,setCharacterId] = useState("");
+    const [newCharacter,setNewCharacter] = useState(false);
+
+    function createCharacter(){
+        setCharacterId("");
+        setNewCharacter(true);
+    }
 
     return(
         <Presence 
@@ -81,15 +83,18 @@ export default function CampaignSystemSheet(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <div>
-                                                <Text className="subtitle-s">SEUS PERSONAGENS</Text>
-                                                    <Flex mb={8} wrap="wrap" mt='1'>
+                                            <Flex mb={8} align={"center"} placeContent={"space-between"}>
+                                                <div>
+                                                    <Text className="subtitle-s">SEUS PERSONAGENS</Text>
+                                                    <Flex wrap="wrap" mt='1'>
                                                         <For each={['um','dois','tres',]}>
                                                             {(item) => <Box onClick={()=>setCharacterId(item)}><CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile></Box>}
                                                         </For>
-                                                        <Box onClick={()=>setCharacterId("")}><AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile></Box>
+                                                        <Box onClick={()=>createCharacter()}><IconButton m={1} rounded={"full"} size={"xl"} variant={"outline"}><LuPlus/></IconButton></Box>
                                                     </Flex>
-                                            </div>
+                                                </div>
+                                                <Avatar mr={20} scale={2} size={"2xl"} src=""></Avatar>
+                                            </Flex>
                                             <SystemPagePlayerSheetComponent characterId={characterId} title="CRIE UM PERSONAGEM!" system={''}/>
                                         </div>
                                     </div>
@@ -102,6 +107,8 @@ export default function CampaignSystemSheet(){
                             {<LuArrowRightLeft />}
                         </IconButton>
                         <ToggleThemeXL/>
+
+                        <NewCharacterDialog open={newCharacter} handleClose={setNewCharacter} campaignId=""/>
                     </div>
                 }
             </Box>
