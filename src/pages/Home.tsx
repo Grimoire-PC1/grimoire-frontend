@@ -21,6 +21,7 @@ import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
+import { DialogNewCampaign } from "@/components/Dialog/DialogNewCampaign";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -48,6 +49,7 @@ export default function Home() {
     const [idcampanhavalido, setidcampanhavalido] = useState(true)
     const [showUserSettings, setShowUserSettings] = useState(false);
     const [selectedField, setSelectedField] = useState('')
+    const [openNewCampaign,setOpenNewCampaign] = useState(false);
 
     const username = 'User'
 
@@ -61,11 +63,6 @@ export default function Home() {
         }else{
             setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
         }
-    }
-
-    function navigateNewCampaign(){
-        //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
-        navigate("/grimoire/campaign");
     }
 
     function navigateNewSystem(){
@@ -172,13 +169,15 @@ export default function Home() {
 
                 </Presence>
 
+
+                <DialogNewCampaign open={openNewCampaign} handleClose={setOpenNewCampaign}/>
                 <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
 
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                     
                         <div className="flex col-span-2">
                             <div className="margin-top">
-                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewCampaign()}>Nova campanha</Button>
+                                <Button mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=>setOpenNewCampaign(true)}>Nova campanha</Button>
                                 <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> navigateNewSystem()}>Novo sistema</Button>
                                 <br></br>
