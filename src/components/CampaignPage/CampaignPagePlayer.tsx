@@ -71,7 +71,7 @@ export const CampaignPagePlayer = ({
                         {/*
                         ---- BACKEND PENDING ----
 
-                        <For each={campaign.diary.fixedSessions}>
+                        <For each={campaign.diario.fixedSessions}>
                             {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
                             }
                         </For>

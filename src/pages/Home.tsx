@@ -31,6 +31,7 @@ export default function Home() {
     
     //const user = useUserStore((state) => useState(false));
 
+    
     const {data: campanhasCriadas} = useQuery({
         queryKey: ["userCreatedCampaigns"],
         queryFn: getAllUserCreatedCampaigns,
@@ -45,6 +46,10 @@ export default function Home() {
         queryKey: ["userCharacters"],
         queryFn: getAllUserCharacters
     })
+
+    if(campanhasCriadas != undefined){
+        useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
+    }
 
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)
@@ -67,13 +72,23 @@ export default function Home() {
         }
     }
 
-    function navigateNewCampaign(){
+    async function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
         //navigate("/grimoire/campaign");
+        const resImg = await fetch("http://localhost:8081/upload", {
+            method:"POST",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({img: ''})
+          })
+          const data = await resImg.json()
+          console.log(data.data._id)
+          
         const newCampaignPayload: CreateNewCampaignPayload = {
             titulo: '',
-            foto_url: '',
-            id_sistema: 1,
+            foto_url: data.data._id,
+            id_sistema: 4,
             descricao: '',
         }
         newCampaign.mutate(newCampaignPayload)

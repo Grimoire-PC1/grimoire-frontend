@@ -15,16 +15,17 @@ export const CampaignCard = ({
 
     function navigateCampaignPage() {
         sessionStorage.setItem('currentCampaignId', campaign.id);
+        console.log(campaign.id)
         navigate("/grimoire/campaign");
     }
     return(
         <CardRoot className="margin-top" cursor={"pointer"}>
                 <Image 
-                src={campaign.image}
+                src={campaign.foto_url}
                 className="max-h-[25vh]"
                 />
             <CardBody onClick={navigateCampaignPage}>
-                <Text lineClamp={1} fontSize={"lg"}>{campaign.name}</Text>
+                <Text lineClamp={1} fontSize={"lg"}>{campaign.titulo}</Text>
             </CardBody>
         </CardRoot>
     )

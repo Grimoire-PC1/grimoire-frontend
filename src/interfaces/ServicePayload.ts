@@ -44,11 +44,15 @@ export type CreateNewSession = {
 }
 
 export type UpdateCampaignPayload = {
+    novo_titulo?: string;
+    nova_foto_url?: string;
+    id_novo_sistema?: number;
+    nova_descricao?: string;
+}
+
+export type TemporaryCampaignPayload = {
+    payload: UpdateCampaignPayload;
     campaignId: number;
-    name?: string;
-    image?: string;
-    systemId?: number;
-    description?: string;
 }
 
 export type UpdateSystemPayload = {

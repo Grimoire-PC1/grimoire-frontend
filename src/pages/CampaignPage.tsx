@@ -12,12 +12,22 @@ import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { useUserStore } from "@/stores/user/user.store";
+import { Campaign } from "@/interfaces/Models";
 
 export default function CampaignPage(){
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
-    console.log(useUserStore.getState().createdCampaigns)
+    const allCreatedCampaign = useUserStore.getState().createdCampaigns;
+    let campaignInformation: Campaign = allCreatedCampaign[0];
+
+    for(let i = 0; i < allCreatedCampaign.length; i++) {
+        if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
+            campaignInformation = allCreatedCampaign[i];
+            console.log(campaignInformation)
+            break
+        } 
+    }
 
     return(
         <Presence 
@@ -29,14 +39,14 @@ export default function CampaignPage(){
 
                 {isGameMaster ? //mostre a visão do mestre
                     <div>
-                        <CampaignHeader  campaign="minha campanha"/>
+                        <CampaignHeader  campaign={campaignInformation}/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
                                 <SidebarGM campaign=""></SidebarGM>
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <CampaignPageGM user={'meu nome'} campaign={'minha campanha'}></CampaignPageGM>
+                                    <CampaignPageGM user={'meu nome'} campaign={campaignInformation}></CampaignPageGM>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">

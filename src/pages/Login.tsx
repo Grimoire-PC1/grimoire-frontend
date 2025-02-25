@@ -171,7 +171,8 @@ export default function LoginPage() {
     mutationKey: ["createUser"],
     mutationFn: createUser,
     onSuccess: () => {
-      navigate("/grimoire");
+      window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
+      navigate("/grimoire/home");
     },
     onError: (error) => {
       console.log(error);
