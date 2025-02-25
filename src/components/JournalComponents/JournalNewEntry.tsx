@@ -78,7 +78,7 @@ export const JournalNewEntry = ({
                                     <Radio value="sim">Sim, estou registrando uma sessão passada</Radio>
                                     <Radio value="nao">Não, estou planejando uma sessão futura</Radio>
                                 </RadioGroup>
-                                <Textarea mt={4} resize={"vertical"} h={"26vh"} placeholder='O que aconteceu ou vai acontecer nesta sessão?'></Textarea>
+                                <Textarea mt={4} resize={"vertical"} h={"26vh"} maxH={"40vh"} placeholder='O que aconteceu ou vai acontecer nesta sessão?'></Textarea>
                                 <Text className='text' mt={4}>Que personagens fizeram ou vão fazer parte desta sessão?</Text>
 
                                 <Flex mt={2} flexWrap={"wrap"} gap={1}>

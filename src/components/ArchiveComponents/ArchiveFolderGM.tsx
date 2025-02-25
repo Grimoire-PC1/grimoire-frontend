@@ -11,6 +11,7 @@ import { NewTxtFileDialog } from "./NewTxtFileDialog";
 import { NewImgFileDialog } from "./NewImgFileDialog";
 import { NewItemFileDialog } from "./NewItemFileDialog";
 import { NewSheetFileDialog } from "./NewSheetFileDialog";
+import { ArchiveFileComponent } from "./ArchiveFileComponent";
 
 export interface ArchiveGMProps {
     campaign: string; //depois mudar pra Campaign
@@ -50,6 +51,8 @@ export const ArchiveFolderGM = ({
     const [showNewIMG,setShowNewIMG] = useState(false);
     const [showNewItem,setShowNewItem] = useState(false);
     const [showNewSheet,setShowNewSheet] = useState(false);
+
+
 
     return(
         <div>
@@ -94,15 +97,7 @@ export const ArchiveFolderGM = ({
                                 </Box>}
                 </For>
                 <For each={files.filter((f) => f.pasta === folder.nome)}>
-                    {(file)=><Box cursor={"pointer"} w={"100px"} placeItems={"center"}><IconButton size={"2xl"} variant={"ghost"}>
-                                            {file.tipo === 'TEXTO' ? <LuFileText/> : 
-                                            file.tipo === 'IMAGEM' ? <LuFileImage/> : 
-                                            file.tipo === 'ITEM' ? <LuBackpack/> : 
-                                            file.tipo === 'FICHA' ? <LuUserRoundPen/> : 
-                                            <LuFile/>}  
-                                            </IconButton>
-                                    <Text textAlign={"center"}>{file.nome}</Text>
-                                </Box>}
+                    {(file)=><ArchiveFileComponent campaign="" folderId={folder.nome} file={file}/>}
                 </For>
                 </Flex>
             </Box>

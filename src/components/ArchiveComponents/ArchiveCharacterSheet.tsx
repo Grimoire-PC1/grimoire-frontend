@@ -4,6 +4,8 @@ import { Toaster, toaster } from "../ui/toaster";
 import { useState } from "react";
 import { CharacterSheetPlayerEditSection } from "../CharacterSheetComponents/CharacterSheetPlayerEditSection";
 import { useNavigate } from "react-router-dom";
+import { Avatar } from "../ui/avatar";
+import { CharacterSheetPlayerNoEditSection } from "../CharacterSheetComponents/CharacterSheetPlayerNoEditSection";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -20,6 +22,7 @@ export const ArchiveCharacterSheet = ({
     
     const characterName = characterId; //depois mudar pra um get q pega o nome do personagem
     const [disableSaveButton,setDisableSaveButton] = useState(false);
+    const is_creator = true;
 
     function saveCharacter(){
         setDisableSaveButton(true);
@@ -58,26 +61,55 @@ export const ArchiveCharacterSheet = ({
 
     return(
         <div className="">
-            <div className="margin-right">
-                <Flex placeContent={"space-between"}>
-                    <Flex gapX={4} alignItems={"center"}>
-                        <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
-                            <LuChevronLeft />
-                        </IconButton>
-                        <Text className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+            {
+                is_creator ?
+                <div className="margin-right">
+                    <Flex placeContent={"space-between"}>
+                        <Flex gapX={4} alignItems={"center"}>
+                            <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
+                                <LuChevronLeft />
+                            </IconButton>
+                            <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+                            <Avatar size={"2xl"} src=""></Avatar>
+                        </Flex>
+                        <Flex gapX={2} align={"center"}>
+                            <IconButton disabled={disableSaveButton} onClick={()=>saveCharacter()}><LuSave /></IconButton>
+                        </Flex>
                     </Flex>
-                    <IconButton disabled={disableSaveButton}
-                    onClick={()=>saveCharacter()}><LuSave /></IconButton>
-                </Flex>
-                    <Grid mt={2} maxH={"53vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
+
+                    <Grid mt={2} maxH={"72vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
                         <CharacterSheetPlayerEditSection sectionTitle="Identidade do Personagem" sectionId="section1" fields="field1" characterId={characterId}/>
                         <CharacterSheetPlayerEditSection sectionTitle="História" sectionId="section2" fields="field2" characterId={characterId}/>
                         <CharacterSheetPlayerEditSection sectionTitle="Atributos" sectionId="section3" fields="field3" characterId={characterId}/>
                         <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                        <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                        <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
                     </Grid>
-            
-            </div>
-            <Toaster />
+                
+                    <Toaster />
+                </div>
+                :
+                <div className="margin-right">
+                    <Flex placeContent={"space-between"}>
+                        <Flex gapX={4} alignItems={"center"}>
+                            <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
+                                <LuChevronLeft />
+                            </IconButton>
+                            <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+                            <Avatar size={"2xl"} src=""></Avatar>
+                        </Flex>
+                    </Flex>
+                        <Grid mt={2} maxH={"72vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="Identidade do Personagem" sectionId="section1" fields="field1" characterId={characterId}/>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="História" sectionId="section2" fields="field2" characterId={characterId}/>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="Atributos" sectionId="section3" fields="field3" characterId={characterId}/>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                        </Grid>
+                
+                </div>
+            }
         </div>
     )
 }

@@ -94,7 +94,7 @@ export const JournalDetails = ({
                             <Box m={1}>
                                 <Editable.Root className="text" textAlign="justify" defaultValue={journalEntryContent}>
                                     <Editable.Preview />
-                                    <Editable.Textarea h={"60vh"}  />
+                                    <Editable.Textarea maxH={"60vh"} h={"60vh"}  />
                                 </Editable.Root>
                                 
                             </Box>
