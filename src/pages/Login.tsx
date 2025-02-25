@@ -44,6 +44,16 @@ export default function LoginPage() {
   const [showSignInForm, setShowSignInForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
+  function signUp(){
+    setShowSignInForm(false);
+    setShowSignUpForm(true);
+  }
+
+  function signIn(){
+    setShowSignUpForm(false);
+    setShowSignInForm(true);
+  }
+
   function navigateHome(){
     navigate("/grimoire/home");
   }
@@ -68,7 +78,7 @@ export default function LoginPage() {
         
       <div className="flex w-full h-full">
         <div className="w-2/5 h-[100vh]">
-          <Image height={"100vh"} w={"40vw"} src="src/assets/login_image.png"></Image>
+          <Image height={"100vh"} w={"40vw"} src="/src/assets/login_image.png"></Image>
         </div>
 
         <Separator orientation="vertical" size={"md"} height={"100"} />
@@ -107,6 +117,7 @@ export default function LoginPage() {
               </Form>
               <br></br>
               <Button onClick={()=>navigateHome()} className="padding-xl margin-sides">Entrar</Button>
+              <Text onClick={()=>signUp()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Não tem uma conta ainda? Cadastre-se!</Text>
               </div> 
             </Presence>
 
@@ -127,9 +138,10 @@ export default function LoginPage() {
               </Form>
               <br></br>
               <div className="flex place-content-around margin-sides content-end">
-              <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
-              <Textarea onClick={()=>setShowSignUpForm(false)} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
-                </div>
+                <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
+                <Textarea onClick={()=>setShowSignUpForm(false)} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
+              </div>
+              <Text onClick={()=>signIn()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Já faz parte da comunidade do Grimoire? Entre com sua conta!</Text>
               </div> 
             </Presence>
             <ToggleTheme/>
