@@ -8,6 +8,7 @@ import { NumberInputField, NumberInputRoot } from '../ui/number-input';
 import { useState } from 'react';
 import { LuDices, LuSave, LuTrash2 } from 'react-icons/lu';
 import { HiUpload } from 'react-icons/hi';
+import { DialogRollDice } from '../Dialog/DialogRollDice';
 
 export interface DialogLgProps {
     open:boolean,
@@ -24,6 +25,24 @@ export const OpenItemFileDialog = ({
     const [rollDice,setRollDice] = useState("sim"); //pegar do próprio item nesse caso
     const file_criador = true;
     const file_image = true;
+
+    const [diceRoll, setDiceRoll] = useState(false);
+    const [rollValue,setRollValue] = useState(0);
+
+    function rollDices(){
+        let v = 0;
+        for(let i = 0; i < file.qtd_dados;i++){
+            const r = Math.floor(Math.random() * (file.tipo_dado) + 1)
+            v+=r;
+        }
+
+        if(file.bonus_dado){
+            v+=parseInt(file.bonus_dado);
+        }
+
+        setRollValue(v);
+        setDiceRoll(true);
+    }
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -152,7 +171,7 @@ export const OpenItemFileDialog = ({
                                                     <NumberInputRoot disabled>
                                                         <NumberInputField defaultValue={file.bonus_dado || 0}></NumberInputField>
                                                     </NumberInputRoot>
-                                                    <IconButton><LuDices/></IconButton>
+                                                    <IconButton onClick={()=>rollDices()}><LuDices/></IconButton>
                                                 </Box>
                                             </div>
                                             :
@@ -171,6 +190,7 @@ export const OpenItemFileDialog = ({
                 </Box>
             </div>
         </div>
+        <DialogRollDice open={diceRoll} handleClose={setDiceRoll} value={rollValue}/>
     </Dialog>
     )
 }

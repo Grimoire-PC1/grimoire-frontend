@@ -4,6 +4,7 @@ import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-up
 import { HiUpload } from "react-icons/hi";
 import { useReducer, useState } from "react";
 import { LuDices } from "react-icons/lu";
+import { DialogRollDice } from "../Dialog/DialogRollDice";
 
 
 export interface CharacterSheetFieldProps {
@@ -28,6 +29,9 @@ export const CharacterSheetPlayerEditField = ({
     const [field2Value,setField2Value] = useState(previousValue[1]);
     const [field3Value,setField3Value] = useState(previousValue[2]);
 
+    const [diceRoll, setDiceRoll] = useState(false);
+    const [rollValue,setRollValue] = useState(0);
+
 
     function update(value:string,num:number){
         if(num == 1){
@@ -40,7 +44,18 @@ export const CharacterSheetPlayerEditField = ({
     }
 
     function rollDice(){
-        //implementar depois e criar um dialogzinho pra mostrar o resultado da rolagem
+        let v = 0;
+        for(let i = 0; i < parseInt(field1Value);i++){
+            const r = Math.floor(Math.random() * (parseInt(field2Value)) + 1)
+            v+=r;
+        }
+
+        if(field3Value){
+            v+=parseInt(field3Value);
+        }
+
+        setRollValue(v);
+        setDiceRoll(true);
     }
 
     return(
@@ -98,6 +113,8 @@ export const CharacterSheetPlayerEditField = ({
                         }
                     </div>
             </div>
+
+            <DialogRollDice open={diceRoll} handleClose={setDiceRoll} value={rollValue}/>
         </div>
     )
 }

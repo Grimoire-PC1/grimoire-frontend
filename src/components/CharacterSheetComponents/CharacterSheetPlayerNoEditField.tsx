@@ -2,6 +2,7 @@ import { IconButton, Input, Text, Textarea, Image} from "@chakra-ui/react"
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { useReducer, useState } from "react";
 import { LuDices } from "react-icons/lu";
+import { DialogRollDice } from "../Dialog/DialogRollDice";
 
 
 export interface CharacterSheetFieldProps {
@@ -36,9 +37,25 @@ export const CharacterSheetPlayerNoEditField = ({
             setField3Value(value);
         }
     }
+    
+    const [diceRoll, setDiceRoll] = useState(false);
+    const [rollValue,setRollValue] = useState(0);
+
+    
 
     function rollDice(){
-        //implementar depois e criar um dialogzinho pra mostrar o resultado da rolagem
+        let v = 0;
+        for(let i = 0; i < parseInt(field1Value);i++){
+            const r = Math.floor(Math.random() * (parseInt(field2Value)) + 1)
+            v+=r;
+        }
+
+        if(field3Value){
+            v+=parseInt(field3Value);
+        }
+
+        setRollValue(v);
+        setDiceRoll(true);
     }
 
     return(
@@ -89,6 +106,7 @@ export const CharacterSheetPlayerNoEditField = ({
                         }
                     </div>
             </div>
+            <DialogRollDice open={diceRoll} handleClose={setDiceRoll} value={rollValue}/>
         </div>
     )
 }
