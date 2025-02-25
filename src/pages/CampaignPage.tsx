@@ -20,6 +20,7 @@ export default function CampaignPage(){
 
     const allCreatedCampaign = useUserStore.getState().createdCampaigns;
     let campaignInformation: Campaign = allCreatedCampaign[0];
+    console.log(allCreatedCampaign)
 
     for(let i = 0; i < allCreatedCampaign.length; i++) {
         if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
@@ -61,8 +62,7 @@ export default function CampaignPage(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">
-                                {/* na box vai ser a imagem da campanha */}
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">                                
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
@@ -73,7 +73,7 @@ export default function CampaignPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignPagePlayer user={'Usuario de teste'} campaign={'campanha muito legal dos meus amigos'}></CampaignPagePlayer>
+                                            <CampaignPagePlayer user={'Usuario de teste'} campaign={campaignInformation}></CampaignPagePlayer>
                                         </div>
                                     </div>
                                 </div>

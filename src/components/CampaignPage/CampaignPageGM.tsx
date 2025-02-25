@@ -99,6 +99,22 @@ export const CampaignPageGM = ({
     }
 
     // -------------------------------------- SESSÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          setImg(data.image)
+          console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
+
     const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
         const reader = new FileReader()
         if(file) {
@@ -139,7 +155,7 @@ export const CampaignPageGM = ({
             headers: {
               "content-type" : "application/json"
             },
-            body: JSON.stringify({img: img})
+            body: JSON.stringify({image: img})
           })
           const data = await res.json()
           console.log(data)

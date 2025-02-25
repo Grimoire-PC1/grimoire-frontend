@@ -3,6 +3,7 @@ import { LuLogOut } from "react-icons/lu";
 import { Avatar } from "../ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { Campaign } from "@/interfaces/Models";
+import { useUserStore } from "@/stores/user/user.store";
 
 export interface CampaignHeaderProps {
     campaign: Campaign; //depois mudar pra Campaign
@@ -11,6 +12,17 @@ export interface CampaignHeaderProps {
 export const CampaignHeader = ({
     campaign,
 }: CampaignHeaderProps) => {
+    const allCreatedCampaign = useUserStore.getState().createdCampaigns;
+    let campaignInformation: Campaign = allCreatedCampaign[0];
+    console.log(allCreatedCampaign)
+    
+    for(let i = 0; i < allCreatedCampaign.length; i++) {
+        if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
+            campaign = allCreatedCampaign[i];
+            console.log(campaignInformation)
+            break
+        } 
+    }
     console.log(campaign)
     const navigate = useNavigate();
 

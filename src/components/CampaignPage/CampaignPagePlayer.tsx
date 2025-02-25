@@ -7,17 +7,31 @@ import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
 import { CampaignCard } from "../CampaignCard/CampaignCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
+import { useState } from "react";
+import { Campaign } from "@/interfaces/Models";
 
 export interface CampaignPagePlayerProps {
     user: string;
-    campaign: string; //depois mudar pra Campaign
+    campaign: Campaign; //depois mudar pra Campaign
 }
 
 export const CampaignPagePlayer = ({
     user,
     campaign,
 }: CampaignPagePlayerProps) => {
-    const campaign_image = campaign //depois mudar pra pegar a imagem cadastrada na campanha
+    const [img,setImg] = useState("")
+        
+        const getImage = async () => {
+            const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
+                method:"GET",
+                headers: {
+                  "content-type" : "application/json"
+                }
+              })
+              const data = await res.json()
+              setImg(data.image)
+              console.log(data)
+        }
 
     return(
         <div>
