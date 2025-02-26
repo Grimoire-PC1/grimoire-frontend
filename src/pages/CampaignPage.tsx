@@ -5,7 +5,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {IconButton, Text} from "@chakra-ui/react"
+import {IconButton, Image, Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -28,6 +28,24 @@ export default function CampaignPage(){
             console.log(campaignInformation)
             break
         } 
+    }
+
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaignInformation?.foto_url}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          setImg(data.image)
+          console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
     }
 
     return(
@@ -62,7 +80,8 @@ export default function CampaignPage(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">                                
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-[url(img)] to-transparent">                                
+                            <Image className="bg-linear-to-b to-transparent" src={img} overflow={"hidden"} h={"100vh"} fit={"cover"} w={"100vw"}/>
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
