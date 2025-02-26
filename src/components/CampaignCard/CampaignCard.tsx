@@ -1,5 +1,5 @@
 import { Campaign } from "@/interfaces/Models"
-import {CardBody, CardRoot, Image, Text } from "@chakra-ui/react"
+import {CardBody, CardRoot, Image, Skeleton, Text } from "@chakra-ui/react"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,11 +40,19 @@ export const CampaignCard = ({
 
     return(
         <CardRoot className="margin-top" cursor={"pointer"}>
-                <Image 
-                src={img}
-                className="max-h-[25vh]"
-                onClick={navigateCampaignPage}
-                />
+                {
+                    img ?
+                    <Image 
+                    src={img}
+                    w={"full"}
+                    h={"20vh"}
+                    onClick={navigateCampaignPage}
+                    />
+                    :
+                    <Skeleton 
+                    w={"full"}
+                    h={"20vh"} />
+                }
             <CardBody onClick={navigateCampaignPage}>
                 <Text lineClamp={1} fontSize={"lg"}>{campaign.titulo}</Text>
             </CardBody>

@@ -80,8 +80,8 @@ export default function CampaignPage(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-[url(img)] to-transparent">                                
-                            <Image className="bg-linear-to-b to-transparent" src={img} overflow={"hidden"} h={"100vh"} fit={"cover"} w={"100vw"}/>
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center coisa">
+                            <Image src={img} w={"100vw"} h={"113vh"} />
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
