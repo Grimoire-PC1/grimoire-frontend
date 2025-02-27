@@ -1,19 +1,36 @@
-
-import { Text, Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image, Separator, Button, Box, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
+import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
+import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
+import { SidebarPlayer } from "../SidebarPlayer/SidebarPlayer";
+import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
+import { CampaignCard } from "../CampaignCard/CampaignCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
-import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
+import { useState } from "react";
+import { Campaign } from "@/interfaces/Models";
 
 export interface CampaignPagePlayerProps {
     user: string;
-    campaign: string; //depois mudar pra Campaign
+    campaign: Campaign; //depois mudar pra Campaign
 }
 
 export const CampaignPagePlayer = ({
     user,
     campaign,
 }: CampaignPagePlayerProps) => {
-    const campaign_image = campaign //depois mudar pra pegar a imagem cadastrada na campanha
+    const [img,setImg] = useState("")
+        
+        const getImage = async () => {
+            const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
+                method:"GET",
+                headers: {
+                  "content-type" : "application/json"
+                }
+              })
+              const data = await res.json()
+              setImg(data.image)
+              console.log(data)
+        }
 
     return(
         <div>
@@ -27,15 +44,16 @@ export const CampaignPagePlayer = ({
 
                     <CardRoot className="w-full h-[36vh]">
                         <CardHeader>
-                            <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                            <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"auto"}  className="flex">
+                        <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
                                     <For each={['',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
+                                    <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                 </Flex>
                             </Center>
                         </CardBody>
@@ -46,7 +64,7 @@ export const CampaignPagePlayer = ({
                             <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"auto"}  className="flex">
+                        <CardBody overflowY={"scroll"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
                                     <For each={['','','',]}>
@@ -63,11 +81,19 @@ export const CampaignPagePlayer = ({
                         <Separator></Separator>
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
-                        <PinnedDiaryListCardNoEdit/>
-                        <PinnedDiaryListCardNoEdit/>
-                        <PinnedDiaryListCardNoEdit/>
-                        <PinnedDiaryListCardNoEdit/>
-                        <PinnedDiaryListCardNoEdit/>
+                        {/*
+                        ---- BACKEND PENDING ----
+
+                        <For each={campaign.diario.fixedSessions}>
+                            {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
+                            }
+                        </For>
+                        */}
+                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCard/>
+                        <PinnedDiaryListCard/>
                     </CardBody>
                 </CardRoot>
             </div>
