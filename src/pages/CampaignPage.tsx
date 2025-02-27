@@ -18,6 +18,8 @@ export default function CampaignPage(){
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
+    const curCampaign = sessionStorage.getItem('currentCampaignId');
+
     const allCreatedCampaign = useUserStore.getState().createdCampaigns;
     let campaignInformation: Campaign = allCreatedCampaign[0];
     console.log(allCreatedCampaign)
@@ -26,6 +28,7 @@ export default function CampaignPage(){
         if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
             campaignInformation = allCreatedCampaign[i];
             console.log(campaignInformation)
+            sessionStorage.setItem('currentCampaign',JSON.stringify(campaignInformation))
             break
         } 
     }
@@ -58,14 +61,14 @@ export default function CampaignPage(){
 
                 {isGameMaster ? //mostre a visão do mestre
                     <div>
-                        <CampaignHeader  campaign={campaignInformation}/>
+                        <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarGM campaign=""></SidebarGM>
+                                <SidebarGM></SidebarGM>
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <CampaignPageGM user={'meu nome'} campaign={campaignInformation}></CampaignPageGM>
+                                    <CampaignPageGM></CampaignPageGM>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">

@@ -2,22 +2,17 @@ import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, Fil
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { Campaign, Character } from "@/interfaces/Models";
-import { useEffect, useState } from "react";
+import { useReducer, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { updateCampaign } from "@/services/campaignService";
+import { getCampaignById, updateCampaign } from "@/services/campaignService";
 import { TemporaryCampaignPayload, UpdateCampaignPayload } from "@/interfaces/ServicePayload";
 import { HiUpload } from "react-icons/hi";
+import { toaster, Toaster } from "../ui/toaster";
 
-export interface CampaignPageGMProps {
-    user: string;
-    campaign?: Campaign; //depois mudar pra Campaign
-}
+export const CampaignPageGM = () => {
+    const [,forceUpdate] = useReducer(x=>x+1,0);
 
-export const CampaignPageGM = ({
-    user,
-    campaign,
-}: CampaignPageGMProps) => {
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [img,setImg] = useState("")
 
@@ -59,14 +54,14 @@ export const CampaignPageGM = ({
     };
 
     const saveChanges = async () => {
-        const title = campaignTilte['value'];
-        const description = campaignDescription['value'];
+        const title = campaignTilte['value']||'';
+        const description = campaignDescription['value']||'';
         const image = await handleImageSubmit();
         console.log(image)
         console.log("title ---->", title, "description --->", description); 
         const updateCampaignPayload: UpdateCampaignPayload = {
-            novo_titulo: title,
-            nova_descricao: description,
+            novo_titulo: title != "" ? title : campaign.titulo,
+            nova_descricao: description != "" ? description : campaign.descricao,
             nova_foto_url: campaign?.foto_url,
             id_novo_sistema: 4
         }
@@ -77,6 +72,9 @@ export const CampaignPageGM = ({
         }
         console.log(updateCampaignPayload)
         mutation.mutate(temporaryCampaignPayload);
+
+        forceUpdate();
+        setModifiedCampaign(false);
      };
 
     const mutation = useMutation({
@@ -84,10 +82,17 @@ export const CampaignPageGM = ({
         mutationFn: updateCampaign,
         onSuccess: (data) => {
           console.log(data)
+          toaster.create({
+                      description: "Campanha atualizada com sucesso!",
+                      type: "success",
+                      })
         },
         onError: (error) => {
           console.log(error);
-          
+          toaster.create({
+            description: "Houve um problema salvando sua campanha",
+            type: "error",
+            })
         },
       });
 
@@ -98,7 +103,7 @@ export const CampaignPageGM = ({
         characters.push(players[i]);
     }
 
-    // -------------------------------------- SESSÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+    // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const getImage = async () => {
         const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
             method:"GET",
@@ -171,7 +176,7 @@ export const CampaignPageGM = ({
         fetchImage()
       },[])
       */
-    // -------------------------------------- FIM DA SESSÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+    // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
 
     return(
         <div className="h-[80vh] overflow-y-auto">
@@ -204,9 +209,9 @@ export const CampaignPageGM = ({
                     </div>
                     <div className="padding-left content-end">
                         <Text className="text">Título</Text>
-                        <Input onChange={titleChange} id="TituloCampanha"></Input>
+                        <Input defaultValue={campaign.titulo} onChange={titleChange} id="TituloCampanha"></Input>
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
-                        <Textarea resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
+                        <Textarea defaultValue={campaign.descricao} resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
                         {!modifiedCampaign ?
                             <Button mt={"4"} disabled>Salvar alterações</Button> 
                             :
@@ -251,6 +256,7 @@ export const CampaignPageGM = ({
                     </div>
                 </div>
             </div>
+            <Toaster />
         </div>
     )
 }

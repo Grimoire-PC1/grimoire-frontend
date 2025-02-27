@@ -9,9 +9,7 @@ export interface SidebarGMProps {
     campaign: string; //depois mudar pra Campaign
 }
 
-export const SidebarGM = ({
-    campaign,
-}: SidebarGMProps) => {
+export const SidebarGM = () => {
     const navigate = useNavigate();
     
     return(
