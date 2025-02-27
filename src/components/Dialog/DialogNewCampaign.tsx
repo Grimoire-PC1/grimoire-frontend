@@ -2,6 +2,11 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { Alert, Box, Button, createListCollection, Flex, Input, } from "@chakra-ui/react";
 import { Form, useNavigate } from 'react-router-dom';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
+import { useMutation } from '@tanstack/react-query';
+import { useUserStore } from '@/stores/user/user.store';
+import { CreateNewCampaignPayload } from '@/interfaces/ServicePayload';
+import { createNewCampaign } from '@/services/campaignService';
+import { useState } from 'react';
 
 
 export interface DialogCampaignCodeProps {
@@ -24,9 +29,50 @@ export const DialogNewCampaign = ({
     ],
     })
 
-    function createCampaign(){
-        navigate("/grimoire/campaign");
+    const [title,setTitle] = useState("");
+
+    const setCampaignTitle = (e: any) => {
+        const value = e.target.value;
+        setTitle(value);
+      };
+
+    async function navigateNewCampaign(){
+        //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
+        //navigate("/grimoire/campaign");
+        const resImg = await fetch("http://localhost:8081/upload", {
+            method:"POST",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({img: ''})
+          })
+          const data = await resImg.json()
+          console.log(data.data._id)
+          
+        const newCampaignPayload: CreateNewCampaignPayload = {
+            titulo: title,
+            foto_url: data.data._id,
+            id_sistema: 1,
+            descricao: '',
+        }
+        newCampaign.mutate(newCampaignPayload)
     }
+
+    const newCampaign = useMutation({
+        mutationKey: ["createNewCampaign"],
+        mutationFn: createNewCampaign,
+        onSuccess: (data) => {
+            useUserStore
+            .getState()
+            .setCreatedCampaigns([...useUserStore.getState().createdCampaigns, data]);
+            console.log(data)
+            sessionStorage.setItem('currentCampaignId', data.id);
+            navigate("/grimoire/campaign");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
 
     return(
         <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -57,7 +103,7 @@ export const DialogNewCampaign = ({
                     </div>
                     </div>
                         <Form>
-                            <Input mb={"2"} required placeholder="Título da campanha"/>
+                            <Input mb={"2"} onChange={setCampaignTitle} required placeholder="Título da campanha"/>
                             <SelectRoot mt={2} collection={types} >
                             <SelectTrigger>
                                 <SelectValueText placeholder="Sistema" />
@@ -78,7 +124,7 @@ export const DialogNewCampaign = ({
                                     </Alert.Root>
 
                         <Flex justifyContent={"center"}>
-                            <Button mb={"4"} className="margin-top" onClick={()=>createCampaign()} >Criar campanha</Button>
+                            <Button mb={"4"} className="margin-top" onClick={()=>navigateNewCampaign()} >Criar campanha</Button>
                         </Flex>
 
                 </DialogPanel>

@@ -8,13 +8,13 @@ export type User = {
 
 export type Campaign = {
     id: string;
-    gameMasterId: string;
-    name: string;
-    image: string;
-    system: System;
-    description: string;
-    players: Player[];
-    diary: Diary;
+    id_mestre: string;
+    titulo: string;
+    foto_url: string;
+    id_sistema: System;
+    descricao: string;
+    jogadores?: Player[];
+    diario?: Diary;
 }
 
 export type Diary = {
@@ -44,10 +44,14 @@ export type Character = {
 }
 
 export type System = {
+    id: number;
     image:string;
     name:string;
     description:string;
+    systemType: SystemType
 }
+
+export type SystemType = "PUBLICO" | "PRIVADO"
 
 export type CharacterSheet = {
     system: System;

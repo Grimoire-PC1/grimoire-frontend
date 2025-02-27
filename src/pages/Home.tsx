@@ -1,16 +1,10 @@
-/*
-import { useState } from "react";
-import { useUserStore } from "../stores/user/user.store";
-import { useQuery } from "@tanstack/react-query";
-*/
-
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
 import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
@@ -19,14 +13,17 @@ import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
 import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
-import { AddNewCharacterProfile } from "@/components/CharacterProfile/AddNewCharacterProfile";
 import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 import { DialogNewCampaign } from "@/components/Dialog/DialogNewCampaign";
+import { useUserStore } from "@/stores/user/user.store";
+import { CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
+import { SystemType } from "@/interfaces/Models";
+import { createNewSystem } from "@/services/systemService";
 
 export default function Home() {
     const navigate = useNavigate();
     
-    //const user = useUserStore((state) => useState(false));
+    const user = useUserStore((state) => state.user);
 
     const {data: campanhasCriadas} = useQuery({
         queryKey: ["userCreatedCampaigns"],
@@ -43,6 +40,10 @@ export default function Home() {
         queryFn: getAllUserCharacters
     })
 
+    if(campanhasCriadas != undefined){
+        useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
+    }
+
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [idcampanha, setidcampanha] = useState("")
@@ -50,8 +51,6 @@ export default function Home() {
     const [showUserSettings, setShowUserSettings] = useState(false);
     const [selectedField, setSelectedField] = useState('')
     const [openNewCampaign,setOpenNewCampaign] = useState(false);
-
-    const username = 'User'
 
     function logout(){
         navigate("/grimoire/");
@@ -66,9 +65,32 @@ export default function Home() {
     }
 
     function navigateNewSystem(){
-        //fazer com que essa função crie um novo objeto sistema associado ao usuário como mestre. por padrão o sistema é privado
-        navigate("/grimoire/system/");
+        const newSystemPayload: CreateNewSystemPayload = {
+            foto_url: '',
+            nome: '',
+            descricao: ''
+        }
+        const systemType: SystemType =  'PUBLICO';
+        const temporaryJson: TemporarySystemPayload = {
+            payload: newSystemPayload,
+            systemType: systemType
+        }
+
+        newSystem.mutate(temporaryJson)
+        //navigate("/grimoire/system/");
     }
+
+    const newSystem = useMutation({
+        mutationKey: ["createNewSystem"],
+        mutationFn: createNewSystem,
+        onSuccess: (data) => {
+            console.log(data)
+            //navigate("/grimoire/campaign");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
 
     function userSettings(campo:string){
         setSelectedField(campo);
@@ -84,7 +106,7 @@ export default function Home() {
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                 <div className="header margin-sides flex place-content-between items-center" >
-                    <span className="header-title agreloy">{username}'s Grimoire</span>
+                    <span className="header-title agreloy">{user?.username}'s Grimoire</span>
                     <div className="grid grid-cols-2 gap-x-4">
 
                     <MenuRoot>

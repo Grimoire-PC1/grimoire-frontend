@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { ENDPOINT } from "../constants/Endpoint"
 import { useUserStore } from "../stores/user/user.store";
 import { User } from "../interfaces/Models";
 import axiosInstace from "../services/axios";
-import SignUpForm from "../components/SignupForm/SignupForm";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
