@@ -1,14 +1,12 @@
-import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, Grid, IconButton,  } from "@chakra-ui/react";
-import { FileUploadRoot, FileUploadDropzone,FileUploadList } from "../ui/file-upload";
-import {RadioGroup, Radio } from "../ui/radio";
-import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
+import { Text, Flex,Grid, IconButton,  } from "@chakra-ui/react";
 import { RulesCard } from "../RulesCard/RulesCard";
 import { LuPlus } from "react-icons/lu";
 import { useState } from "react";
 import { RulesCardDialog } from "../RulesCard/RulesCardDialog";
+import { System } from "@/interfaces/Models";
 
 export interface SystemPageComponentProps {
-    system: string; //depois mudar pra System
+    system: System; //depois mudar pra System
     title: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
     subtitle: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
     maxHeight:string; //nao mude isso
@@ -20,9 +18,7 @@ export const SystemPageRulesComponent = ({
     subtitle,
     maxHeight
 }: SystemPageComponentProps) => {
-    const system_image = "";
     const [addNewRule,setAddNewRule] = useState(false);
-
 
     return(
         <div className="overflow-y-hidden">

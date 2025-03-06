@@ -9,17 +9,31 @@ import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPl
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
-import { CampaignSystemPageGM } from "@/components/CampaignSystemPage/CampaignSystemPageGM";
-import { CampaignSystemPagePlayer } from "@/components/CampaignSystemPage/CampaignSystemPagePlayer";
-import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
+import { useUserStore } from "@/stores/user/user.store";
+import { System } from "@/interfaces/Models";
 
 export default function CampaignSystemPage(){
 
     const system = "sistema externo";
-    const campaign = "minha campanha";
+    const campaignId = sessionStorage.getItem('currentCampaignId');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+
+    const allUserSystems = useUserStore.getState().userSystems;
+    let sysInformation: System = allUserSystems[0];
+    console.log(allUserSystems)
+
+    for(let i = 0; i < allUserSystems.length; i++) {
+        if(allUserSystems[i].id == campaign.id_sistema) {
+            sysInformation = allUserSystems[i];
+            console.log('sistema utilizado na campanha:')
+            console.log(sysInformation)
+            break
+        } 
+    }
+
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
@@ -40,32 +54,19 @@ export default function CampaignSystemPage(){
                             </div>
                             <div className="col-span-9">
                                 <div className="grid h-[85vh] grid-cols-1 content-between">
-                                    {
-                                        system == "" ?
                                         <div className="margin-right">
                                             <Flex placeContent={"space-between"}>
                                                 <div>
-                                                    <Text className="subtitle-s">COMO SE JOGA {campaign.toUpperCase()}?</Text>
-                                                    <Text className="text">Selecione um dos seus sistemas ou pesquise sistemas disponíveis no Grimoire para contar sua história!</Text>         
-                                                </div>
-                                                <Button onClick={()=> setOpenDialogLg(true)} mt={4}>Escolher sistema</Button>
-                                            </Flex>
-                                        </div>
-                                        :
-                                        <div className="margin-right">
-                                            <Flex placeContent={"space-between"}>
-                                                <div>
-                                                    <Text className="subtitle-s">{campaign.toUpperCase()} SE JOGA COM {system.toUpperCase()}!</Text>
+                                                    <Text className="subtitle-s">{(campaign.titulo).toUpperCase()} SE JOGA COM {(sysInformation.nome).toUpperCase()}!</Text>
                                                     <Text className="text">Meu sistema é muito legal e essa é a descrição dele muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito {/* depois mudar isso pra descrição do sistema, limitar a descrição do sistema a 250 caracteres */}</Text>         
                                                 </div>
                                             </Flex>
                                         </div>
-                                    }
                                     <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
                                     <Box mt={8}>
                                         <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
                                                                     subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 
-                                                                    system={""}
+                                                                    system={system}
                                                                     maxHeight="48.3vh"
                                                                     />
                                     </Box>

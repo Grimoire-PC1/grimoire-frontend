@@ -7,8 +7,10 @@ export const useUserStore = create<UserState & UserActions>()((set) => ({
     createdCampaigns: [],
     playedCampaigns: [],
     characters: [],
+    userSystems: [],
     setUser: (user) => set({ user }),
     setCreatedCampaigns: (createdCampaigns) => set({createdCampaigns}),
     setPlayedCampaigns: (playedCampaigns) => set({playedCampaigns}),
     setCharacters: (characters) => set({characters}),
+    setUserSystems: (userSystems) => set({userSystems}),
 }));

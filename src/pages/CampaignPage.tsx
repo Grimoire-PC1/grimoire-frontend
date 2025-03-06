@@ -83,7 +83,7 @@ export default function CampaignPage(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center coisa">
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
                             <Image src={img} w={"100vw"} h={"113vh"} />
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>

@@ -7,7 +7,7 @@ import { TemporarySystemPayload, UpdateSystemPayload } from "@/interfaces/Servic
 export const getAllUserCreatedSystems = async () => {
 
     const { data } = await axiosInstace.get<GetSystemsResponse>(
-        `/${ENDPOINT.GET_USER_CREATED_SYSTEMS}`
+        `/${ENDPOINT.GET_SYSTEM_BY_ID}`
     );
 
     const arrayedSystems: System[] = [];
@@ -15,6 +15,7 @@ export const getAllUserCreatedSystems = async () => {
         arrayedSystems.push(item);
     }) 
 
+    console.log(arrayedSystems)
     return arrayedSystems;
 }
 

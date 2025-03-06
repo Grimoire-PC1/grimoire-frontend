@@ -45,10 +45,11 @@ export type Character = {
 
 export type System = {
     id: number;
-    image:string;
-    name:string;
-    description:string;
-    systemType: SystemType
+    id_criador: number;
+    foto_url:string;
+    nome:string;
+    descricao:string;
+    tipo_sistema: SystemType
 }
 
 export type SystemType = "PUBLICO" | "PRIVADO"

@@ -18,7 +18,7 @@ import { DialogNewCampaign } from "@/components/Dialog/DialogNewCampaign";
 import { useUserStore } from "@/stores/user/user.store";
 import { CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
 import { SystemType } from "@/interfaces/Models";
-import { createNewSystem } from "@/services/systemService";
+import { createNewSystem, getAllUserCreatedSystems } from "@/services/systemService";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -40,8 +40,17 @@ export default function Home() {
         queryFn: getAllUserCharacters
     })
 
+    const {data: sistemasUsuario} = useQuery({
+        queryKey: ["userSystems"],
+        queryFn: getAllUserCreatedSystems
+    })
+
     if(campanhasCriadas != undefined){
         useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
+    }
+
+    if(sistemasUsuario != undefined){
+        useUserStore.getState().setUserSystems(sistemasUsuario);
     }
 
     const [openDialogSm, setOpenDialogSm] = useState(false)

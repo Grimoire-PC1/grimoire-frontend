@@ -53,7 +53,6 @@ export const CampaignPagePlayer = ({
                                     <For each={['',]}>
                                         {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
                                     </For>
-                                    <AddNewCharacterProfile mt='1' mr='1' ml='1' mb="1"></AddNewCharacterProfile>
                                 </Flex>
                             </Center>
                         </CardBody>
