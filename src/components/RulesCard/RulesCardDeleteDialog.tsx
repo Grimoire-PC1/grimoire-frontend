@@ -1,5 +1,8 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Alert, Box, Button} from "@chakra-ui/react";
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { deleteRule } from '@/services/systemService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -15,6 +18,27 @@ export const RulesCardDeleteDialog = ({
     ruleId,
     ruleName,
 }: UserSettingsDialogSmProps) => {
+
+    const mutation = useMutation({
+        mutationKey: ["deleteRule"],
+        mutationFn: deleteRule,
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                        description: "Regra deletada com sucesso!",
+                        type: "success",
+                        })
+            handleClose(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema deletando a regra.",
+            type: "error",
+            })
+        },
+    });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -43,13 +67,15 @@ export const RulesCardDeleteDialog = ({
                                         <Alert.Indicator />
                                         <Alert.Title>Esta ação não poderá ser desfeita.</Alert.Title>
                                     </Alert.Root>
-                                    <Button mt={"4"} mb={"4"}>Deletar Regra</Button>
+                                    <Button onClick={()=>mutation.mutate(parseInt(ruleId))} mt={"4"} mb={"4"}>Deletar Regra</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+
+                    <Toaster/>
     </Dialog>
     )
 }

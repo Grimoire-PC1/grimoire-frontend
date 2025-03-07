@@ -62,6 +62,18 @@ export type UpdateSystemPayload = {
     description: string;
 }
 
+export type NewRulePayload = {
+    id_sistema: number;
+    titulo: string;
+    descricao: string;
+}
+
+export type UpdateRulePayload = {
+    id_regra:number;
+    titulo: string;
+    descricao: string;
+}
+
 export type UpdateUserPayload = {
 
 }

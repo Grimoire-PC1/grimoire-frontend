@@ -1,7 +1,7 @@
 import { Text, Flex,Grid, IconButton, For,  } from "@chakra-ui/react";
 import { RulesCard } from "../RulesCard/RulesCard";
 import { LuPlus } from "react-icons/lu";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { RulesCardDialog } from "../RulesCard/RulesCardDialog";
 import { getSystemRules } from "@/services/systemService";
 import { useQuery } from "@tanstack/react-query";
@@ -21,12 +21,17 @@ export const SystemPageRulesComponent = ({
 }: SystemPageComponentProps) => {
     const [addNewRule,setAddNewRule] = useState(false);
 
-    sessionStorage.setItem('systemId',system);
-
     const {data: regras} = useQuery({
         queryKey: ["regras"],
         queryFn: getSystemRules
     })
+
+    function fecharEforcar(){
+        setAddNewRule(false);
+        location.reload();
+    }
+
+    sessionStorage.setItem('systemId',system);
 
     console.log(regras)
 
@@ -50,7 +55,7 @@ export const SystemPageRulesComponent = ({
                         </For>
                     </Grid>
 
-                    <RulesCardDialog open={addNewRule} handleClose={setAddNewRule} campaign=""></RulesCardDialog>
+                    <RulesCardDialog open={addNewRule} handleClose={fecharEforcar} campaign={system}></RulesCardDialog>
             </div>
         </div>
     )

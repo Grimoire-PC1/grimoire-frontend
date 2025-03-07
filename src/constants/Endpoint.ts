@@ -25,4 +25,7 @@ export const ENDPOINT = {
     UPDATE_SYSTEM: "engine/update",
 
     GET_SYSTEM_RULES: "engine-rule/get",
+    CREATE_SYSTEM_RULE: "engine-rule/register",
+    UPDATE_SYSTEM_RULE: "engine-rule/update",
+    DELETE_SYSTEM_RULE: "engine-rule/delete",
 } as const;

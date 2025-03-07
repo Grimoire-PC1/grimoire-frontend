@@ -21,6 +21,12 @@ export const RulesCard = ({
     const [editDialog,setEditDialog] = useState(false);
     const [deleteDialog,setDeleteDialog] = useState(false);
 
+    function fecharEforcar(){
+        setEditDialog(false);
+        setDeleteDialog(false);
+        location.reload();
+    }
+
     return(
         <div>
             <CardRoot size={"sm"} cursor={"pointer"}>
@@ -42,8 +48,8 @@ export const RulesCard = ({
                 </CardBody>
             </CardRoot>
 
-            <RulesCardEditDialog open={editDialog} handleClose={setEditDialog} ruleId={ruleId} ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
-            <RulesCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} ruleId={ruleId}  ruleName={ruleTitle}></RulesCardDeleteDialog>
+            <RulesCardEditDialog open={editDialog} handleClose={fecharEforcar} ruleId={ruleId} ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
+            <RulesCardDeleteDialog open={deleteDialog} handleClose={fecharEforcar} ruleId={ruleId}  ruleName={ruleTitle}></RulesCardDeleteDialog>
 
         </div>
     )

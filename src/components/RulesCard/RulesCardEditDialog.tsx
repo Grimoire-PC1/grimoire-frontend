@@ -1,6 +1,10 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Box, Button, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { createRule, updateRule } from '@/services/systemService';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Toaster, toaster } from '../ui/toaster';
 
 
 export interface UserSettingsDialogSmProps {
@@ -19,9 +23,28 @@ export const RulesCardEditDialog = ({
     ruleDesc
 }: UserSettingsDialogSmProps) => {
 
-    function modify(){
-        console.log("modificar regra "+ruleId)
-    }
+        const [titulo,setTitulo] = useState(ruleName);
+        const [desc,setDesc] = useState(ruleDesc);
+    
+        const mutation = useMutation({
+            mutationKey: ["createRule"],
+            mutationFn: updateRule,
+            onSuccess: (data) => {
+              console.log(data)
+              toaster.create({
+                          description: "Regra modificada com sucesso!",
+                          type: "success",
+                          })
+              handleClose(false);
+            },
+            onError: (error) => {
+              console.log(error);
+              toaster.create({
+                description: "Houve um problema modificando a regra.",
+                type: "error",
+                })
+            },
+        });
 
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -47,16 +70,17 @@ export const RulesCardEditDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} placeholder='Nome da regra' defaultValue={ruleName}></Input>
-                                        <Textarea mt={2} minH={"40px"} maxH={"200px"} resize={"vertical"} placeholder='O que essa regra impõe?' defaultValue={ruleDesc}></Textarea>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Nome da regra' defaultValue={ruleName}></Input>
+                                        <Textarea value={desc} onInput={e => setDesc(e.target.value)} mt={2} minH={"40px"} maxH={"200px"} resize={"vertical"} placeholder='O que essa regra impõe?' defaultValue={ruleDesc}></Textarea>
                                     </Form>
-                                    <Button onClick={()=>modify()} mt={"4"} mb={"4"}>Modificar Regra</Button>
+                                    <Button onClick={()=>mutation.mutate({id_regra: parseInt(ruleId),titulo: titulo, descricao: desc})} mt={"4"} mb={"4"}>Modificar Regra</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }
