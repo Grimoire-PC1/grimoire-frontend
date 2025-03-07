@@ -1,6 +1,6 @@
 import { ENDPOINT } from "@/constants/Endpoint";
 import axiosInstace from "./axios";
-import { NewSessionPayload } from "@/interfaces/ServicePayload";
+import { NewSessionPayload, UpdateSessionPayload } from "@/interfaces/ServicePayload";
 import { Session } from "@/interfaces/Models";
 
 export const createSession = async(payload: NewSessionPayload) => {
@@ -22,5 +22,24 @@ export const getCampaignSessions = async() =>{
         { params: { id_campanha: campaign} }
     )
     console.log(data)
+    return data;
+}
+
+export const updateSession = async(payload:UpdateSessionPayload) =>{
+    const { data } = await axiosInstace.put<UpdateSessionPayload>(
+        `/${ENDPOINT.UPDATE_SESSION}`,
+        payload,
+        { params: { id_sessao: payload.id_sessao, novo_tipo_sessao: payload.novo_tipo_sessao} }
+    )
+
+    return data;
+}
+
+export const deleteSession = async(id:number) =>{
+    const { data } = await axiosInstace.delete<Session>(
+        `/${ENDPOINT.DELETE_SESSION}`,
+        { params: { id_sessao: id} }
+    )
+
     return data;
 }

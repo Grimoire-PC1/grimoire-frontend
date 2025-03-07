@@ -16,6 +16,11 @@ export const Journal = ({
 
     const [newEntry,setNewEntry] = useState(false);
 
+    function fecharEforcar(){
+        setNewEntry(false);
+        location.reload();
+    }
+
     const {data} = useQuery({
         queryKey: ["sessoes"],
         queryFn: getCampaignSessions
@@ -72,7 +77,7 @@ export const Journal = ({
                 </CardRoot>
             </Box>
 
-            <JournalNewEntry open={newEntry} handleClose={setNewEntry} campaignId={campaign}/>
+            <JournalNewEntry open={newEntry} handleClose={setNewEntry} handleCreate={fecharEforcar} campaignId={campaign}/>
         </div>
     )
 }

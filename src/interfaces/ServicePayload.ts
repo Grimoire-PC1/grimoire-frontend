@@ -87,4 +87,14 @@ export type NewSessionPayload = {
     fixada:boolean;
 }
 
+export type UpdateSessionPayload = {
+    id_sessao:number;
+    novo_tipo_sessao:SessionType;
+    novo_titulo:string;
+    nova_data:string;
+    nova_descricao:string;
+    fixada:boolean;
+}
+
+
 export type SessionType = "FUTURA" | "PASSADA"

@@ -8,14 +8,16 @@ import { useState } from 'react';
 
 
 export interface UserSettingsDialogSmProps {
-    open:boolean,
+    open:boolean;
     handleClose: (open: boolean) => void;
+    handleCreate: (open: boolean) => void;
     campaign:string; //mudar para campaign depois
 }
 
 export const RulesCardDialog = ({
     open,
     handleClose,
+    handleCreate,
     campaign
 }: UserSettingsDialogSmProps) => {
 
@@ -31,7 +33,7 @@ export const RulesCardDialog = ({
                       description: "Regra criada com sucesso!",
                       type: "success",
                       })
-          handleClose(false);
+          handleCreate(false);
         },
         onError: (error) => {
           console.log(error);

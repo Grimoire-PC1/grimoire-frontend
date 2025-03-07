@@ -10,6 +10,7 @@ import { Toaster, toaster } from '../ui/toaster';
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
+    handleConfirm: (open: boolean) => void;
     ruleId:string;
     ruleName:string;
     ruleDesc:string;
@@ -18,6 +19,7 @@ export interface UserSettingsDialogSmProps {
 export const RulesCardEditDialog = ({
     open,
     handleClose,
+    handleConfirm,
     ruleId,
     ruleName,
     ruleDesc
@@ -35,7 +37,7 @@ export const RulesCardEditDialog = ({
                           description: "Regra modificada com sucesso!",
                           type: "success",
                           })
-              handleClose(false);
+              handleConfirm(false);
             },
             onError: (error) => {
               console.log(error);

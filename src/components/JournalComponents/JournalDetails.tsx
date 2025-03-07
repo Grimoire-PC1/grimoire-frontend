@@ -7,11 +7,15 @@ import { useMemo, useReducer, useState} from "react";
 import { withMask } from "use-mask-input"
 import { Radio, RadioGroup } from '../ui/radio';
 import { SessionType } from '@/interfaces/ServicePayload';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { deleteSession, updateSession } from '@/services/sessionService';
 
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
+    handleSaveOrDelete: (open: boolean) => void;
     journalEntryId:number;
     journalEntryTitle:string;
     journalEntryDate:string;
@@ -23,6 +27,7 @@ export interface DialogLgProps {
 export const JournalDetails = ({
     open,
     handleClose,
+    handleSaveOrDelete,
     journalEntryId,
     journalEntryTitle,
     journalEntryDate,
@@ -68,6 +73,46 @@ export const JournalDetails = ({
     }
     */
 
+    const mutationDelete = useMutation({
+        mutationKey: ["deleteSession"],
+        mutationFn: deleteSession,
+        onSuccess: (data) => {
+          console.log(data)
+          toaster.create({
+                      description: "Registro deletado com sucesso!",
+                      type: "success",
+                      })
+          handleSaveOrDelete(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema durante a deleção do registro.",
+            type: "error",
+            })
+        },
+      });
+
+      const mutationEdit = useMutation({
+        mutationKey: ["updateSession"],
+        mutationFn: updateSession,
+        onSuccess: (data) => {
+          console.log(data)
+          toaster.create({
+                      description: "Registro modificado com sucesso!",
+                      type: "success",
+                      })
+          handleSaveOrDelete(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema durante a modificação do registro.",
+            type: "error",
+            })
+        },
+      });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -86,11 +131,11 @@ export const JournalDetails = ({
                             <div className="">
                                 <div className="">
                                         <Flex mb={4} gapX={4} placeItems={"space-between"} alignItems={"center"}>
-                                            <Editable.Root fontSize={"2xl"} defaultValue={journalEntryTitle}>
+                                            <Editable.Root value={titulo} onInput={e => setTitulo(e.target.value)} fontSize={"2xl"} defaultValue={journalEntryTitle}>
                                                 <Editable.Preview />
                                                 <Editable.Input  />
                                             </Editable.Root>
-                                            <Editable.Root ref={withMask("99/99/9999")} w={"160px"} fontSize={"2xl"} defaultValue={journalEntryDate}>
+                                            <Editable.Root value={data} onInput={e => setData(e.target.value)} ref={withMask("99/99/9999")} w={"160px"} fontSize={"2xl"} defaultValue={journalEntryDate}>
                                                 <Editable.Preview />
                                                 <Editable.Input ref={withMask("99/99/9999")} />
                                             </Editable.Root>
@@ -101,7 +146,7 @@ export const JournalDetails = ({
                         <Box maxH={"75vh"} overflowY={"auto"}>
 
                             <Box h={"60vh"} m={1}>
-                                <Editable.Root className="text" textAlign="justify" defaultValue={journalEntryContent}>
+                                <Editable.Root value={desc} onInput={e => setDesc(e.target.value)} className="text" textAlign="justify" defaultValue={journalEntryContent}>
                                     <Editable.Preview />
                                     <Editable.Textarea maxH={"60vh"} h={"60vh"}  />
                                 </Editable.Root>
@@ -148,8 +193,13 @@ export const JournalDetails = ({
                                 </Box>
 
                                 <Flex>
-                                <Button mb={2} alignSelf={"end"}>Salvar alterações</Button>
-                                <IconButton alignSelf={"end"} m={2} aria-label="Apagar"> <LuTrash2/> </IconButton>
+                                <Button onClick={()=>mutationEdit.mutate({  id_sessao:journalEntryId,
+                                                                            novo_tipo_sessao:tipo,
+                                                                            novo_titulo:titulo,
+                                                                            nova_data:data,
+                                                                            nova_descricao:desc,
+                                                                            fixada:fixar})} mb={2} alignSelf={"end"}>Salvar alterações</Button>
+                                <IconButton onClick={()=>mutationDelete.mutate(journalEntryId)} alignSelf={"end"} m={2} aria-label="Apagar"> <LuTrash2/> </IconButton>
 
                                 </Flex>
                                 
@@ -160,6 +210,7 @@ export const JournalDetails = ({
                 </Box>
             </div>
         </div>
+        <Toaster/>
     </Dialog>
     )
 }

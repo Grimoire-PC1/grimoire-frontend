@@ -58,7 +58,7 @@ export const SystemPageRulesComponent = ({
                         </For>
                     </Grid>
 
-                    <RulesCardDialog open={addNewRule} handleClose={fecharEforcar} campaign={system}></RulesCardDialog>
+                    <RulesCardDialog open={addNewRule} handleClose={setAddNewRule} handleCreate={fecharEforcar} campaign={system}></RulesCardDialog>
             </div>
         </div>
     )

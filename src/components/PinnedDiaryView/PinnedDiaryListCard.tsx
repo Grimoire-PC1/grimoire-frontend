@@ -22,6 +22,11 @@ export const PinnedDiaryListCard = ({
     fixada
 }:JournalProps) => {
     const [showJournalDetails,setShowJournalDetails] = useState(false);
+
+    function fecharEforcar(){
+        setShowJournalDetails(false);
+        location.reload();
+    }
     
     return(
         <div>
@@ -35,7 +40,7 @@ export const PinnedDiaryListCard = ({
                     </CardBody>
                 </CardRoot>
             </Box>
-            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} journalEntryId={id} journalEntryTitle={titulo} journalEntryDate={data} journalEntryContent={descricao} journalEntryType={tipo} journalEntryPinned={fixada}/>
+            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} handleSaveOrDelete={fecharEforcar} journalEntryId={id} journalEntryTitle={titulo} journalEntryDate={data} journalEntryContent={descricao} journalEntryType={tipo} journalEntryPinned={fixada}/>
         </div>
     )
 }

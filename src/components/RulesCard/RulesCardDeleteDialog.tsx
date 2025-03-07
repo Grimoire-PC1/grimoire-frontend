@@ -8,6 +8,7 @@ import { deleteRule } from '@/services/systemService';
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
+    handleConfirm: (open: boolean) => void;
     ruleId:string;
     ruleName:string;
 }
@@ -15,6 +16,7 @@ export interface UserSettingsDialogSmProps {
 export const RulesCardDeleteDialog = ({
     open,
     handleClose,
+    handleConfirm,
     ruleId,
     ruleName,
 }: UserSettingsDialogSmProps) => {
@@ -28,7 +30,7 @@ export const RulesCardDeleteDialog = ({
                         description: "Regra deletada com sucesso!",
                         type: "success",
                         })
-            handleClose(false);
+            handleConfirm(false);
         },
         onError: (error) => {
             console.log(error);

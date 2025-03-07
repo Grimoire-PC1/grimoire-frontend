@@ -12,12 +12,14 @@ import { SessionType } from '@/interfaces/ServicePayload';
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
+    handleCreate: (open: boolean) => void;
     campaignId:string;
 }
 
 export const JournalNewEntry = ({
     open,
     handleClose,
+    handleCreate,
     campaignId,
 }: DialogLgProps) => {
     const [titulo,setTitulo] = useState("");
@@ -65,7 +67,7 @@ export const JournalNewEntry = ({
                       description: "Sessão registrada com sucesso!",
                       type: "success",
                       })
-          handleClose(false);
+          handleCreate(false);
         },
         onError: (error) => {
           console.log(error);
