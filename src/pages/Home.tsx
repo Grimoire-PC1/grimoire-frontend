@@ -245,20 +245,14 @@ export default function Home() {
                         </CardRoot>
                         <div className="col-span-3">
 
-                            <CardRoot className="w-full h-[40vh]">
+                            <CardRoot className="w-full h-[80vh]">
                                 <CardHeader>
-                                    <CardTitle className="text-center padding-bottom">SEUS PERSONAGENS</CardTitle>
+                                    <CardTitle className="text-center padding-bottom">SEUS SISTEMAS</CardTitle>
                                     <Separator></Separator>
                                 </CardHeader>
-                                <CardBody overflowY={"auto"}  className="flex">
-                                    <Center>
-                                        <Flex wrap="wrap" mt='2'>
-                                            <For each={['','','','','']}>
-                                                {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
-                                            </For>
-                                        </Flex>
-                                    </Center>
-                                </CardBody>
+                                <CardBody  overflowY={"auto"}>
+                                    {/* fazer um For pra exibir seus sistemas */}
+                            </CardBody>
                             </CardRoot>
                             
                         </div>

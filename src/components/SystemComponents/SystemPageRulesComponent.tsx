@@ -25,6 +25,9 @@ export const SystemPageRulesComponent = ({
         queryKey: ["regras"],
         queryFn: getSystemRules
     })
+    regras?.sort((a, b) => {
+        return a.id - b.id;
+    });
 
     function fecharEforcar(){
         setAddNewRule(false);
