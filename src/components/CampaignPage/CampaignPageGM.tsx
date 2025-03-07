@@ -12,6 +12,12 @@ import { toaster, Toaster } from "../ui/toaster";
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
+    const sessoesDaCampanha = [{id: 1, id_campanha: 1, titulo: 'teste 1', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'sim',personagens:['p1','p2']},
+      {id: 2, id_campanha: 1, titulo: 'teste 2', data: '10202020', descricao: 'teste',id_tipo_sessao:2,fixada:'sim',personagens:['p1','p2']},
+      {id: 3, id_campanha: 2, titulo: 'teste 3', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'sim',personagens:['p1','p2']},
+      {id: 4, id_campanha: 1, titulo: 'teste 4', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'nao',personagens:['p1','p2']},
+    ]
+
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [img,setImg] = useState("")
@@ -62,7 +68,7 @@ export const CampaignPageGM = () => {
         const updateCampaignPayload: UpdateCampaignPayload = {
             novo_titulo: title != "" ? title : campaign.titulo,
             nova_descricao: description != "" ? description : campaign.descricao,
-            nova_foto_url: campaign?.foto_url,
+            nova_id_foto: campaign?.id_foto,
             id_novo_sistema: 4
         }
         console.log(campaign?.id)
@@ -105,7 +111,7 @@ export const CampaignPageGM = () => {
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
+        const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"
@@ -155,7 +161,7 @@ export const CampaignPageGM = () => {
     
       const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${campaign?.foto_url}`, {
+          const res = await fetch(`http://localhost:8081/update/${campaign?.id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"
@@ -222,21 +228,12 @@ export const CampaignPageGM = () => {
                 <div className="grid grid-cols-28 margin-top-s">
                     <div className="col-span-16 margin-right">
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
-                        {/*
-                        ---- BACKEND PENDING ----
-
-                        <For each={campaign.diario.fixedSessions}>
-                            {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
+                        <For each={sessoesDaCampanha}>
+                            {(item) => item.id_campanha == campaign.id && item.fixada === 'sim' ? 
+                                <PinnedDiaryListCard titulo={item.titulo} descricao={item.descricao} data={item.data} personagens={item.personagens}/> 
+                            : <div></div>
                             }
                         </For>
-                        */}
-                        
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
                         {/* aqui vem uma lista de PinnedDiaryListCard. clicar em um card abre a entrada do diário para aquela sessão*/}
                     </div>
                     <Separator orientation={"vertical"} className="col-span-1"></Separator>

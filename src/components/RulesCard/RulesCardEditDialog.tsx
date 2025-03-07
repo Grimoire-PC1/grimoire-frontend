@@ -18,6 +18,11 @@ export const RulesCardEditDialog = ({
     ruleName,
     ruleDesc
 }: UserSettingsDialogSmProps) => {
+
+    function modify(){
+        console.log("modificar regra "+ruleId)
+    }
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -45,7 +50,7 @@ export const RulesCardEditDialog = ({
                                         <Input mt={4} placeholder='Nome da regra' defaultValue={ruleName}></Input>
                                         <Textarea mt={2} minH={"40px"} maxH={"200px"} resize={"vertical"} placeholder='O que essa regra impõe?' defaultValue={ruleDesc}></Textarea>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Modificar Regra</Button>
+                                    <Button onClick={()=>modify()} mt={"4"} mb={"4"}>Modificar Regra</Button>
                                 </div>
 
                             </DialogPanel>

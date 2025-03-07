@@ -1,12 +1,13 @@
-import { Text, Flex,Grid, IconButton,  } from "@chakra-ui/react";
+import { Text, Flex,Grid, IconButton, For,  } from "@chakra-ui/react";
 import { RulesCard } from "../RulesCard/RulesCard";
 import { LuPlus } from "react-icons/lu";
 import { useState } from "react";
 import { RulesCardDialog } from "../RulesCard/RulesCardDialog";
-import { System } from "@/interfaces/Models";
+import { getSystemRules } from "@/services/systemService";
+import { useQuery } from "@tanstack/react-query";
 
 export interface SystemPageComponentProps {
-    system: System; //depois mudar pra System
+    system: string; //depois mudar pra System
     title: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
     subtitle: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
     maxHeight:string; //nao mude isso
@@ -19,6 +20,15 @@ export const SystemPageRulesComponent = ({
     maxHeight
 }: SystemPageComponentProps) => {
     const [addNewRule,setAddNewRule] = useState(false);
+
+    sessionStorage.setItem('systemId',system);
+
+    const {data: regras} = useQuery({
+        queryKey: ["regras"],
+        queryFn: getSystemRules
+    })
+
+    console.log(regras)
 
     return(
         <div className="overflow-y-hidden">
@@ -35,30 +45,12 @@ export const SystemPageRulesComponent = ({
                                             
                 </Flex>
                     <Grid maxH={maxHeight} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
-                        <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-
-                        <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-
-                        <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-
-                        <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-
-                        <RulesCard ruleId="1" ruleTitle="Combate" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="2" ruleTitle="Turnos" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-                        <RulesCard ruleId="3" ruleTitle="Iniciativa" ruleDesc="Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente. Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente.Quando um jogador quiser iniciar combate, ele deve rolar Iniciativa contra o oponente."/>
-
+                        <For each={regras}>
+                            {(regra)=><RulesCard ruleId={String(regra.id)} ruleTitle={regra.titulo} ruleDesc={regra.descricao}/>}
+                        </For>
                     </Grid>
 
                     <RulesCardDialog open={addNewRule} handleClose={setAddNewRule} campaign=""></RulesCardDialog>
-            
             </div>
         </div>
     )

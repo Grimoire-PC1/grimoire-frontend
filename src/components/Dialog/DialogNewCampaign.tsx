@@ -51,7 +51,7 @@ export const DialogNewCampaign = ({
           
         const newCampaignPayload: CreateNewCampaignPayload = {
             titulo: title,
-            foto_url: data.data._id,
+            id_foto: data.data._id,
             id_sistema: 1,
             descricao: '',
         }

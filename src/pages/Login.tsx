@@ -149,7 +149,7 @@ export default function LoginPage() {
         senha: signUpForm['senha'],
         email: signUpForm['email'],
         nome: signUpForm['nome'],
-        foto_url: "string"
+        id_foto: "string"
       }
       console.log(signUpPayload)
       sendSignUnForm.mutate(signUpPayload)

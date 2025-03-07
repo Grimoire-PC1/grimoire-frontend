@@ -5,7 +5,7 @@ export type SignUpPayload = {
     email: string;
     senha: string;
     nome: string;
-    foto_url: string;
+    id_foto: string;
 };
 
 export type SignInPayload = {
@@ -15,13 +15,13 @@ export type SignInPayload = {
 
 export type CreateNewCampaignPayload = {
     titulo: string;
-    foto_url: string;
+    id_foto: string;
     id_sistema: number;
     descricao: string;
 };
 
 export type CreateNewSystemPayload = {
-    foto_url: string;
+    id_foto: string;
     nome: string;
     descricao: string;
 }
@@ -45,7 +45,7 @@ export type CreateNewSession = {
 
 export type UpdateCampaignPayload = {
     novo_titulo?: string;
-    nova_foto_url?: string;
+    nova_id_foto?: string;
     id_novo_sistema?: number;
     nova_descricao?: string;
 }

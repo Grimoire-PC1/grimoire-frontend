@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
-import { System} from "@/interfaces/Models";
+import { System, SystemRule} from "@/interfaces/Models";
 import { TemporarySystemPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
@@ -64,4 +64,13 @@ export const getSystemById = async (systemId: string) => {
     )
 
     return data
+}
+
+export const getSystemRules = async() =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.get<SystemRule[]>(
+        `/${ENDPOINT.GET_SYSTEM_RULES}?id_sistema=${systemId}`
+    )
+
+    return data;
 }

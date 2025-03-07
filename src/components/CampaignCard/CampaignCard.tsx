@@ -23,7 +23,7 @@ export const CampaignCard = ({
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign?.foto_url}`, {
+        const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

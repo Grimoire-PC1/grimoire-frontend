@@ -10,7 +10,7 @@ export type Campaign = {
     id: string;
     id_mestre: string;
     titulo: string;
-    foto_url: string;
+    id_foto: string;
     id_sistema: System;
     descricao: string;
     jogadores?: Player[];
@@ -46,10 +46,17 @@ export type Character = {
 export type System = {
     id: number;
     id_criador: number;
-    foto_url:string;
+    id_foto:string;
     nome:string;
     descricao:string;
     tipo_sistema: SystemType
+}
+
+export type SystemRule = {
+    id:number;
+    id_sistema:number;
+    titulo:string;
+    descricao:string;
 }
 
 export type SystemType = "PUBLICO" | "PRIVADO"

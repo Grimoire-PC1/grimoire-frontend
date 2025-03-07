@@ -23,4 +23,6 @@ export const ENDPOINT = {
     GET_PUBLIC_SYSTEMS: "engine/get-public",
     GET_SYSTEM_BY_ID: "engine/get", 
     UPDATE_SYSTEM: "engine/update",
+
+    GET_SYSTEM_RULES: "engine-rule/get",
 } as const;

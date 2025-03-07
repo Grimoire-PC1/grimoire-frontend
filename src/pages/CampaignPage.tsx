@@ -36,7 +36,7 @@ export default function CampaignPage(){
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaignInformation?.foto_url}`, {
+        const res = await fetch(`http://localhost:8081/get/${campaignInformation?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

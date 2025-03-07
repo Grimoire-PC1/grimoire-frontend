@@ -4,7 +4,7 @@ export type SignInResponse = {
     username: string;
     email: string;
     token: string;
-    foto_url: string;
+    id_foto: string;
 };
 
 export type GetCampaigsResponse = Campaign[];

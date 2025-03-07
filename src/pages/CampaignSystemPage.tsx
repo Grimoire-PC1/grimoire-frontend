@@ -14,25 +14,12 @@ import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
 import { useUserStore } from "@/stores/user/user.store";
 import { System } from "@/interfaces/Models";
+import { getSystemRules } from "@/services/systemService";
 
 export default function CampaignSystemPage(){
 
     const system = "sistema externo";
-    const campaignId = sessionStorage.getItem('currentCampaignId');
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
-
-    const allUserSystems = useUserStore.getState().userSystems;
-    let sysInformation: System = allUserSystems[0];
-    console.log(allUserSystems)
-
-    for(let i = 0; i < allUserSystems.length; i++) {
-        if(allUserSystems[i].id == campaign.id_sistema) {
-            sysInformation = allUserSystems[i];
-            console.log('sistema utilizado na campanha:')
-            console.log(sysInformation)
-            break
-        } 
-    }
 
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
@@ -47,27 +34,19 @@ export default function CampaignSystemPage(){
 
                 {isGameMaster ?
                     <div className="max-h-[100vh] overflow-y-hidden">
-                        <CampaignHeader  campaign="minha campanha"/>
+                        <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarGM campaign=""></SidebarGM>
+                                <SidebarGM></SidebarGM>
                             </div>
                             <div className="col-span-9">
                                 <div className="grid h-[85vh] grid-cols-1 content-between">
-                                        <div className="margin-right">
-                                            <Flex placeContent={"space-between"}>
-                                                <div>
-                                                    <Text className="subtitle-s">{(campaign.titulo).toUpperCase()} SE JOGA COM {(sysInformation.nome).toUpperCase()}!</Text>
-                                                    <Text className="text">Meu sistema é muito legal e essa é a descrição dele muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito {/* depois mudar isso pra descrição do sistema, limitar a descrição do sistema a 250 caracteres */}</Text>         
-                                                </div>
-                                            </Flex>
-                                        </div>
                                     <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
-                                    <Box mt={8}>
+                                    <Box mt={6}>
                                         <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
                                                                     subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 
-                                                                    system={system}
-                                                                    maxHeight="48.3vh"
+                                                                    system={String(campaign.id_sistema)}
+                                                                    maxHeight="64.3vh"
                                                                     />
                                     </Box>
                                 </div>

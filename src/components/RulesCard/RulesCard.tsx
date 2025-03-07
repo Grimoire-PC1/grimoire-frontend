@@ -42,8 +42,8 @@ export const RulesCard = ({
                 </CardBody>
             </CardRoot>
 
-            <RulesCardEditDialog open={editDialog} handleClose={setEditDialog} ruleId="" ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
-            <RulesCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} ruleId=""  ruleName={ruleTitle}></RulesCardDeleteDialog>
+            <RulesCardEditDialog open={editDialog} handleClose={setEditDialog} ruleId={ruleId} ruleName={ruleTitle} ruleDesc={ruleDesc}></RulesCardEditDialog>
+            <RulesCardDeleteDialog open={deleteDialog} handleClose={setDeleteDialog} ruleId={ruleId}  ruleName={ruleTitle}></RulesCardDeleteDialog>
 
         </div>
     )

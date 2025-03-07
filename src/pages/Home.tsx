@@ -75,7 +75,7 @@ export default function Home() {
 
     function navigateNewSystem(){
         const newSystemPayload: CreateNewSystemPayload = {
-            foto_url: '',
+            id_foto: '',
             nome: '',
             descricao: ''
         }

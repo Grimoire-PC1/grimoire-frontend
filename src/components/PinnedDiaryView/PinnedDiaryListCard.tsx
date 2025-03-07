@@ -3,11 +3,19 @@ import { useState } from "react";
 import { JournalDetails } from "../JournalComponents/JournalDetails";
 import { withMask } from "use-mask-input";
 
-export const PinnedDiaryListCard = () => {
-    const title = 'Titulo da minha sessao'
-    const date = "12032009"
-    const content = 'Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis. Aenean sit amet tristique magna. Integer elementum odio sed mauris sollicitudin facilisis. Phasellus molestie neque turpis, sit amet consectetur urna finibus at. Quisque in nunc volutpat, pharetra ipsum eu, ullamcorper lorem. Donec maximus vel turpis eu dictum. Maecenas sollicitudin dolor in interdum porta. Sed sed arcu in metus accumsan finibus. Praesent dictum leo id enim lacinia, quis bibendum sapien mollis. Sed sollicitudin, ligula malesuada posuere feugiat, lacus leo consequat mauris, a auctor nunc nisi vitae felis. Donec vel fringilla turpis. Integer volutpat, elit at condimentum aliquam, ligula lectus pulvinar sapien, sed congue lacus arcu convallis quam. Duis ultricies sem nec nibh malesuada mollis.'
+export interface JournalProps {
+    titulo:string;
+    descricao:string;
+    data:string;
+    personagens:string[];
+}
 
+export const PinnedDiaryListCard = ({
+    titulo,
+    descricao,
+    data,
+    personagens
+}:JournalProps) => {
     const [showJournalDetails,setShowJournalDetails] = useState(false);
     
     return(
@@ -16,13 +24,13 @@ export const PinnedDiaryListCard = () => {
                 <CardRoot mt={"2%"} cursor={"pointer"}>
                     <CardBody className="text">
                         <Flex placeContent={"space-between"} gapX={8}>
-                        <Text lineClamp={1}>{title}</Text> 
-                        <Text ref={withMask("99/99/9999")}>{date}</Text>
+                        <Text lineClamp={1}>{titulo}</Text> 
+                        <Text ref={withMask("99/99/9999")}>{data}</Text>
                         </Flex>
                     </CardBody>
                 </CardRoot>
             </Box>
-            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} journalEntryId="" journalEntryTitle={title} journalEntryDate={date} journalEntryContent={content} journalEntryCharacters={["P1","P2","P3"]} campaignId={""}/>
+            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} journalEntryId="" journalEntryTitle={titulo} journalEntryDate={data} journalEntryContent={descricao} journalEntryCharacters={personagens} campaignId={""}/>
         </div>
     )
 }
