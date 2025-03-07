@@ -1,33 +1,40 @@
 import { Dialog, DialogBackdrop, DialogPanel} from '@headlessui/react'
-import { Box,Button,createListCollection,Editable,Flex,For,IconButton,Text } from "@chakra-ui/react";
+import { Box,Button,createListCollection,Editable,Flex,For,IconButton,Separator,Text, Textarea } from "@chakra-ui/react";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from "../ui/select";
 import { useMemo, useReducer, useState} from "react";
 import { withMask } from "use-mask-input"
+import { Radio, RadioGroup } from '../ui/radio';
+import { SessionType } from '@/interfaces/ServicePayload';
 
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
-    journalEntryId:string;
+    journalEntryId:number;
     journalEntryTitle:string;
     journalEntryDate:string;
     journalEntryContent:string;
-    journalEntryCharacters:string[]; //mudar para Character[]
+    journalEntryType:SessionType;
+    journalEntryPinned:boolean;
 }
 
 export const JournalDetails = ({
     open,
     handleClose,
-    campaignId,
     journalEntryId,
     journalEntryTitle,
     journalEntryDate,
     journalEntryContent,
-    journalEntryCharacters,
+    journalEntryType,
+    journalEntryPinned
 }: DialogLgProps) => {
+    const [titulo,setTitulo] = useState(journalEntryTitle);
+    const [desc,setDesc] = useState(journalEntryContent);
+    const [data,setData] = useState(journalEntryDate);
+    const [tipo,setTipo] = useState<SessionType>(journalEntryType);
+    const [fixar,setFixar] = useState(journalEntryPinned);
     
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
@@ -39,6 +46,7 @@ export const JournalDetails = ({
         })
         }, [])
 
+        /*
     const [characters, setCharacters] = useState(journalEntryCharacters);
 
     function updateCharacters(c:string){
@@ -58,6 +66,7 @@ export const JournalDetails = ({
         setCharacters(newCharacterList);
         forceUpdate();
     }
+    */
 
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -89,36 +98,53 @@ export const JournalDetails = ({
                                 </div>
                             </div>
                         </div>
-                        <Box maxH={"74vh"} overflowY={"auto"}>
+                        <Box maxH={"75vh"} overflowY={"auto"}>
 
-                            <Box m={1}>
+                            <Box h={"60vh"} m={1}>
                                 <Editable.Root className="text" textAlign="justify" defaultValue={journalEntryContent}>
                                     <Editable.Preview />
                                     <Editable.Textarea maxH={"60vh"} h={"60vh"}  />
                                 </Editable.Root>
-                                
                             </Box>
+                            <Separator mt={4} mb={1}/>
 
                             <Flex placeContent={"space-between"}>
-                                <Box w={"1/2"}>
-                                    <Text mt={4} fontSize={"2xl"}>Personagens presentes</Text>
-                                    <Flex mt={2} flexWrap={"wrap"} gap={1}>
-                                        <For each={characters}>
-                                            {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
-                                        </For>
-                                        <SelectRoot collection={allCharacters} placeSelf={"center"} w={"47px"} size="xs" variant={"ghost"}>
-                                        <SelectTrigger>
-                                            <IconButton variant={"outline"} size={"xl"} rounded={"full"}><LuPlus/></IconButton>
-                                        </SelectTrigger>
-                                        <SelectContent  w={"320px"} maxH={"200px"}>
-                                            {allCharacters.items.map((character) => (
-                                            <SelectItem onClick={()=>updateCharacters(character)} cursor={"pointer"} item={character} key={character}>
-                                                {character}
-                                            </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                        </SelectRoot>
-                                    </Flex>
+                                {/*
+                                    <Box w={"1/2"}>
+                                        <Text mt={4} fontSize={"2xl"}>Personagens presentes</Text>
+                                        <Flex mt={2} flexWrap={"wrap"} gap={1}>
+                                            <For each={characters}>
+                                                {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
+                                            </For>
+                                            <SelectRoot collection={allCharacters} placeSelf={"center"} w={"47px"} size="xs" variant={"ghost"}>
+                                            <SelectTrigger>
+                                                <IconButton variant={"outline"} size={"xl"} rounded={"full"}><LuPlus/></IconButton>
+                                            </SelectTrigger>
+                                            <SelectContent  w={"320px"} maxH={"200px"}>
+                                                {allCharacters.items.map((character) => (
+                                                <SelectItem onClick={()=>updateCharacters(character)} cursor={"pointer"} item={character} key={character}>
+                                                    {character}
+                                                </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                            </SelectRoot>
+                                        </Flex>
+                                    </Box>
+                                 */}
+                                <Box w={'1/2'}>
+                                    <Text className='text' mt={4}>Mudar o status da sessão?</Text>
+                                    <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue={journalEntryType}>
+                                        <Radio onClick={()=>setTipo("PASSADA")} value="PASSADA">A sessão já foi jogada</Radio>
+                                        <Radio onClick={()=>setTipo("FUTURA")} value="FUTURA">A sessão ainda será jogada</Radio>
+                                    </RadioGroup>
+                                </Box>
+                                <Box w={'1/2'}>
+                                    
+                                <Text className='text' mt={6}>Mudar visibilidade do registro?</Text>
+                                    <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue={journalEntryPinned ? "sim" : "nao"}>
+                                        <Radio onClick={()=>setFixar(true)} value="sim">Público</Radio>
+                                        <Radio onClick={()=>setFixar(false)} value="nao">Privado</Radio>
+                                    </RadioGroup>
                                 </Box>
 
                                 <Flex>

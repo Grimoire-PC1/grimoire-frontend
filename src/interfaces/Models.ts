@@ -1,3 +1,4 @@
+import { SessionType } from "./ServicePayload";
 import { SignInResponse } from "./ServiceResponse";
 
 export type User = {
@@ -24,11 +25,14 @@ export type Diary = {
 }
 
 export type Session = {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    presentPlayers: Player[];
+    id: number;
+    id_campanha:number;
+    id_campanha_mestre:number;
+    titulo:string;
+    data:string;
+    descricao:string;
+    tipo_sessao:SessionType;
+    fixada:boolean;
 }
 
 export type Player = {

@@ -77,3 +77,14 @@ export type UpdateRulePayload = {
 export type UpdateUserPayload = {
 
 }
+
+export type NewSessionPayload = {
+    id_campanha:number;
+    tipo_sessao:SessionType;
+    titulo:string;
+    data:string;
+    descricao:string;
+    fixada:boolean;
+}
+
+export type SessionType = "FUTURA" | "PASSADA"

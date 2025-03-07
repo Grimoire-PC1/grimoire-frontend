@@ -1,12 +1,13 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
-import { Box,Button,createListCollection,Flex,For,IconButton,Input,Text, Textarea } from "@chakra-ui/react";
+import { Box,Button,createListCollection,Flex,Input,Text, Textarea } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { Radio, RadioGroup } from '../ui/radio';
 import { useMemo, useReducer, useState } from 'react';
-import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
-import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '../ui/select';
-import { LuPlus } from 'react-icons/lu';
 import { withMask } from "use-mask-input"
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { createSession } from '@/services/sessionService';
+import { SessionType } from '@/interfaces/ServicePayload';
 
 export interface DialogLgProps {
     open:boolean,
@@ -19,6 +20,11 @@ export const JournalNewEntry = ({
     handleClose,
     campaignId,
 }: DialogLgProps) => {
+    const [titulo,setTitulo] = useState("");
+    const [desc,setDesc] = useState("");
+    const [data,setData] = useState("");
+    const [tipo,setTipo] = useState<SessionType>("PASSADA");
+    const [fixar,setFixar] = useState(false);
 
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
@@ -49,6 +55,27 @@ export const JournalNewEntry = ({
         setCharacters(newCharacterList);
         forceUpdate();
     }
+
+    const mutation = useMutation({
+        mutationKey: ["createSession"],
+        mutationFn: createSession,
+        onSuccess: (data) => {
+          console.log(data)
+          toaster.create({
+                      description: "Sessão registrada com sucesso!",
+                      type: "success",
+                      })
+          handleClose(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema registrando a sessão.",
+            type: "error",
+            })
+        },
+      });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -70,17 +97,22 @@ export const JournalNewEntry = ({
 
                             <Form>
                                 <Flex gapX={2}>
-                                    <Input mt={4} placeholder='Título da sessão'></Input>
-                                    <Input textAlign={"center"} w={"20%"} mt={4} placeholder='Data da sessão' ref={withMask("99/99/9999")}></Input>
+                                    <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Título da sessão'></Input>
+                                    <Input value={data} onInput={e => setData(e.target.value)} textAlign={"center"} w={"20%"} mt={4} placeholder='Data da sessão' ref={withMask("99/99/9999")}></Input>
                                 </Flex>
                                 <Text className='text' mt={4}>Esta sessão já foi jogada?</Text>
-                                <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue="sim">
-                                    <Radio value="sim">Sim, estou registrando uma sessão passada</Radio>
-                                    <Radio value="nao">Não, estou planejando uma sessão futura</Radio>
+                                <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue="PASSADA">
+                                    <Radio onClick={()=>setTipo("PASSADA")} value="PASSADA">Sim, estou registrando uma sessão passada</Radio>
+                                    <Radio onClick={()=>setTipo("FUTURA")} value="FUTURA">Não, estou planejando uma sessão futura</Radio>
                                 </RadioGroup>
-                                <Textarea mt={4} resize={"vertical"} h={"26vh"} maxH={"40vh"} placeholder='O que aconteceu ou vai acontecer nesta sessão?'></Textarea>
+                                <Textarea value={desc} onInput={e => setDesc(e.target.value)} mt={4} resize={"vertical"} h={"26vh"} maxH={"40vh"} placeholder='O que aconteceu ou vai acontecer nesta sessão?'></Textarea>
+                                <Text className='text' mt={4}>Gostaria de fixar este registro para seus jogadores terem acesso?</Text>
+                                <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue="nao">
+                                    <Radio onClick={()=>setFixar(true)} value="sim">Sim, o registro será público</Radio>
+                                    <Radio onClick={()=>setFixar(false)} value="nao">Não, quero manter o registro privado</Radio>
+                                </RadioGroup>
+                                {/*
                                 <Text className='text' mt={4}>Que personagens fizeram ou vão fazer parte desta sessão?</Text>
-
                                 <Flex mt={2} flexWrap={"wrap"} gap={1}>
                                     <For each={characters}>
                                         {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
@@ -98,10 +130,16 @@ export const JournalNewEntry = ({
                                     </SelectContent>
                                     </SelectRoot>
                                 </Flex>
+                                */}
                             </Form>
                             
                             <Flex mt={8} justifyContent={"center"}>
-                                <Button>Registrar sessão</Button>
+                                <Button onClick={()=>mutation.mutate({  id_campanha:parseInt(campaignId),
+                                                                        tipo_sessao: tipo,
+                                                                        titulo: titulo,
+                                                                        data: data,
+                                                                        descricao: desc,
+                                                                        fixada:fixar,})}>Registrar sessão</Button>
                             </Flex>
                         </Box>
 
@@ -109,6 +147,7 @@ export const JournalNewEntry = ({
                 </Box>
             </div>
         </div>
+        <Toaster/>
     </Dialog>
     )
 }

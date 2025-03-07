@@ -28,4 +28,9 @@ export const ENDPOINT = {
     CREATE_SYSTEM_RULE: "engine-rule/register",
     UPDATE_SYSTEM_RULE: "engine-rule/update",
     DELETE_SYSTEM_RULE: "engine-rule/delete",
+
+    CREATE_SESSION: "session/register",
+    UPDATE_SESSION: "session/update",
+    GET_CAMPAIGN_SESSIONS: "session/get/campaign",
+    DELETE_SESSION: "session/delete",
 } as const;

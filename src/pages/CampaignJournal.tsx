@@ -7,6 +7,8 @@ import { Presence } from "@chakra-ui/react/presence";
 
 export default function CampaignJournal(){
 
+    const campaign = sessionStorage.getItem('currentCampaignId');
+
 
     return(
         <Presence 
@@ -16,14 +18,14 @@ export default function CampaignJournal(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} maxH={"100vh"} overflowY={"hidden"}>
                     <div>
-                        <CampaignHeader  campaign="minha campanha"/>
+                        <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarGM campaign=""></SidebarGM>
+                                <SidebarGM></SidebarGM>
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <Journal campaign="minha campanha"/>
+                                    <Journal campaign={campaign||''}/>
                                 </div>
                                 <ToggleTheme/>
                             </div>

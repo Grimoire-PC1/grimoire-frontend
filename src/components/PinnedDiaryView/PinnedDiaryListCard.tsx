@@ -2,19 +2,24 @@ import { Box, CardBody, CardRoot,Flex,Text } from "@chakra-ui/react"
 import { useState } from "react";
 import { JournalDetails } from "../JournalComponents/JournalDetails";
 import { withMask } from "use-mask-input";
+import { SessionType } from "@/interfaces/ServicePayload";
 
 export interface JournalProps {
     titulo:string;
     descricao:string;
     data:string;
-    personagens:string[];
+    id:number;
+    tipo:SessionType;
+    fixada:boolean;
 }
 
 export const PinnedDiaryListCard = ({
     titulo,
     descricao,
     data,
-    personagens
+    id,
+    tipo,
+    fixada
 }:JournalProps) => {
     const [showJournalDetails,setShowJournalDetails] = useState(false);
     
@@ -30,7 +35,7 @@ export const PinnedDiaryListCard = ({
                     </CardBody>
                 </CardRoot>
             </Box>
-            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} journalEntryId="" journalEntryTitle={titulo} journalEntryDate={data} journalEntryContent={descricao} journalEntryCharacters={personagens} campaignId={""}/>
+            <JournalDetails open={showJournalDetails} handleClose={setShowJournalDetails} journalEntryId={id} journalEntryTitle={titulo} journalEntryDate={data} journalEntryContent={descricao} journalEntryType={tipo} journalEntryPinned={fixada}/>
         </div>
     )
 }

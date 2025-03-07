@@ -18,8 +18,6 @@ export default function CampaignPage(){
 
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
-    const curCampaign = sessionStorage.getItem('currentCampaignId');
-
     const allCreatedCampaign = useUserStore.getState().createdCampaigns;
     let campaignInformation: Campaign = allCreatedCampaign[0];
     console.log(allCreatedCampaign)
