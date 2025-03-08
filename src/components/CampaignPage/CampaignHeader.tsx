@@ -7,7 +7,7 @@ export const CampaignHeader = () => {
     const navigate = useNavigate();
 
     function logout(){
-        navigate("/grimoire/");
+        navigate("/grimoire/"); 
     }
 
     const c = JSON.parse(sessionStorage.getItem('currentCampaign')||'')

@@ -14,7 +14,7 @@ export const ENDPOINT = {
     UPDATE_CAMPAIGN: "campaign/update",
 
     CREATE_NEW_CHARACTER: "createNewCharacter",
-    GET_USER_CHARACTERS: "characters",
+    GET_USER_CHARACTERS: "character/get/user",
     GET_USER_CREATED_SYSTEMS: "createdSystems",
     GET_CHARACTER_BY_ID: "characterById",
 

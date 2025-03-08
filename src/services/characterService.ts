@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCharactersResponse } from "../interfaces/ServiceResponse";
-import { Character } from "@/interfaces/Models";
+import { Character, CharacterRegister } from "@/interfaces/Models";
 
 export const getAllUserCharacters = async () => {
 
@@ -17,3 +17,11 @@ export const getAllUserCharacters = async () => {
     return arrayedCampaigns;
 }
 
+export const getUserCharacters = async() =>{
+    const { data } = await axiosInstace.get<CharacterRegister[]>(
+        `/${ENDPOINT.GET_USER_CHARACTERS}`
+    )
+
+    console.log(data);
+    return data;
+}
