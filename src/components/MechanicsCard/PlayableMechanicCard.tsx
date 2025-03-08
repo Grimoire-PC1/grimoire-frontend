@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Box, Button, createListCollection, Flex, For, Group, IconButton,Tag,Text,} from "@chakra-ui/react";
-import { useMemo, useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
 import { LuPlus,LuUser } from 'react-icons/lu';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
@@ -24,6 +24,12 @@ export const PlayableMechanicCard = ({
     mechanicName,
     mechanicReactions
 }: UserSettingsDialogSmProps) => {
+    const [,forceUpdate] = useReducer(x=>x+1,0);
+
+    type personagem = {
+        nome:string;
+        iniciativa:number;
+    }
 
     //const allCharacters = ['P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1',] //getCharacters da campanha
 
@@ -55,14 +61,14 @@ export const PlayableMechanicCard = ({
         }, [mechanicReactions]
     )
 
-    const [characters,setCharacters] = useState<string[]>(['P1','P2','P3','NPC1','NPC2']); //inicia vazio na prática
+    const [characters,setCharacters] = useState<personagem[]>([]); //inicia vazio na prática
     const [chosenAction,setChosenAction] = useState<string[]>([]);
     const [chosenReaction,setChosenReaction] = useState<string[]>([]);
     const [chosenCharacter,setCharacter] = useState<string[]>([]);
 
     function close(){
         console.log(characters);
-        setCharacters(['P1','P2','P3','NPC1','NPC2']);
+        setCharacters([]);
         console.log(characters);
         setChosenAction([]);
         setChosenReaction([]);
@@ -72,11 +78,45 @@ export const PlayableMechanicCard = ({
     const charactersCollection = useMemo(()=>{
         return createListCollection({
             items: characters,
-            itemToString: (item) => item,
-            itemToValue: (item) => item,
+            itemToString: (item) => item.nome,
+            itemToValue: (item) => item.nome,
           })
         }, [characters]
     )
+    
+    function updateCharacters(c:personagem){
+        if(!(characters.find((character) => character.nome === c.nome))){
+            const newCharacterList = characters;
+            newCharacterList.push(c);
+            setCharacters(newCharacterList);
+            forceUpdate();
+        }
+        console.log(round)
+    }
+
+    function updateRemoveCharacter(c:personagem){
+        const newCharacterList = characters;
+        newCharacterList.forEach( (item, index) => {
+            if(item === c) newCharacterList.splice(index,1);
+          });
+        setCharacters(newCharacterList);
+        forceUpdate();
+    }
+
+    function numeroAleatorio(){
+        return Math.floor(Math.random() * 21)
+    }
+
+    function rolariniciativa(){
+        for(let c of characters){
+            c.iniciativa = numeroAleatorio();
+        }
+        forceUpdate();
+    }
+
+    function proximaRodada(){
+        setRound(0);
+    }
 
     return(
     <Dialog open={open} onClose={close} className="relative z-10">
@@ -97,7 +137,10 @@ export const PlayableMechanicCard = ({
                                     <DialogTitle className="text-base text-large font-semibold">
                                         <Flex placeContent={"space-between"}>
                                             <Text>{mechanicName}</Text>
-                                            <Button disabled={round == 0 || !(round % characters.length == 0)}>Re-rolar iniciativa</Button>
+                                            <Button disabled={characters.length == 0 || !(round == 0)}
+                                                    onClick={()=>rolariniciativa()}>
+                                                Rolar Iniciativa
+                                            </Button>
                                         </Flex>
                                     </DialogTitle>
                                     </div>
@@ -113,7 +156,7 @@ export const PlayableMechanicCard = ({
                                             </SelectTrigger>
                                             <SelectContent  w={"320px"} maxH={"200px"}>
                                                 {allCharacters.items.map((character) => (
-                                                <SelectItem onClick={()=>console.log(character)} cursor={"pointer"} item={character} key={character}>
+                                                <SelectItem onClick={()=>updateCharacters({nome: character, iniciativa: 0})} cursor={"pointer"} item={character} key={character}>
                                                     {character}
                                                 </SelectItem>
                                                 ))}
@@ -121,23 +164,33 @@ export const PlayableMechanicCard = ({
                                             </SelectRoot>
                                         </Box>
                                         <Flex gap={1} flexWrap={"wrap"}>
-                                             <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
+                                            <For each={characters}>
+                                                {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
+                                            </For>
                                         </Flex>
                                     </Flex>
                                         <div>
                                             <Text mt={4} className='text'>Ordem de iniciativa</Text>
                                             <Flex justifyContent={"center"} mt={2} gapY={1} gapX={4} flexWrap={"wrap"}>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>19</Text>
-                                                </div>
+                                                <For each={characters.sort((a, b) => {
+                                                                                return b.iniciativa - a.iniciativa;
+                                                                            })}>
+                                                    {(character)=>
+                                                        <Box textAlign={"center"}>
+                                                            <CharacterProfile character={character} mt="" mb="" ml="" mr=""/>
+                                                            <Text>{character.iniciativa}</Text>
+                                                        </Box>
+                                                    }
+                                                </For>
                                             </Flex>
 
                                             <Text mt={4} className='text'>Rodada atual</Text>
-                                            <StepsRoot mt={2} defaultStep={0} count={characters.length}>
+                                            <StepsRoot step={round} mt={2} defaultStep={0} count={characters.length}>
                                                 <StepsList>
-                                                    <For each={characters}>
-                                                        {(item,index) => <StepsItem icon={<LuUser />} index={index} title={item} />}
+                                                    <For each={characters.sort((a, b) => {
+                                                                                return b.iniciativa - a.iniciativa;
+                                                                            })}>
+                                                        {(item,index) => <StepsItem icon={<LuUser />} index={index} title={item.nome} />}
                                                     </For>
                                                 </StepsList>
 
@@ -182,8 +235,8 @@ export const PlayableMechanicCard = ({
                                                                 </SelectTrigger>
                                                                 <SelectContent  w={"200px"} maxH={"200px"}>
                                                                     {charactersCollection.items.map((character) => (
-                                                                    <SelectItem onClick={()=>chosenCharacter.push(character)} cursor={"pointer"} item={character} key={character}>
-                                                                        {character}
+                                                                    <SelectItem onClick={()=>chosenCharacter.push(character.nome)} cursor={"pointer"} item={character.nome} key={character.nome}>
+                                                                        {character.nome}
                                                                     </SelectItem>
                                                                     ))}
                                                                 </SelectContent>
@@ -204,7 +257,7 @@ export const PlayableMechanicCard = ({
                                                             }
                                                     </For>
                                                 </Box>
-                                                <StepsCompletedContent>Rodada concluída!</StepsCompletedContent>
+                                                <StepsCompletedContent>{characters.length == 0 ? "Coloque personagens na cena para iniciar a mecânica!" : "Rodada concluída!"}</StepsCompletedContent>
 
                                                 <Group justifyContent={"center"}>
                                                     <StepsPrevTrigger asChild>
@@ -223,7 +276,10 @@ export const PlayableMechanicCard = ({
                                 </div>
 
                                 <Flex placeContent={"end"}>
-                                    <Button disabled={!(round == 0 || (round % characters.length == 0))}>{round <= 0 ? "Iniciar "+mechanicName : "Próxima rodada"}</Button>
+                                    <Button disabled={round == 0 || characters.length < 2 || !(round == characters.length)}
+                                            onClick={()=>proximaRodada()}>
+                                        {"Próxima rodada"}
+                                    </Button>
                                 </Flex>
 
                             </DialogPanel>
