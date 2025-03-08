@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
-import { Campaign } from "@/interfaces/Models";
+import { Campaign, Character, CharacterRegister } from "@/interfaces/Models";
 import { CreateNewCampaignPayload, TemporaryCampaignPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
@@ -60,3 +60,12 @@ export const updateCampaign = async (temporaryCampaignPayload: TemporaryCampaign
   
     return data;
   };
+
+export const getCampaignCharacters = async() =>{
+    let id = sessionStorage.getItem('currentCampaignId')
+    const { data } = await axiosInstace.get<CharacterRegister[]>(
+        `/${ENDPOINT.GET_CAMPAIGN_CHARACTERS}`,
+        { params: { id_campanha: id} }
+    )
+    return data;
+}

@@ -1,10 +1,13 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import {Box, Button, createListCollection, Flex, For, Group, IconButton,Tag,Text,} from "@chakra-ui/react";
+import {Box, Button, createListCollection, Flex, For, Group, IconButton,Image,Tag,Text,} from "@chakra-ui/react";
 import { useMemo, useReducer, useState } from 'react';
 import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
 import { LuPlus,LuUser } from 'react-icons/lu';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
 import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsNextTrigger, StepsPrevTrigger, StepsRoot } from '../ui/steps';
+import { useQuery } from '@tanstack/react-query';
+import { getCampaignCharacters } from '@/services/campaignService';
+import { Avatar } from '../ui/avatar';
 
 
 export interface UserSettingsDialogSmProps {
@@ -29,7 +32,16 @@ export const PlayableMechanicCard = ({
     type personagem = {
         nome:string;
         iniciativa:number;
+        foto:any;
     }
+
+    const {data: allCharas} = useQuery({
+        queryKey: ["getCampaignCharacters"],
+        queryFn: getCampaignCharacters
+      })
+      allCharas?.sort((a, b) => {
+          return a.id - b.id;
+      });
 
     //const allCharacters = ['P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1',] //getCharacters da campanha
 
@@ -37,9 +49,9 @@ export const PlayableMechanicCard = ({
 
     const allCharacters = useMemo(() => {
         return createListCollection({
-          items: ['P1','P2','NPC1','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21',], //pegar todos os personagens da campanha
-          itemToString: (item) => item,
-          itemToValue: (item) => item,
+          items: allCharas || [],
+          itemToString: (item) => item.nome,
+          itemToValue: (item) => item.nome,
         })
       }, [])
 
@@ -84,10 +96,11 @@ export const PlayableMechanicCard = ({
         }, [characters]
     )
     
-    function updateCharacters(c:personagem){
+    async function updateCharacters(c:personagem){
         if(!(characters.find((character) => character.nome === c.nome))){
             const newCharacterList = characters;
-            newCharacterList.push(c);
+            let f = await getImage(c.foto);
+            newCharacterList.push({nome: c.nome, iniciativa:c.iniciativa,foto:f});
             setCharacters(newCharacterList);
             forceUpdate();
         }
@@ -116,6 +129,19 @@ export const PlayableMechanicCard = ({
 
     function proximaRodada(){
         setRound(0);
+    }
+
+    const getImage = async (id:string) => {
+        const res = await fetch(`http://localhost:8081/get/${id}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          //setImg(data.image)
+          console.log(data.image)
+          return data.image;
     }
 
     return(
@@ -156,8 +182,8 @@ export const PlayableMechanicCard = ({
                                             </SelectTrigger>
                                             <SelectContent  w={"320px"} maxH={"200px"}>
                                                 {allCharacters.items.map((character) => (
-                                                <SelectItem onClick={()=>updateCharacters({nome: character, iniciativa: 0})} cursor={"pointer"} item={character} key={character}>
-                                                    {character}
+                                                <SelectItem onClick={()=>updateCharacters({nome: character.nome, iniciativa: 0,foto: character.id_foto})} cursor={"pointer"} item={character} key={character.nome}>
+                                                    {character.nome}
                                                 </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -165,7 +191,10 @@ export const PlayableMechanicCard = ({
                                         </Box>
                                         <Flex gap={1} flexWrap={"wrap"}>
                                             <For each={characters}>
-                                                {(character)=><Box onClick={()=>updateRemoveCharacter(character)}><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile></Box>}
+                                                {(character)=>  <Box onClick={()=>updateRemoveCharacter(character)}>
+                                                                    <Avatar size={"xl"} name={character.nome} src={character.foto}/>
+                                                                </Box>
+                                                }
                                             </For>
                                         </Flex>
                                     </Flex>
@@ -177,7 +206,7 @@ export const PlayableMechanicCard = ({
                                                                             })}>
                                                     {(character)=>
                                                         <Box textAlign={"center"}>
-                                                            <CharacterProfile character={character} mt="" mb="" ml="" mr=""/>
+                                                            <Avatar size={"xl"} name={character.nome} src={character.foto}/>
                                                             <Text>{character.iniciativa}</Text>
                                                         </Box>
                                                     }

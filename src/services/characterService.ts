@@ -16,3 +16,4 @@ export const getAllUserCharacters = async () => {
 
     return arrayedCampaigns;
 }
+

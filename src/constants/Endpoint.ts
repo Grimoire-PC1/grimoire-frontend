@@ -38,4 +38,9 @@ export const ENDPOINT = {
     CREATE_MECHANIC: "mechanic/register",
     UPDATE_MECHANIC: "mechanic/update",
     DELETE_MECHANIC: "mechanic/delete",
+
+    GET_CAMPAIGN_CHARACTERS: "character/get/campaign",
+    CREATE_CHARACTER: "character/register",
+    UPDATE_CHARACTER: "character/update",
+    DELETE_CHARACTER: "character/delete",
 } as const;

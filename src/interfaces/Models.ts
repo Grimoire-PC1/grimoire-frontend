@@ -78,3 +78,12 @@ export type SystemMechanic = {
     acoes:string;
     efeitos:string;
 }
+
+export type CharacterRegister = {
+    id:number;
+    id_usuario:number;
+    id_campanha:number;
+    id_campanha_mestre:number;
+    nome:string;
+    id_foto:string;
+}

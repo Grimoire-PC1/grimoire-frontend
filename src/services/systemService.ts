@@ -138,6 +138,5 @@ export const deleteMechanic = async(id:number) =>{
         `/${ENDPOINT.DELETE_MECHANIC}`,
         { params: { id_mecanica: id} }
     )
-
     return data;
 }
