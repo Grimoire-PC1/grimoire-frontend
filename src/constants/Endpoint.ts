@@ -33,4 +33,9 @@ export const ENDPOINT = {
     UPDATE_SESSION: "session/update",
     GET_CAMPAIGN_SESSIONS: "session/get/campaign",
     DELETE_SESSION: "session/delete",
+
+    GET_MECHANICS: "mechanic/get",
+    CREATE_MECHANIC: "mechanic/register",
+    UPDATE_MECHANIC: "mechanic/update",
+    DELETE_MECHANIC: "mechanic/delete",
 } as const;

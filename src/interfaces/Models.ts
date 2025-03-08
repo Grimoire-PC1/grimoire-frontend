@@ -68,3 +68,13 @@ export type SystemType = "PUBLICO" | "PRIVADO"
 export type CharacterSheet = {
     system: System;
 }
+
+export type SystemMechanic = {
+    id:number;
+    id_sistema:number;
+    id_sistema_criador:number;
+    nome:string;
+    descricao:string;
+    acoes:string;
+    efeitos:string;
+}

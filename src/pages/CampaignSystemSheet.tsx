@@ -28,18 +28,8 @@ export default function CampaignSystemSheet(){
         setNewCharacter(true);
     }
 
-    const allCreatedCampaign = useUserStore.getState().createdCampaigns;
-    let campaignInformation: Campaign = allCreatedCampaign[0];
-    console.log(allCreatedCampaign)
 
-    for(let i = 0; i < allCreatedCampaign.length; i++) {
-        if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
-            campaignInformation = allCreatedCampaign[i];
-            console.log(campaignInformation)
-            sessionStorage.setItem('currentCampaign',JSON.stringify(campaignInformation))
-            break
-        } 
-    }
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     return(
         <Presence 
@@ -60,7 +50,7 @@ export default function CampaignSystemSheet(){
                                 <div>
                                         <SystemPageSheetComponent   title="CRIE PERSONAGENS ÚNICOS!" 
                                                                     subtitle="Crie ou modifique um modelo de ficha para dar vida aos personagens dentro da sua história" 
-                                                                    system={campaignInformation.id_sistema}/>
+                                                                    system={campaign.id_sistema}/>
                                 </div>
                                 
                                 <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">

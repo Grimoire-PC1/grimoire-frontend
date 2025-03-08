@@ -3,20 +3,23 @@ import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-u
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
 import { useReducer, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCampaignById, updateCampaign } from "@/services/campaignService";
 import { TemporaryCampaignPayload, UpdateCampaignPayload } from "@/interfaces/ServicePayload";
 import { HiUpload } from "react-icons/hi";
 import { toaster, Toaster } from "../ui/toaster";
+import { getCampaignSessions } from "@/services/sessionService";
 
 export const CampaignPageGM = () => {
-    const [,forceUpdate] = useReducer(x=>x+1,0);
+    const [,forceUpdate] = useReducer(x=>x+1,0); 
 
-    const sessoesDaCampanha = [{id: 1, id_campanha: 1, titulo: 'teste 1', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'sim',personagens:['p1','p2']},
-      {id: 2, id_campanha: 1, titulo: 'teste 2', data: '10202020', descricao: 'teste',id_tipo_sessao:2,fixada:'sim',personagens:['p1','p2']},
-      {id: 3, id_campanha: 2, titulo: 'teste 3', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'sim',personagens:['p1','p2']},
-      {id: 4, id_campanha: 1, titulo: 'teste 4', data: '10202020', descricao: 'teste',id_tipo_sessao:1,fixada:'nao',personagens:['p1','p2']},
-    ]
+    const {data: sessoesDaCampanha} = useQuery({
+      queryKey: ["sessoes"],
+      queryFn: getCampaignSessions
+    })
+    sessoesDaCampanha?.sort((a, b) => {
+        return a.id - b.id;
+    });
 
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
@@ -229,8 +232,8 @@ export const CampaignPageGM = () => {
                     <div className="col-span-16 margin-right">
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
                         <For each={sessoesDaCampanha}>
-                            {(item) => item.id_campanha == campaign.id && item.fixada === 'sim' ? 
-                                <PinnedDiaryListCard titulo={item.titulo} descricao={item.descricao} data={item.data} personagens={item.personagens}/> 
+                            {(item) => item.id_campanha == campaign.id && item.fixada ? 
+                                <PinnedDiaryListCard titulo={item.titulo} descricao={item.descricao} data={item.data} id={item.id} tipo={item.tipo_sessao} fixada={item.fixada} /> 
                             : <div></div>
                             }
                         </For>

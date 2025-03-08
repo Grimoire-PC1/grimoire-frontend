@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
-import { System, SystemRule} from "@/interfaces/Models";
-import { NewRulePayload, TemporarySystemPayload, UpdateRulePayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
+import { System, SystemMechanic, SystemRule} from "@/interfaces/Models";
+import { NewMechanicPayload, NewRulePayload, TemporarySystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
 
@@ -98,6 +98,45 @@ export const deleteRule = async(id:number) =>{
     const { data } = await axiosInstace.delete<UpdateRulePayload>(
         `/${ENDPOINT.DELETE_SYSTEM_RULE}`,
         { params: { id_regra: id} }
+    )
+
+    return data;
+}
+
+export const getSystemMechanics = async() =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.get<SystemMechanic[]>(
+        `/${ENDPOINT.GET_MECHANICS}`,
+        { params: { id_sistema: systemId} }
+    )
+    return data;
+}
+
+export const createMechanic = async(payload:NewMechanicPayload) =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.post<NewMechanicPayload>(
+        `/${ENDPOINT.CREATE_MECHANIC}`,
+        payload,
+        { params: { id_sistema: systemId} }
+    )
+
+    return data;
+}
+
+export const updateMechanic = async(payload:UpdateMechanicPayload) =>{
+    const { data } = await axiosInstace.put<UpdateMechanicPayload>(
+        `/${ENDPOINT.UPDATE_MECHANIC}`,
+        payload,
+        { params: { id_mecanica: payload.id_mecanica} }
+    )
+
+    return data;
+}
+
+export const deleteMechanic = async(id:number) =>{
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_MECHANIC}`,
+        { params: { id_mecanica: id} }
     )
 
     return data;

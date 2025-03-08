@@ -1,8 +1,10 @@
-import { Text, Flex, Grid, IconButton,  } from "@chakra-ui/react";
+import { Text, Flex, Grid, IconButton, For,  } from "@chakra-ui/react";
 import { LuPlus } from "react-icons/lu";
 import { useState } from "react";
 import { MechanicsCard } from "../MechanicsCard/MechanicsCard";
 import { MechanicsCardDialog } from "../MechanicsCard/MechanicsCardDialog";
+import { useQuery } from "@tanstack/react-query";
+import { getSystemMechanics, getSystemRules } from "@/services/systemService";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -17,8 +19,20 @@ export const SystemPageMechanicsComponent = ({
     subtitle,
     maxHeight
 }: SystemPageComponentProps) => {
-    const [addNewRule,setAddNewRule] = useState(false);
+    const [addNewMechanic,setAddNewMechanic] = useState(false);
 
+    const {data: mechs} = useQuery({
+        queryKey: ["mechs"],
+        queryFn: getSystemMechanics
+    })
+    mechs?.sort((a, b) => {
+        return a.id - b.id;
+    });
+
+    function fecharEforcar(){
+        setAddNewMechanic(false);
+        location.reload();
+    }
 
     return(
         <div className="overflow-y-hidden">
@@ -29,19 +43,18 @@ export const SystemPageMechanicsComponent = ({
                         <Text className="text">{subtitle}</Text>
                     </div>
                     
-                    <IconButton onClick={()=>setAddNewRule(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Mecanica"> 
+                    <IconButton onClick={()=>setAddNewMechanic(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Mecanica"> 
                         <LuPlus />
                     </IconButton>
                                             
                 </Flex>
                     <Grid maxH={maxHeight} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
-                        <MechanicsCard mechanicTitle="Combate" mechanicId=""/>
-                        <MechanicsCard mechanicTitle="Furtividade" mechanicId=""/>
-                        <MechanicsCard mechanicTitle="Criar poção" mechanicId=""/>
-                        <MechanicsCard mechanicTitle="Diplomacia" mechanicId=""/>
+                        <For each={mechs}>
+                            {(m)=><MechanicsCard mechanicTitle={m.nome} mechanicId={m.id} mechanicDesc={m.descricao} mechanicActions={m.acoes.substring(2,(m.acoes.length)-2).split(",")} mechanicEffects={m.efeitos.substring(2,(m.efeitos.length)-2).split(",")}/>}
+                        </For>
                     </Grid>
 
-                    <MechanicsCardDialog open={addNewRule} handleClose={setAddNewRule} system=""></MechanicsCardDialog>
+                    <MechanicsCardDialog open={addNewMechanic} handleClose={setAddNewMechanic} handleCreate={fecharEforcar} system=""></MechanicsCardDialog>
             
             </div>
         </div>

@@ -96,5 +96,19 @@ export type UpdateSessionPayload = {
     fixada:boolean;
 }
 
-
 export type SessionType = "FUTURA" | "PASSADA"
+
+export type NewMechanicPayload = {
+    nome:string;
+    descricao:string;
+    acoes:string[];
+    efeitos:string[];
+}
+
+export type UpdateMechanicPayload = {
+    id_mecanica:number;
+    novo_nome:string;
+    nova_descricao:string;
+    novas_acoes:string[];
+    novos_efeitos:string[];
+}

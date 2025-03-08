@@ -10,13 +10,10 @@ import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsNextTri
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    mechanicId:string;
+    mechanicId:number;
     mechanicName:string;
-    mechanicDesc:string;
     mechanicActions:string[];
-    mechanicReactions:string[];
-    mechanicRoundCounter:number|undefined;
-    campaign:string;
+    mechanicReactions:string[]
 }
 
 export const PlayableMechanicCard = ({
@@ -24,11 +21,8 @@ export const PlayableMechanicCard = ({
     handleClose,
     mechanicId,
     mechanicActions,
-    mechanicDesc,
     mechanicName,
-    mechanicReactions,
-    mechanicRoundCounter,
-    campaign
+    mechanicReactions
 }: UserSettingsDialogSmProps) => {
 
     //const allCharacters = ['P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1',] //getCharacters da campanha
@@ -103,7 +97,7 @@ export const PlayableMechanicCard = ({
                                     <DialogTitle className="text-base text-large font-semibold">
                                         <Flex placeContent={"space-between"}>
                                             <Text>{mechanicName}</Text>
-                                            <Button disabled={round == 0 || !(round % characters.length == 0)}>{"Encerrar "+mechanicName}</Button>
+                                            <Button disabled={round == 0 || !(round % characters.length == 0)}>Re-rolar iniciativa</Button>
                                         </Flex>
                                     </DialogTitle>
                                     </div>
@@ -130,39 +124,12 @@ export const PlayableMechanicCard = ({
                                              <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
                                         </Flex>
                                     </Flex>
-                                    
-                                    {
-                                        mechanicRoundCounter ?
                                         <div>
                                             <Text mt={4} className='text'>Ordem de iniciativa</Text>
                                             <Flex justifyContent={"center"} mt={2} gapY={1} gapX={4} flexWrap={"wrap"}>
                                                 <div className='text-center'>
                                                     <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
                                                     <Text>19</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>16</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>11</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>8</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>8</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>5</Text>
-                                                </div>
-                                                <div className='text-center'>
-                                                    <CharacterProfile character={"NPC"} mt={''} mr={''} ml={''} mb={''}></CharacterProfile>
-                                                    <Text>2</Text>
                                                 </div>
                                             </Flex>
 
@@ -253,10 +220,6 @@ export const PlayableMechanicCard = ({
                                                 </Group>
                                             </StepsRoot>
                                         </div>
-                                        :
-                                        <div>
-                                        </div>
-                                    }
                                 </div>
 
                                 <Flex placeContent={"end"}>

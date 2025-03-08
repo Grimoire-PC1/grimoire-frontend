@@ -44,7 +44,7 @@ export default function LoginPage() {
     }
   }, [navigate, setUser, user]);
 
-  const [showSignInForm, setShowSignInForm] = useState(false);
+  const [showSignInForm, setShowSignInForm] = useState(true);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [signInForm, setSignInForm] = useState({});
   const [signUpForm, setSignUpForm] = useState({});
@@ -197,7 +197,7 @@ export default function LoginPage() {
     >
       <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
         
-      <div className="flex w-full h-full">
+      <Flex>
         <div className="w-2/5 h-[100vh]">
           <Image height={"100vh"} w={"40vw"} src="/src/assets/login_image.png"></Image>
         </div>
@@ -210,71 +210,69 @@ export default function LoginPage() {
             <p></p>
             <span className="agreloy title">Grimoire</span>
 
-            <div className="text-left">
-              <h1 className="subtitle">ABOUT</h1>
-              <p className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum neque ac congue semper. Vestibulum pulvinar eros sit amet nisi eleifend feugiat. Aliquam tristique arcu metus, ac dapibus dui congue vitae. Curabitur consectetur, velit sed iaculis ullamcorper, sapien turpis ullamcorper metus, eget ultrices augue ipsum mattis felis.</p>
-            </div>
+            <Box h={"45vh"} alignContent={"center"}>
+              <Presence
+                present={!showSignInForm && !showSignUpForm}
+                animationName={{ _open: "fade-in" }}
+                animationDuration="moderate"
+              >
+                <div className="margin">
+                <Button onClick={()=>setShowSignInForm(true)} className="padding-xl margin-sides">Entrar</Button>
+                <Button onClick={()=>setShowSignUpForm(true)} className="padding-xl margin-sides">Cadastrar</Button>
+                </div>
+              </Presence>
+              <Presence
+                present={showSignInForm}
+                animationName={{ _open: "fade-in"}}
+                animationDuration="moderate"
+              >
+                <div className="margin grid place-items-center">
+                <Form className="grid-cols-1 w-1/3">
+                  <Input mb={"2"} resize="none" placeholder="username" onChange={usernameSignInChange} />
+                  <br></br>
+                  <PasswordInput resize="none" placeholder="senha" onChange={passwordSignInChange}></PasswordInput>
+                </Form>
+                <br></br>
+                <Button onClick={submitLogin} className="padding-xl margin-sides">Entrar</Button>
+                <Text onClick={()=>signUp()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Não tem uma conta ainda? Cadastre-se!</Text>
+                </div> 
+              </Presence>
 
-            <Presence
-              present={!showSignInForm && !showSignUpForm}
-              animationName={{ _open: "fade-in" }}
-              animationDuration="moderate"
-            >
-              <div className="margin">
-              <Button onClick={()=>setShowSignInForm(true)} className="padding-xl margin-sides">Entrar</Button>
-              <Button onClick={()=>setShowSignUpForm(true)} className="padding-xl margin-sides">Cadastrar</Button>
-              </div>
-            </Presence>
-            <Presence
-              present={showSignInForm}
-              animationName={{ _open: "fade-in"}}
-              animationDuration="moderate"
-            >
-              <div className="margin grid place-items-center">
-              <Form className="grid-cols-1 w-1/3">
-                <Input mb={"2"} resize="none" placeholder="username" onChange={usernameSignInChange} />
+              <Presence
+                present={showSignUpForm}
+                animationName={{ _open: "fade-in"}}
+                animationDuration="moderate"
+              >
+                          <div className="margin">
+                <Form>
+                  <Textarea resize="none" className="height" placeholder="nome" onChange={nameSignUpChange}/>
+                  <Textarea resize="none" className="height" placeholder="username" onChange={usernameSignUpChange} />
+                  <br></br>
+                  <Textarea resize="none" className="height-l" placeholder="e-mail" onChange={emailSignUpChange} />
+                  <br></br>
+                  <Box placeItems={"center"}>
+                  <Flex gapX={2} className="height-l" justifyContent={"center"}>
+                    <PasswordInput resize="none" placeholder="senha" onChange={passwordSignUpChange} />
+                    <PasswordInput resize="none" placeholder="repita sua senha" onChange={passwordConfirmationSignUpChange} />
+                  </Flex>
+                    
+                    </Box>
+                </Form>
                 <br></br>
-                <PasswordInput resize="none" placeholder="senha" onChange={passwordSignInChange}></PasswordInput>
-              </Form>
-              <br></br>
-              <Button onClick={submitLogin} className="padding-xl margin-sides">Entrar</Button>
-              <Text onClick={()=>signUp()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Não tem uma conta ainda? Cadastre-se!</Text>
-              </div> 
-            </Presence>
+                <div className="flex place-content-around margin-sides content-end">
+                  <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
+                  <Textarea onChange={usernameConfirmation} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
+                </div>
+                <Text onClick={()=>signIn()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Já faz parte da comunidade do Grimoire? Entre com sua conta!</Text>
+                </div> 
+              </Presence>
 
-            <Presence
-              present={showSignUpForm}
-              animationName={{ _open: "fade-in"}}
-              animationDuration="moderate"
-            >
-                        <div className="margin">
-              <Form>
-                <Textarea resize="none" className="height" placeholder="nome" onChange={nameSignUpChange}/>
-                <Textarea resize="none" className="height" placeholder="username" onChange={usernameSignUpChange} />
-                <br></br>
-                <Textarea resize="none" className="height-l" placeholder="e-mail" onChange={emailSignUpChange} />
-                <br></br>
-                <Box placeItems={"center"}>
-                <Flex gapX={2} className="height-l" justifyContent={"center"}>
-                  <PasswordInput resize="none" placeholder="senha" onChange={passwordSignUpChange} />
-                  <PasswordInput resize="none" placeholder="repita sua senha" onChange={passwordConfirmationSignUpChange} />
-                </Flex>
-                  
-                  </Box>
-              </Form>
-              <br></br>
-              <div className="flex place-content-around margin-sides content-end">
-                <Text className="text-left text">Assine com seu username para começar sua aventura!</Text>
-                <Textarea onChange={usernameConfirmation} resize="none" variant={"flushed"} className="height" placeholder="assinatura " />
-              </div>
-              <Text onClick={()=>signIn()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Já faz parte da comunidade do Grimoire? Entre com sua conta!</Text>
-              </div> 
-            </Presence>
+            </Box>
             <ToggleTheme/>
           </div>
         </div>
 
-      </div>
+      </Flex>
       </Box>
     </Presence>
   );
