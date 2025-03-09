@@ -3,7 +3,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {Button, Flex, IconButton, Text} from "@chakra-ui/react"
+import {IconButton, Text,Image} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -13,16 +13,32 @@ import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPa
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
 import { useUserStore } from "@/stores/user/user.store";
-import { System } from "@/interfaces/Models";
-import { getSystemRules } from "@/services/systemService";
+import { Campaign } from "@/interfaces/Models";
 
 export default function CampaignSystemPage(){
 
-    const system = "sistema externo";
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [openDialogLg, setOpenDialogLg] = useState(false)
     const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            setImg(data.image)
+            console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
 
     return(
         <Presence 
@@ -63,12 +79,12 @@ export default function CampaignSystemPage(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">
-                                {/* na box vai ser a imagem da campanha */}
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
+                                <Image src={img} w={"100vw"} h={"113vh"} />
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
-                                <CampaignHeaderPlayer  campaign="campanha muito legal dos meus amigos"/>
+                                <CampaignHeaderPlayer/>
                                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                                     <div className="col-span-2 sticky">
                                         <SidebarPlayer campaign=""></SidebarPlayer>
@@ -77,7 +93,7 @@ export default function CampaignSystemPage(){
                                         <div className="h-[80vh]">
                                                 <SystemPageRulesNoEditComponent   
                                                                             title="REGRAS DO SISTEMA"
-                                                                            subtitle={campaign+" utiliza o sistema "+system}
+                                                                            subtitle={"Explore as regras que "+campaign.titulo+" utiliza para contar sua história!"}
                                                                             system={""}
                                                                             maxHeight="67vh"
                                                                             />

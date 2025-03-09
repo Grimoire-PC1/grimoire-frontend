@@ -6,7 +6,7 @@ import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoo
 export interface RulesCardProps {
     ruleTitle: string; // mudar para o tipo Rule depois. O tipo rule contém título e descrição, e talvez tag também 
     ruleDesc: string;
-    ruleId: string;
+    ruleId: number;
 }
 
 export const RulesNoEditCard = ({
@@ -20,7 +20,7 @@ export const RulesNoEditCard = ({
             <CardRoot size={"sm"} cursor={"pointer"}>
                 <CardBody>
                     <AccordionRoot collapsible cursor={"pointer"}>
-                        <AccordionItem cursor={"pointer"} key={ruleId} value={ruleId}>
+                        <AccordionItem cursor={"pointer"} key={ruleId} value={String(ruleId)}>
                         <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
                             <LuScrollText /> {ruleTitle}
                         </AccordionItemTrigger>

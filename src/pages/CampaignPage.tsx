@@ -95,7 +95,7 @@ export default function CampaignPage(){
                                         <div className="h-[80vh]">
                                             <CampaignPagePlayer></CampaignPagePlayer>
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                                 
                             </div>

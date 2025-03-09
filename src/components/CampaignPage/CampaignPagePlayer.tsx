@@ -110,7 +110,7 @@ export const CampaignPagePlayer = () => {
                             <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"auto"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
                                     <For each={myCharas}>
@@ -126,7 +126,7 @@ export const CampaignPagePlayer = () => {
                             <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"auto"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
                                     <For each={otherCharas}>
