@@ -2,13 +2,14 @@ import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, Fil
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getCampaignById, updateCampaign } from "@/services/campaignService";
+import { getCampaignById, getCampaignCharacters, updateCampaign } from "@/services/campaignService";
 import { TemporaryCampaignPayload, UpdateCampaignPayload } from "@/interfaces/ServicePayload";
 import { HiUpload } from "react-icons/hi";
 import { toaster, Toaster } from "../ui/toaster";
 import { getCampaignSessions } from "@/services/sessionService";
+import { Avatar } from "../ui/avatar";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
@@ -105,28 +106,71 @@ export const CampaignPageGM = () => {
         },
       });
 
-    const players = [[''],[''],['','']];
-    var characters: string[][] = [];
-
-    for(let i = 0; i < players.length; i++) {
-        characters.push(players[i]);
-    }
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
-    const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
-            method:"GET",
-            headers: {
-              "content-type" : "application/json"
+    const getImage = async (id:string) => {
+      const res = await fetch(`http://localhost:8081/get/${id}`, {
+          method:"GET",
+          headers: {
+            "content-type" : "application/json"
+          }
+        })
+        const data = await res.json()
+        setImg(data.image)
+        console.log(data)
+  }
+
+  const getPlayerImage = async (id:string) => {
+    const res = await fetch(`http://localhost:8081/get/${id}`, {
+        method:"GET",
+        headers: {
+          "content-type" : "application/json"
+        }
+      })
+      const data = await res.json()
+      return data.image;
+}
+
+    type MyCharas = {
+      id:number;
+      foto: any;
+      nome:string;
+  }
+
+    const [otherCharas, setOtherCharas] = useState<MyCharas[]>([]);
+    const [flag,setFlag] = useState(0);
+
+    let {data: allCharas} = useQuery({
+        queryKey: ["getCampaignCharacters"],
+        queryFn: getCampaignCharacters
+      })
+      allCharas = allCharas?.filter((c) => c.id_usuario != c.id_campanha_mestre).sort((a, b) => {
+          return a.id - b.id;
+      });
+
+    useEffect(() => {
+        const updateOtherCharasArray = async () => {
+            const updatedOtherCharas = [];
+
+            for (let c of allCharas || []) {
+                const f = await getPlayerImage(c.id_foto);
+                updatedOtherCharas.push({ id: c.id, foto: f,nome:c.nome });
             }
-          })
-          const data = await res.json()
-          setImg(data.image)
-          console.log(data)
-    }
+
+            // Atualiza o estado
+            setOtherCharas(updatedOtherCharas);
+        };
+
+        if (allCharas && (flag == 0)) {
+            updateOtherCharasArray();
+            setFlag(1);
+            console.log(otherCharas)
+        }
+    }, [allCharas]);
+
 
     if(!img || img == "") {
-        getImage()
+        getImage(campaign?.id_foto)
     }
 
     const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
@@ -244,12 +288,9 @@ export const CampaignPageGM = () => {
                         <Text className="subtitle-s text-center">PERSONAGENS DOS JOGADORES</Text>
                         <Center>
                             <Flex wrap="wrap" mt='2'>
-                                <For each={characters}>
-                                    {(itemPlayer) => 
-                                    <For each={itemPlayer}>
-                                        {(itemCharacter) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={itemCharacter}></CharacterProfile>}
-                                    </For>}
-                                </For>
+                                      <For each={otherCharas}>
+                                          {(item) => <Avatar name={item.nome} size={"xl"} m={1} src={item.foto}/>}
+                                      </For>
                             </Flex>
                         </Center>
                         {/* aqui vem uma lista de avatares dos jogadores. clicar neles leva à ficha do personagem*/}

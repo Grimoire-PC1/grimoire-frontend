@@ -7,34 +7,18 @@ import { withMask } from 'use-mask-input';
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
-    journalEntryId:string;
     journalEntryTitle:string;
     journalEntryDate:string;
     journalEntryContent:string;
-    journalEntryCharacters:string[]; //mudar para Character[]
 }
 
 export const JournalDetailsNoEdit = ({
     open,
     handleClose,
-    campaignId,
-    journalEntryId,
     journalEntryTitle,
     journalEntryDate,
     journalEntryContent,
-    journalEntryCharacters,
 }: DialogLgProps) => {
-
-    function formatDate(d:Date){
-       const date_String = d.getFullYear() +
-            "/" +
-            (d.getMonth() + 1) +
-            "/" +
-            +d.getDate()
-        return date_String;
-    }
-
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -65,13 +49,14 @@ export const JournalDetailsNoEdit = ({
                                 <Text textAlign={"justify"}>{journalEntryContent}</Text>
                                 
                             </Box>
-                            
+                            {/*
                             <Text mt={4} fontSize={"2xl"}>Personagens presentes</Text>
                             <Flex mt={2} flexWrap={"wrap"} gap={1}>
                                 <For each={journalEntryCharacters}>
                                     {(character)=><CharacterProfile character={character} mt="" mb="" ml="" mr=""></CharacterProfile>}
                                 </For>
                             </Flex>
+                            */}
 
                         </Box>
 

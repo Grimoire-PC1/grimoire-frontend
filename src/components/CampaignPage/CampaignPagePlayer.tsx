@@ -1,36 +1,99 @@
-import { Input, Text, Textarea, Image, Separator, Button, Box, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
-import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
-import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
-import { SidebarPlayer } from "../SidebarPlayer/SidebarPlayer";
-import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
-import { CampaignCard } from "../CampaignCard/CampaignCard";
-import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
-import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
-import { useState } from "react";
-import { Campaign } from "@/interfaces/Models";
+import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCampaignCharacters } from "@/services/campaignService";
+import { Avatar } from "../ui/avatar";
+import { getUserCharacters } from "@/services/characterService";
+import { getCampaignSessions } from "@/services/sessionService";
+import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 
-export interface CampaignPagePlayerProps {
-    user: string;
-    campaign: Campaign; //depois mudar pra Campaign
-}
+export const CampaignPagePlayer = () => {
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
 
-export const CampaignPagePlayer = ({
-    user,
-    campaign,
-}: CampaignPagePlayerProps) => {
-    const [img,setImg] = useState("")
-        
-        const getImage = async () => {
-            const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
-                method:"GET",
-                headers: {
-                  "content-type" : "application/json"
-                }
-              })
-              const data = await res.json()
-              setImg(data.image)
-              console.log(data)
+    const {data: sessoesDaCampanha} = useQuery({
+        queryKey: ["sessoes"],
+        queryFn: getCampaignSessions
+    })
+    sessoesDaCampanha?.sort((a, b) => {
+        return a.id - b.id;
+    });
+
+    type MyCharas = {
+        id:number;
+        foto: any;
+    }
+
+    const [myCharas, setMyCharas] = useState<MyCharas[]>([]);
+    const [otherCharas, setOtherCharas] = useState<MyCharas[]>([]);
+    const [flag1,setFlag1] = useState(0);
+    const [flag2,setFlag2] = useState(0);
+
+
+    const getImage = async (id:string) => {
+        const res = await fetch(`http://localhost:8081/get/${id}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            console.log(data)
+            return data.image;
+    }
+
+    let {data: userCharas} = useQuery({
+        queryKey: ["getCampaignCharacters"],
+        queryFn: getUserCharacters
+      })
+      userCharas = userCharas?.filter((c)=> c.id_campanha == campaign.id).sort((a, b) => {
+          return a.id - b.id;
+      });
+
+    useEffect(() => {
+        const updateMyCharasArray = async () => {
+            const updatedMyCharas = [];
+
+            for (let c of userCharas || []) {
+                const f = await getImage(c.id_foto);
+                updatedMyCharas.push({ id: c.id, foto: f });
+            }
+
+            // Atualiza o estado
+            setMyCharas(updatedMyCharas);
+        };
+
+        if (userCharas && (flag1 == 0)) {
+            updateMyCharasArray();
+            setFlag1(1);
         }
+    }, [userCharas]);
+
+    let {data: allCharas} = useQuery({
+        queryKey: ["getCampaignCharacters"],
+        queryFn: getCampaignCharacters
+      })
+      allCharas = allCharas?.filter((c) => c.id_usuario != c.id_campanha_mestre && !(userCharas?.includes(c))).sort((a, b) => {
+          return a.id - b.id;
+      });
+
+    useEffect(() => {
+        const updateOtherCharasArray = async () => {
+            const updatedOtherCharas = [];
+
+            for (let c of allCharas || []) {
+                const f = await getImage(c.id_foto);
+                updatedOtherCharas.push({ id: c.id, foto: f });
+            }
+
+            // Atualiza o estado
+            setOtherCharas(updatedOtherCharas);
+        };
+
+        if (allCharas && (flag2 == 0)) {
+            updateOtherCharasArray();
+            setFlag2(1);
+        }
+    }, [allCharas]);
 
     return(
         <div>
@@ -38,7 +101,7 @@ export const CampaignPagePlayer = ({
             <div className="grid grid-cols-3 gap-x-8 content-padding">
                 <div className="col-span-1">
                     {/* aqui vem a descrição da campanha */}
-                    <Text className="text" textAlign={"justify"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum ipsum ex, at ullamcorper dolor maximus vitae. Suspendisse potenti. Phasellus ultrices erat eu magna iaculis dapibus. Sed placerat augue nibh, ut convallis nulla iaculis a. Praesent turpis velit, bibendum vulputate posuere quis, fringilla sed est. Nunc volutpat nunc ac volutpat tempor. Sed ac orci faucibus, interdum eros in, elementum arcu.</Text>
+                    <Text className="text" textAlign={"justify"}>{campaign.descricao}</Text>
                 </div>
                 <div className="col-span-1 max-h-[80vh]">
 
@@ -47,11 +110,11 @@ export const CampaignPagePlayer = ({
                             <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"auto"}  className="flex">
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
-                                    <For each={['',]}>
-                                        {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
+                                    <For each={myCharas}>
+                                        {(item) => <Avatar size={"xl"} m={1} src={item.foto}/>}
                                     </For>
                                 </Flex>
                             </Center>
@@ -63,11 +126,11 @@ export const CampaignPagePlayer = ({
                             <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
                             <Separator></Separator>
                         </CardHeader>
-                        <CardBody overflowY={"scroll"}  className="flex">
+                        <CardBody overflowY={"auto"}  className="flex">
                             <Center>
                                 <Flex alignItems={"center"} wrap="wrap" mt='1'>
-                                    <For each={['','','',]}>
-                                        {(item) => <CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile>}
+                                    <For each={otherCharas}>
+                                        {(item) => <Avatar size={"xl"} m={1} src={item.foto}/>}
                                     </For>
                                 </Flex>
                             </Center>
@@ -80,19 +143,12 @@ export const CampaignPagePlayer = ({
                         <Separator></Separator>
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
-                        {/*
-                        ---- BACKEND PENDING ----
-
-                        <For each={campaign.diario.fixedSessions}>
-                            {(item) => <PinnedDiaryListCard title={item.title} date={item.date}/>
+                        <For each={sessoesDaCampanha}>
+                            {(item) => item.id_campanha == campaign.id && item.fixada ? 
+                                <PinnedDiaryListCardNoEdit titulo={item.titulo} descricao={item.descricao} data={item.data}/> 
+                            : <div></div>
                             }
                         </For>
-                        */}
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
-                        <PinnedDiaryListCard/>
                     </CardBody>
                 </CardRoot>
             </div>
