@@ -20,12 +20,6 @@ export const PublicRoutes: RouteObject[] = [
   {
     path: "/grimoire/",
     element: <LoginPage />,
-    children : [
-        {
-            path: "/grimoire/SignUp",
-            element: <SignUpPage/>
-        }
-    ]
   },
   {
     path: "/grimoire/home",
