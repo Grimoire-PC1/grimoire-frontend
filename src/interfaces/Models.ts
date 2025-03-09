@@ -2,9 +2,9 @@ import { SessionType } from "./ServicePayload";
 import { SignInResponse } from "./ServiceResponse";
 
 export type User = {
-    createdCampaign: Campaign[];
-    playedCampaign: Campaign[]
-    characters: Character[];
+    createdCampaign?: Campaign[];
+    playedCampaign?: Campaign[]
+    characters?: Character[];
 } & SignInResponse;
 
 export type Campaign = {

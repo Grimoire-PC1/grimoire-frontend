@@ -18,14 +18,37 @@ export const SystemListCard = ({
 
     const navigate = useNavigate();
 
+    const [img,setImg] = useState("")
+        
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            setImg(data.image)
+            console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
+    
+    const navigateToSystemPage = () => {
+        sessionStorage.setItem('currentSystem', JSON.stringify(system))
+        navigate("/grimoire/system")
+    }
+
     return(
 
         <MenuRoot>
             <MenuTrigger asChild>
                 <CardRoot className="" cursor={"pointer"}>
-                        {system.image && system.image != '' ?
+                        {system.id_foto && system.id_foto != '' ?
                             <Image
-                            src={system.image}
+                            src={img}
                             className={"max-h-[20vh] rounded-t-sm"}
                             />
                         :
@@ -34,12 +57,12 @@ export const SystemListCard = ({
                             />
                         }
                     <CardBody>
-                        <Text fontSize={"lg"}>{system.name}</Text>
+                        <Text fontSize={"lg"}>{system.nome}</Text>
                     </CardBody>
                 </CardRoot>
             </MenuTrigger>
             <MenuContent>
-                <MenuItem onClick={()=>navigate("/grimoire/system")} cursor={"pointer"} value="abrirSistema">Abrir sistema</MenuItem>
+                <MenuItem onClick={navigateToSystemPage} cursor={"pointer"} value="abrirSistema">Abrir sistema</MenuItem>
                 <MenuItem onClick={()=>setOpenUserCampaigns(true)} cursor={"pointer"} value="usarSistema">Usar em uma campanha</MenuItem>
             </MenuContent>
 

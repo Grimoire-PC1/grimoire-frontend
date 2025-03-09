@@ -21,11 +21,11 @@ export const createUser = async (body: SignUpPayload) => {
     return data;
 }
 
-export const getUser = async (id: string) => {
+export const getUser = async () => {
     const { data } = await axiosInstace.get<SignInResponse>(
-        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`
+        `/${ENDPOINT.GET_USER}`
     );
-
+ 
     return data;
 }
 

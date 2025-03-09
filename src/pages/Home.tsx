@@ -17,13 +17,18 @@ import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 import { DialogNewCampaign } from "@/components/Dialog/DialogNewCampaign";
 import { useUserStore } from "@/stores/user/user.store";
 import { CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
-import { SystemType } from "@/interfaces/Models";
+import { SystemType, User } from "@/interfaces/Models";
 import { createNewSystem, getAllUserCreatedSystems } from "@/services/systemService";
+import { getUser } from "@/services/userService";
+import { SystemListCard } from "@/components/system/SystemListCard";
 
 export default function Home() {
     const navigate = useNavigate();
-    
-    const user = useUserStore((state) => state.user);
+
+    const {data: infoUsuario} = useQuery({
+        queryKey: ["infoUsuario"],
+        queryFn: getUser
+    })
 
     const {data: campanhasCriadas} = useQuery({
         queryKey: ["userCreatedCampaigns"],
@@ -35,7 +40,7 @@ export default function Home() {
         queryFn: getAllUserPlayedCampaigns
     })
 
-    const {data: characters} = useQuery({
+    const {data: personagens} = useQuery({
         queryKey: ["userCharacters"],
         queryFn: getAllUserCharacters
     })
@@ -44,6 +49,21 @@ export default function Home() {
         queryKey: ["userSystems"],
         queryFn: getAllUserCreatedSystems
     })
+
+    const userObject: User = {
+        createdCampaign: campanhasCriadas,
+        playedCampaign: campanhasJogadas,
+        characters: personagens,
+        login: infoUsuario?.login,
+        email: infoUsuario?.email,
+        nome: infoUsuario?.nome,
+        id_foto: infoUsuario?.id_foto
+    }
+
+    if(useUserStore.getState().user == undefined) {
+        useUserStore.getState().setUser(userObject);
+        console.log(useUserStore.getState())
+    }
 
     if(campanhasCriadas != undefined){
         useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
@@ -73,28 +93,42 @@ export default function Home() {
         }
     }
 
-    function navigateNewSystem(){
+    async function navigateNewSystem(){
+        const resImg = await fetch("http://localhost:8081/upload", {
+            method:"POST",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({img: ''})
+        })
+        const data = await resImg.json()
+          
         const newSystemPayload: CreateNewSystemPayload = {
-            id_foto: '',
+            id_foto: data.data._id,
             nome: '',
             descricao: ''
         }
-        const systemType: SystemType =  'PUBLICO';
+
+        console.log(data)
+        console.log(data.data._id)
+        console.log(newSystemPayload)
+
+        const systemType: SystemType =  "PRIVADO";
         const temporaryJson: TemporarySystemPayload = {
             payload: newSystemPayload,
             systemType: systemType
         }
 
         newSystem.mutate(temporaryJson)
-        //navigate("/grimoire/system/");
     }
 
     const newSystem = useMutation({
         mutationKey: ["createNewSystem"],
         mutationFn: createNewSystem,
         onSuccess: (data) => {
+            sessionStorage.setItem('currentSystem', JSON.stringify(data))
             console.log(data)
-            //navigate("/grimoire/campaign");
+            navigate("/grimoire/system");
         },
         onError: (error) => {
           console.log(error);
@@ -115,7 +149,7 @@ export default function Home() {
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                 <div className="header margin-sides flex place-content-between items-center" >
-                    <span className="header-title agreloy">{user?.username}'s Grimoire</span>
+                    <span className="header-title agreloy">{userObject.login}'s Grimoire</span>
                     <div className="grid grid-cols-2 gap-x-4">
 
                     <MenuRoot>
@@ -251,7 +285,9 @@ export default function Home() {
                                     <Separator></Separator>
                                 </CardHeader>
                                 <CardBody  overflowY={"auto"}>
-                                    {/* fazer um For pra exibir seus sistemas */}
+                                <For each={sistemasUsuario}>
+                                    {(item) => <SystemListCard system={item}></SystemListCard>}
+                                </For>
                             </CardBody>
                             </CardRoot>
                             

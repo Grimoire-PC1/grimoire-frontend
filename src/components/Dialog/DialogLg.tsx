@@ -1,7 +1,10 @@
 import {System } from "@/interfaces/Models"
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { SystemListCard } from "../system/SystemListCard";
-import { Box } from "@chakra-ui/react";
+import { Box, For } from "@chakra-ui/react";
+import { useUserStore } from "@/stores/user/user.store";
+import { useQuery } from "@tanstack/react-query";
+import { getAllPublicSystems } from "@/services/systemService";
 
 
 export interface DialogLgProps {
@@ -18,6 +21,14 @@ export const DialogLg = ({
     title,
     description,
 }: DialogLgProps) => {
+
+    let sistemasUsuario = useUserStore.getState().userSystems;
+
+    const {data: sistemasPublicos} = useQuery({
+            queryKey: ["publicSystems"],
+            queryFn: getAllPublicSystems
+    })
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -49,37 +60,16 @@ export const DialogLg = ({
                         <div className="">
                             <span className="text-large">Seus sistemas</span>
                             <div className="grid grid-cols-3 gap-4 margin-top-s m-b-s">
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
+                                <For each={sistemasUsuario}>
+                                    {(item) => <SystemListCard system={item}></SystemListCard>}
+                                </For>
                             </div>
-                            
+                             
                             <span className="text-large">Sistemas da comunidade</span>
                             <div className="grid grid-cols-3 gap-4 margin-top-s">
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
-                                <SystemListCard system={{image:'',name:'My System',description:'Meu sistema muito legal'}}></SystemListCard> {/* Depois mudar pra uma lista dinamica de sistemas */}
+                                <For each={sistemasPublicos}>
+                                    {(item) => <SystemListCard system={item}></SystemListCard>}
+                                </For>
                             </div>
                         </div>
 

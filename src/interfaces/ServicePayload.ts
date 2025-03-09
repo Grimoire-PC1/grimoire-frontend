@@ -56,10 +56,15 @@ export type TemporaryCampaignPayload = {
 }
 
 export type UpdateSystemPayload = {
-    systemId: number;
-    image: string;
-    name: string;
-    description: string;
+    id_nova_foto: string;
+    novo_nome: string;
+    nova_descricao: string;
+}
+
+export type TemporaryUpdateSystemPayload = {
+    payload: UpdateSystemPayload;
+    id_sistema: Number;
+    tipo_sistema: SystemType;
 }
 
 export type NewRulePayload = {

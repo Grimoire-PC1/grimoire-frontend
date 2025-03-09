@@ -31,7 +31,7 @@ export default function SystemPage(){
                                 <div>
                                     {
                                         isOwner ?
-                                        <SystemPageComponent system={"meu sistema"}/>
+                                        <SystemPageComponent/>
                                         :
                                         <SystemPageNoEditComponent system={"sistema de outra pessoa"}/>
 

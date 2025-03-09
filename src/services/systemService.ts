@@ -2,7 +2,7 @@ import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
 import { System, SystemMechanic, SystemRule} from "@/interfaces/Models";
-import { NewMechanicPayload, NewRulePayload, TemporarySystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
+import { NewMechanicPayload, NewRulePayload, TemporarySystemPayload, TemporaryUpdateSystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
 
@@ -43,15 +43,13 @@ export const createNewSystem = async(temporarySystemPayload: TemporarySystemPayl
     return data;
 }
 
-export const updateSystem = async (updatedSystem: UpdateSystemPayload) => {
-  
+export const updateSystem = async (updatedSystem: TemporaryUpdateSystemPayload) => {
     const { data } = await axiosInstace.put<GetSystemsResponse>(
-      `/${ENDPOINT.UPDATE_SYSTEM}/${updatedSystem.systemId}`,
+      `/${ENDPOINT.UPDATE_SYSTEM}?id_sistema=${updatedSystem.id_sistema}&tipo_sistema=${updatedSystem.tipo_sistema}`,
       {
-        systemId: updatedSystem.systemId,
-        name: updatedSystem.name,
-        image: updatedSystem.image,
-        description: updatedSystem.description
+        novo_nome: updatedSystem.payload.novo_nome,
+        id_nova_foto: updatedSystem.payload.id_nova_foto,
+        nova_descricao: updatedSystem.payload.nova_descricao
       }
     );
   
