@@ -286,7 +286,7 @@ export default function Home() {
                                 </CardHeader>
                                 <CardBody  overflowY={"auto"}>
                                 <For each={sistemasUsuario}>
-                                    {(item) => <SystemListCard system={item}></SystemListCard>}
+                                    {(item) => <Box className="margin-top"><SystemListCard system={item}></SystemListCard></Box>}
                                 </For>
                             </CardBody>
                             </CardRoot>

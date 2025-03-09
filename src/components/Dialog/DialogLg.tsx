@@ -23,11 +23,18 @@ export const DialogLg = ({
 }: DialogLgProps) => {
 
     let sistemasUsuario = useUserStore.getState().userSystems;
+    let my_id = 0;
+    if(sistemasUsuario && sistemasUsuario.length > 0){
+        my_id = sistemasUsuario[0].id_criador;
+    }
 
-    const {data: sistemasPublicos} = useQuery({
+    let {data: sistemasPublicos} = useQuery({
             queryKey: ["publicSystems"],
             queryFn: getAllPublicSystems
     })
+    sistemasPublicos = sistemasPublicos?.filter((s) => s.tipo_sistema === "PUBLICO" && s.id_criador != my_id);
+    console.log(sistemasPublicos)
+    console.log(sistemasUsuario)
 
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">

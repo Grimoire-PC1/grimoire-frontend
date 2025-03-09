@@ -9,7 +9,7 @@ export interface CampaignCardProps {
 }
 
 export const CampaignCard = ({
-    campaign,
+    campaign, 
 }: CampaignCardProps) => {
     
     const navigate = useNavigate();
