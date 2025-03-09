@@ -5,7 +5,7 @@ import { useReducer, useState } from "react";
 import { HiUpload } from "react-icons/hi";
 import { System } from "@/interfaces/Models";
 import { TemporaryUpdateSystemPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
-import { toaster } from "../ui/toaster";
+import { Toaster, toaster } from "../ui/toaster";
 import { updateSystem } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
 
@@ -244,6 +244,7 @@ export const SystemPageComponent = () => {
                 </div>
             
             </div>
+            <Toaster/>
         </div>
     )
 }
