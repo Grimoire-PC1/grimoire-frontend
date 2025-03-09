@@ -1,17 +1,13 @@
-import { Input, Text, Textarea, Image, Separator, Button, Box, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
-import { useEffect, useReducer, useState } from "react";
+import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignCharacters } from "@/services/campaignService";
 import { Avatar } from "../ui/avatar";
-import { CharacterRegister } from "@/interfaces/Models";
 import { getUserCharacters } from "@/services/characterService";
 import { getCampaignSessions } from "@/services/sessionService";
-import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 
 export const CampaignPagePlayer = () => {
-    const [,forceUpdate] = useReducer(x=>x+1,0);
-
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
 
     const {data: sessoesDaCampanha} = useQuery({
@@ -29,6 +25,9 @@ export const CampaignPagePlayer = () => {
 
     const [myCharas, setMyCharas] = useState<MyCharas[]>([]);
     const [otherCharas, setOtherCharas] = useState<MyCharas[]>([]);
+    const [flag1,setFlag1] = useState(0);
+    const [flag2,setFlag2] = useState(0);
+
 
     const getImage = async (id:string) => {
         const res = await fetch(`http://localhost:8081/get/${id}`, {
@@ -63,8 +62,9 @@ export const CampaignPagePlayer = () => {
             setMyCharas(updatedMyCharas);
         };
 
-        if (userCharas) {
+        if (userCharas && (flag1 == 0)) {
             updateMyCharasArray();
+            setFlag1(1);
         }
     }, [userCharas]);
 
@@ -89,8 +89,9 @@ export const CampaignPagePlayer = () => {
             setOtherCharas(updatedOtherCharas);
         };
 
-        if (allCharas) {
+        if (allCharas && (flag2 == 0)) {
             updateOtherCharasArray();
+            setFlag2(1);
         }
     }, [allCharas]);
 
