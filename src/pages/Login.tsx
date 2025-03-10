@@ -139,17 +139,25 @@ export default function LoginPage() {
     })
   }
 
-  const usernameConfirmation = (e: any) => {
+  const usernameConfirmation = async (e: any) => {
     const value = e.target.value;
     console.log(value)
     console.log(signUpForm['login'])
     if(value == signUpForm['login'] && checkSignUpParameters() && checkEqualPassword()) {
+      const resImg = await fetch("http://localhost:8081/upload", {
+        method:"POST",
+        headers: {
+          "content-type" : "application/json"
+        },
+        body: JSON.stringify({img: ''})
+      })
+      const data = await resImg.json()
       const signUpPayload: SignUpPayload = {
         login: signUpForm['login'],
         senha: signUpForm['senha'],
         email: signUpForm['email'],
         nome: signUpForm['nome'],
-        id_foto: "string"
+        id_foto: data.data._id
       }
       console.log(signUpPayload)
       sendSignUnForm.mutate(signUpPayload)

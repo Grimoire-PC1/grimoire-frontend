@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user/user.store';
 import { CreateNewCampaignPayload } from '@/interfaces/ServicePayload';
 import { createNewCampaign } from '@/services/campaignService';
 import { useState } from 'react';
-
+import { System } from '@/interfaces/Models';
 
 export interface DialogCampaignCodeProps {
     open:boolean,
@@ -20,13 +20,12 @@ export const DialogNewCampaign = ({
 }: DialogCampaignCodeProps) => {
     const navigate = useNavigate();
 
+    const userSystems: System[] = useUserStore.getState().userSystems
+
+    const [selectedSystem,setSelectedSystem] = useState("")
+
     const types = createListCollection({
-    items: [
-        { label: "Texto curto (30 caracteres)", value: "StringCurta" },
-        { label: "Texto longo (500 caracteres)", value: "StringLonga" },
-        { label: "Número", value: "Numerico" },
-        { label: "Dado (quantidade - tipo de dado - bônus)", value: "Dado" },
-    ],
+    items: userSystems,
     })
 
     const [title,setTitle] = useState("");
@@ -110,8 +109,8 @@ export const DialogNewCampaign = ({
                             </SelectTrigger>
                             <SelectContent>
                                 {types.items.map((type) => (
-                                <SelectItem item={type} key={type.value}>
-                                    {type.label}
+                                <SelectItem item={type} key={type.id}>
+                                    {type.nome}
                                 </SelectItem>
                                 ))}
                             </SelectContent>
