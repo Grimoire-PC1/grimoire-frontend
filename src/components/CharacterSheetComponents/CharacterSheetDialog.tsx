@@ -1,19 +1,45 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Box, Button, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { createSheetTemplateTab } from '@/services/systemService';
+import { toaster, Toaster } from '../ui/toaster';
 
 
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    sheet:string; //mudar para Ficha depois
+    handleCreate: (open: boolean) => void;
 }
 
 export const CharacterSheetDialog = ({
     open,
     handleClose,
-    sheet
+    handleCreate,
 }: UserSettingsDialogSmProps) => {
+
+    const [titulo,setTitulo] = useState("");
+
+     const mutation = useMutation({
+        mutationKey: ["createTab"],
+        mutationFn: createSheetTemplateTab,
+        onSuccess: (data) => {
+            toaster.create({
+                        description: "Aba criada com sucesso!",
+                        type: "success",
+                        })
+            handleCreate(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a criação da aba.",
+                        type: "error",
+                        })
+        },
+    });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -38,15 +64,16 @@ export const CharacterSheetDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} w={"360px"} placeholder='Nome da aba'></Input>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Nome da aba'></Input>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Criar Aba</Button>
+                                    <Button onClick={()=>mutation.mutate({nome:titulo})} mt={"4"} mb={"4"}>Criar Aba</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

@@ -1,21 +1,46 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Alert, Box, Button, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { deleteSheetTemplateTab } from '@/services/systemService';
 
 
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    sectionId:string;
+    handleConfirm: (open: boolean) => void;
+    sectionId:number;
     sectionName:string;
 }
 
 export const CharacterSheetDeleteSectionDialog = ({
     open,
     handleClose,
+    handleConfirm,
     sectionId,
     sectionName
 }: UserSettingsDialogSmProps) => {
+
+    const mutation = useMutation({
+        mutationKey: ["deleteTab"],
+        mutationFn: deleteSheetTemplateTab,
+        onSuccess: () => {
+            toaster.create({
+                        description: "Aba deletada com sucesso!",
+                        type: "success",
+                        })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a deleção da aba.",
+                        type: "error",
+                        })
+        },
+    });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -43,13 +68,14 @@ export const CharacterSheetDeleteSectionDialog = ({
                                         <Alert.Indicator />
                                         <Alert.Title>Esta ação não poderá ser desfeita.</Alert.Title>
                                     </Alert.Root>
-                                    <Button mt={"4"} mb={"4"}>Deletar Aba</Button>
+                                    <Button onClick={()=>mutation.mutate(sectionId)} mt={"4"} mb={"4"}>Deletar Aba</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

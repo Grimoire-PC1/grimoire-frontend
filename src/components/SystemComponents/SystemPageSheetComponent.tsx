@@ -6,14 +6,16 @@ import { RulesCard } from "../RulesCard/RulesCard";
 import { CharacterSheetSection } from "../CharacterSheetComponents/CharacterSheetSection";
 import { Avatar } from "../ui/avatar";
 import { LuPlus } from "react-icons/lu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CharacterSheetDialog } from "../CharacterSheetComponents/CharacterSheetDialog";
-import { System } from "@/interfaces/Models";
+import { SheetTab, System } from "@/interfaces/Models";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 
 export interface SystemPageComponentProps {
-    system: System; //depois mudar pra System
-    title: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
-    subtitle: string; //nao mude isso, esse parâmetro é algo pra deixar partes da pagina adaptaveis
+    system: System;
+    title: string;
+    subtitle: string;
 }
 
 export const SystemPageSheetComponent = ({
@@ -22,9 +24,46 @@ export const SystemPageSheetComponent = ({
     subtitle
 }: SystemPageComponentProps) => {
 
-    console.log(system)
+    const [data, setData] = useState<SheetTab[]>();
+    const [flag,setFlag] = useState(0);
+
+    /*
+    const {data} = useQuery({
+        queryKey: ["ficha"],
+        queryFn: getCampaignSheetTemplateTabs
+      })
+      data?.sort((a, b) => {
+          return a.id - b.id;
+      });
+    */
+
+    const mutation = useMutation({
+    mutationKey: ["tabs"],
+    mutationFn: getCampaignSheetTemplateTabs,
+    onSuccess: (data) => {
+        console.log(data)
+        setData(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
+        setFlag(1);
+    },
+    onError: (error) => {
+        console.log(error);
+    },
+    });
+
+    useEffect(() => {
+        if(flag == 0){
+            mutation.mutate();
+        }
+    }, []);
 
     const [newSection,setNewSection] = useState(false);
+
+    function fecharEforcar(){
+        setNewSection(false);
+        mutation.mutate();
+    }
 
     return(
         <div className="">
@@ -40,12 +79,14 @@ export const SystemPageSheetComponent = ({
                     </IconButton>
                 </Flex>
                     <Grid maxH={"66vh"} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
-                        <CharacterSheetSection sectionTitle="Identidade do Personagem" sectionId="1" fields=""/>
+                        <For each={data}>
+                            {(item) => <CharacterSheetSection sectionTitle={item.nome} sectionId={item.id} handleEdit={fecharEforcar}/>}
+                        </For>
                     </Grid>
             
             </div>
 
-            <CharacterSheetDialog open={newSection} handleClose={setNewSection} sheet=""></CharacterSheetDialog>
+            <CharacterSheetDialog open={newSection} handleClose={setNewSection} handleCreate={fecharEforcar}></CharacterSheetDialog>
         </div>
     )
 }

@@ -2,31 +2,49 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import {Alert, Box, Button, createListCollection, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { Toaster,toaster } from '../ui/toaster';
+import { updateSheetTemplateSubTab } from '@/services/systemService';
 
 
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    fieldId:string;
+    handleConfirm: (open: boolean) => void;
+    fieldId:number;
     fieldName:string;
 }
 
 export const CharacterSheetEditFieldDialog = ({
     open,
     handleClose,
+    handleConfirm,
     fieldId,
     fieldName,
 }: UserSettingsDialogSmProps) => {
-
-    const types = createListCollection({
-        items: [
-          { label: "Texto curto (30 caracteres)", value: "StringCurta" },
-          { label: "Texto longo (500 caracteres)", value: "StringLonga" },
-          { label: "Número", value: "Numerico" },
-          { label: "Dado (quantidade - tipo de dado - bônus)", value: "Dado" },
-        ],
-      })
     
+    const [titulo,setTitulo] = useState(fieldName);
+    
+    const mutation = useMutation({
+        mutationKey: ["editSubTab"],
+        mutationFn: updateSheetTemplateSubTab,
+        onSuccess: () => {
+            toaster.create({
+                        description: "Campo renomeado com sucesso!",
+                        type: "success",
+                        })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a modificação do campo.",
+                        type: "error",
+                        })
+        },
+    });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -51,15 +69,16 @@ export const CharacterSheetEditFieldDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} w={"360px"} placeholder='Nome do campo' defaultValue={fieldName}></Input>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Nome do campo' defaultValue={fieldName}></Input>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Modificar Campo</Button>
+                                    <Button onClick={()=>mutation.mutate({id_sub_aba_ficha:fieldId,novo_nome:titulo})} mt={"4"} mb={"4"}>Modificar Campo</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

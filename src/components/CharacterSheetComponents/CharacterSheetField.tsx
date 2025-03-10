@@ -9,15 +9,17 @@ import { CharacterSheetEditFieldDialog } from "./CharacterSheetEditFieldDialog";
 
 
 export interface CharacterSheetFieldProps {
-    fieldTitle: string; // mudar para o tipo Rule depois. O tipo rule contém título e descrição, e talvez tag também 
-    fieldType: string; //mudar para FieldType depois. O tipo FieldType pode ser string curta, string longa, numérico ou dado.
-    fieldId: string;
+    fieldTitle: string;
+    fieldType: string;
+    fieldId: number;
+    handleEdit: (open: boolean) => void;
 }
 
 export const CharacterSheetField = ({
     fieldTitle,
     fieldType,
     fieldId,
+    handleEdit
 }: CharacterSheetFieldProps) => {
 
     const [editField,setEditField] = useState(false);
@@ -35,7 +37,7 @@ export const CharacterSheetField = ({
                     </Text>
                     <div className="col-span-4">
                         {
-                            fieldType === 'StringLonga' ?
+                            fieldType === "TEXTO" ?
                                 <div>
                                     <Textarea disabled maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
@@ -45,7 +47,7 @@ export const CharacterSheetField = ({
                                     <Input disabled></Input>
                                 </div>
                             :
-                            fieldType === 'Numerico' ?
+                            fieldType === "INTEIRO" ?
                                 <div>
                                     <NumberInputRoot disabled>
                                         <NumberInputField disabled></NumberInputField>
@@ -82,8 +84,8 @@ export const CharacterSheetField = ({
                     </div>
             </div>
 
-            <CharacterSheetEditFieldDialog open={editField} handleClose={setEditField} fieldId="" fieldName={fieldTitle}/>
-            <CharacterSheetDeleteFieldDialog open={deleteField} handleClose={setDeleteField} fieldId="" fieldName={fieldTitle}/>
+            <CharacterSheetEditFieldDialog open={editField} handleClose={setEditField} handleConfirm={handleEdit} fieldId={fieldId} fieldName={fieldTitle}/>
+            <CharacterSheetDeleteFieldDialog open={deleteField} handleClose={setDeleteField} handleConfirm={handleEdit} fieldId={fieldId} fieldName={fieldTitle}/>
         </div>
     )
 }

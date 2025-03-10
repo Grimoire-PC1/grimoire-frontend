@@ -87,3 +87,21 @@ export type CharacterRegister = {
     nome:string;
     id_foto:string;
 }
+
+export type SheetTab = {
+    id:number;
+    id_sistema:number;
+    id_sistema_criador:number;
+    nome:string;
+}
+
+export type SheetSubTab = {
+    id:number;
+    id_aba_ficha:number;
+    id_sistema:number;
+    id_sistema_criador:number;
+    nome:string;
+    tipo_sub_aba_ficha:SheetSubTabType;
+}
+
+export type SheetSubTabType = "TEXTO" | "INTEIRO" | "DADO";

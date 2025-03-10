@@ -1,21 +1,49 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Box, Button, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { updateSheetTemplateTab } from '@/services/systemService';
 
 
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    sectionId:string;
+    handleConfirm: (open: boolean) => void;
+    sectionId:number;
     sectionName:string;
 }
 
 export const CharacterSheetEditSectionDialog = ({
     open,
     handleClose,
+    handleConfirm,
     sectionId,
     sectionName
 }: UserSettingsDialogSmProps) => {
+
+    const [titulo,setTitulo] = useState(sectionName);
+
+    const mutation = useMutation({
+        mutationKey: ["editTab"],
+        mutationFn: updateSheetTemplateTab,
+        onSuccess: (data) => {
+            toaster.create({
+                        description: "Aba renomeada com sucesso!",
+                        type: "success",
+                        })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a modificação da aba.",
+                        type: "error",
+                        })
+        },
+    });
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -40,15 +68,16 @@ export const CharacterSheetEditSectionDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} w={"360px"} placeholder='Nome da aba' defaultValue={sectionName}></Input>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Nome da aba' defaultValue={sectionName}></Input>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Modificar Aba</Button>
+                                    <Button onClick={()=>mutation.mutate({id_aba_ficha:sectionId,nome:titulo})} mt={"4"} mb={"4"}>Modificar Aba</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
-import { System, SystemMechanic, SystemRule} from "@/interfaces/Models";
-import { NewMechanicPayload, NewRulePayload, TemporarySystemPayload, TemporaryUpdateSystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
+import { SheetTab, System, SystemMechanic, SystemRule} from "@/interfaces/Models";
+import { CreateSheetSubTabPayload, CreateSheetTabPayload, NewMechanicPayload, NewRulePayload, TemporarySystemPayload, TemporaryUpdateSystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSheetSubTabPayload, UpdateSheetTabPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
 
@@ -136,5 +136,73 @@ export const deleteMechanic = async(id:number) =>{
         `/${ENDPOINT.DELETE_MECHANIC}`,
         { params: { id_mecanica: id} }
     )
+    return data;
+}
+
+export const getSystemSheetTemplateTabs = async() =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.get<SheetTab[]>(
+        `/${ENDPOINT.GET_SYSTEM_SHEET_TABS}`,
+        { params: { id_sistema: systemId} }
+    )
+    return data;
+}
+
+export const createSheetTemplateTab = async(payload:CreateSheetTabPayload) =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.post<CreateSheetTabPayload>(
+        `/${ENDPOINT.CREATE_SHEET_TAB}`,
+        payload,
+        { params: { id_sistema: systemId} }
+    )
+
+    return data;
+}
+
+export const updateSheetTemplateTab = async(payload:UpdateSheetTabPayload) =>{
+    const { data } = await axiosInstace.put<UpdateSheetTabPayload>(
+        `/${ENDPOINT.UPDATE_SHEET_TAB}`,
+        payload,
+        { params: { id_aba_ficha: payload.id_aba_ficha} }
+    )
+
+    return data;
+}
+
+export const deleteSheetTemplateTab = async(id:number) =>{
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_SHEET_TAB}`,
+        { params: { id_aba_ficha: id} }
+    )
+
+    return data;
+}
+
+export const createSheetTemplateSubTab = async(payload:CreateSheetSubTabPayload) =>{
+    const { data } = await axiosInstace.post<CreateSheetSubTabPayload>(
+        `/${ENDPOINT.CREATE_SHEET_SUB_TAB}`,
+        payload,
+        { params: { id_aba_ficha: payload.id_aba_ficha, tipo_sub_aba: payload.tipo_sub_aba_ficha} }
+    )
+
+    return data;
+}
+
+export const updateSheetTemplateSubTab = async(payload:UpdateSheetSubTabPayload) =>{
+    const { data } = await axiosInstace.put<UpdateSheetSubTabPayload>(
+        `/${ENDPOINT.UPDATE_SHEET_SUB_TAB}`,
+        payload,
+        { params: { id_sub_aba_ficha: payload.id_sub_aba_ficha} }
+    )
+
+    return data;
+}
+
+export const deleteSheetTemplateSubTab = async(id:number) =>{
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_SHEET_SUB_TAB}`,
+        { params: { id_sub_aba_ficha: id} }
+    )
+
     return data;
 }

@@ -43,4 +43,15 @@ export const ENDPOINT = {
     CREATE_CHARACTER: "character/register",
     UPDATE_CHARACTER: "character/update",
     DELETE_CHARACTER: "character/delete",
+
+    GET_SYSTEM_SHEET_TABS: "character-sheet-template/get/tab",
+    GET_CAMPAIGN_SHEET_TABS: "character-sheet-template/get/tab/campaign",
+    GET_SYSTEM_SHEET_SUB_TABS: "character-sheet-template/get/sub-tab",
+    GET_CAMPAIGN_SHEET_SUB_TABS: "character-sheet-template/get/sub-tab/campaign",
+    CREATE_SHEET_TAB: "character-sheet-template/register/tab",
+    UPDATE_SHEET_TAB: "character-sheet-template/update/tab",
+    DELETE_SHEET_TAB: "character-sheet-template/delete/tab",
+    CREATE_SHEET_SUB_TAB: "character-sheet-template/register/sub-tab",
+    UPDATE_SHEET_SUB_TAB: "character-sheet-template/update/sub-tab",
+    DELETE_SHEET_SUB_TAB: "character-sheet-template/delete/sub-tab",
 } as const;

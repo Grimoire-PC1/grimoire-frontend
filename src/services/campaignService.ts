@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
-import { Campaign, Character, CharacterRegister } from "@/interfaces/Models";
+import { Campaign, CharacterRegister, SheetSubTab, SheetTab } from "@/interfaces/Models";
 import { CreateNewCampaignPayload, TemporaryCampaignPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
@@ -66,6 +66,25 @@ export const getCampaignCharacters = async() =>{
     const { data } = await axiosInstace.get<CharacterRegister[]>(
         `/${ENDPOINT.GET_CAMPAIGN_CHARACTERS}`,
         { params: { id_campanha: id} }
+    )
+    return data;
+}
+
+export const getCampaignSheetTemplateTabs = async() =>{
+    let campaignId = sessionStorage.getItem('currentCampaignId')
+    const { data } = await axiosInstace.get<SheetTab[]>(
+        `/${ENDPOINT.GET_CAMPAIGN_SHEET_TABS}`,
+        { params: { id_campanha: campaignId} }
+    )
+    return data;
+}
+
+
+export const getCampaignSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
+    let campaignId = sessionStorage.getItem('currentCampaignId')
+    const { data } = await axiosInstace.get<SheetSubTab[]>(
+        `/${ENDPOINT.GET_CAMPAIGN_SHEET_SUB_TABS}`,
+        { params: { id_campanha: campaignId, id_aba_ficha:id_aba_ficha} }
     )
     return data;
 }

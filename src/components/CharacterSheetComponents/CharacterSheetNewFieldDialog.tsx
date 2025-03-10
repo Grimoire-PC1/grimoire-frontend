@@ -2,30 +2,58 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import {Alert, Box, Button, createListCollection, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
+import { useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { createSheetTemplateSubTab } from '@/services/systemService';
+import { SheetSubTabType } from '@/interfaces/Models';
 
 
 export interface UserSettingsDialogSmProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    sectionId:string;
+    handleCreate: (open: boolean) => void;
+    sectionId:number;
     sectionName:string;
 }
 
 export const CharacterSheetNewFieldDialog = ({
     open,
     handleClose,
+    handleCreate,
     sectionId,
     sectionName,
 }: UserSettingsDialogSmProps) => {
+    const [titulo,setTitulo] = useState("");
+    const [tipo,setTipo] = useState<SheetSubTabType>("TEXTO");
 
     const types = createListCollection({
         items: [
-          { label: "Texto curto (30 caracteres)", value: "StringCurta" },
-          { label: "Texto longo (500 caracteres)", value: "StringLonga" },
-          { label: "Número", value: "Numerico" },
-          { label: "Dado (quantidade - tipo de dado - bônus)", value: "Dado" },
+          { label: "Texto", value: "TEXTO" },
+          { label: "Número", value: "INTEIRO" },
+          { label: "Dado (quantidade - tipo de dado - bônus)", value: "DADO" },
         ],
       })
+
+    const mutation = useMutation({
+    mutationKey: ["createSubTab"],
+    mutationFn: createSheetTemplateSubTab,
+    onSuccess: (data) => {
+        toaster.create({
+                    description: "Campo criado com sucesso!",
+                    type: "success",
+                    })
+        handleCreate(false);
+    },
+    onError: (error) => {
+        console.log(error);
+        toaster.create({
+                    description: "Houve um problema durante a criação do campo.",
+                    type: "error",
+                    })
+    },
+});
     
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -51,8 +79,9 @@ export const CharacterSheetNewFieldDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} w={"360px"} placeholder='Nome do campo'></Input>
-                                        <SelectRoot mt={2} collection={types} >
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Nome do campo'></Input>
+                                        
+                                        <SelectRoot onValueChange={({ value }) => setTipo(value[0])} mt={2} collection={types} >
                                         <SelectTrigger>
                                             <SelectValueText placeholder="Tipo do campo" />
                                         </SelectTrigger>
@@ -69,13 +98,14 @@ export const CharacterSheetNewFieldDialog = ({
                                         <Alert.Indicator />
                                         <Alert.Title>Você não pode alterar o tipo do campo após a sua criação.</Alert.Title>
                                     </Alert.Root>
-                                    <Button mt={"4"} mb={"4"}>Criar Campo</Button>
+                                    <Button onClick={()=>mutation.mutate({id_aba_ficha:sectionId,tipo_sub_aba_ficha:tipo,nome:titulo})} mt={"4"} mb={"4"}>Criar Campo</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

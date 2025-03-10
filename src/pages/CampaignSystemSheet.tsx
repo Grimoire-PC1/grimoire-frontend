@@ -70,7 +70,7 @@ export default function CampaignSystemSheet(){
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
-                                <CampaignHeaderPlayer  campaign="campanha muito legal dos meus amigos"/>
+                                <CampaignHeaderPlayer/>
                                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                                     <div className="col-span-2 sticky">
                                         <SidebarPlayer campaign=""></SidebarPlayer>

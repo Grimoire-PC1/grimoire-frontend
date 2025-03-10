@@ -1,4 +1,4 @@
-import { SystemType } from "./Models";
+import { SheetSubTabType, SystemType } from "./Models";
 
 export type SignUpPayload = {
     login: string;
@@ -116,4 +116,24 @@ export type UpdateMechanicPayload = {
     nova_descricao:string;
     novas_acoes:string[];
     novos_efeitos:string[];
+}
+
+export type CreateSheetTabPayload = {
+    nome:string;
+}
+
+export type UpdateSheetTabPayload = {
+    id_aba_ficha:number;
+    nome:string;
+}
+
+export type CreateSheetSubTabPayload = {
+    id_aba_ficha:number;
+    tipo_sub_aba_ficha:SheetSubTabType;
+    nome:string;
+}
+
+export type UpdateSheetSubTabPayload = {
+    id_sub_aba_ficha:number;
+    novo_nome:string;
 }
