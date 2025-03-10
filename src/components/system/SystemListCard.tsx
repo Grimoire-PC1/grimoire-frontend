@@ -66,7 +66,7 @@ export const SystemListCard = ({
                 <MenuItem onClick={()=>setOpenUserCampaigns(true)} cursor={"pointer"} value="usarSistema">Usar em uma campanha</MenuItem>
             </MenuContent>
 
-            <DialogUserCampaigns open={openUserCampaigns} handleClose={setOpenUserCampaigns} user="" system=""/>
+            <DialogUserCampaigns open={openUserCampaigns} handleClose={setOpenUserCampaigns} system={system}/>
         </MenuRoot>
     )
 }
