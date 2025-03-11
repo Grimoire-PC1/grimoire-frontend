@@ -81,18 +81,23 @@ export const DialogUserCampaigns = ({
 
         sessionStorage.setItem('systemId',String(system.id))
         const originalSheetTab: SheetTab[] = await getSystemSheetTemplateTabs()
-        const originalSheetSubTab: SheetSubTab[] = await getSystemSheetTemplateSubTabs()
+        let originalSheetSubTab: SheetSubTab[]
         const originalRules: SystemRule[] = await getSystemRules()
         const originalMechanics: SystemMechanic[] = await getSystemMechanics()
 
         sessionStorage.setItem('systemId',String(systemCopy.id))
         let currentSheetTab: SheetTab
-        let currentSheetSubTabGroup: SheetSubTab[]
+        console.log(`Length - ${originalSheetTab.length}`)
         for(let i = 0; i < originalSheetTab.length; i++) {
-            currentSheetTab = await createSheetTemplateTab({nome: data.nome})
-            currentSheetSubTabGroup = originalSheetSubTab.filter((subTab) => subTab.id_aba_ficha == currentSheetTab.id)
-            for(let j = 0; j < currentSheetSubTabGroup.length; j++) {
-                await createSheetTemplateSubTab({id_aba_ficha: currentSheetTab.id, tipo_sub_aba_ficha: currentSheetSubTabGroup[j].tipo_sub_aba_ficha, nome:currentSheetSubTabGroup[j].nome})
+            console.log(originalSheetTab[i])
+            currentSheetTab = await createSheetTemplateTab({nome: originalSheetTab[i].nome})
+            sessionStorage.setItem('systemId',String(system.id))
+            originalSheetSubTab = await getSystemSheetTemplateSubTabs(originalSheetTab[i].id)
+            sessionStorage.setItem('systemId',String(systemCopy.id))
+            console.log("sheetSubTab:")
+            console.log(originalSheetSubTab)
+            for(let j = 0; j < originalSheetSubTab.length; j++) {
+                await createSheetTemplateSubTab({id_aba_ficha: currentSheetTab.id, tipo_sub_aba_ficha: originalSheetSubTab[j].tipo_sub_aba_ficha, nome:originalSheetSubTab[j].nome})
             }
         }
         originalRules.forEach(async (rule) => await createRule({id_sistema:systemCopy.id, titulo:rule.titulo, descricao:rule.descricao}))

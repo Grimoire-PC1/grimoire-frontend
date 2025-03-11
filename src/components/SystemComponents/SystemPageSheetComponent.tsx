@@ -11,6 +11,8 @@ import { CharacterSheetDialog } from "../CharacterSheetComponents/CharacterSheet
 import { SheetTab, System } from "@/interfaces/Models";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
+import { getSystemSheetTemplateTabs } from "@/services/systemService";
+import { CharacterSheetSectionSystem } from "../CharacterSheetComponents/CharacterSheetSectionSystem";
 
 export interface SystemPageComponentProps {
     system: System;
@@ -39,7 +41,7 @@ export const SystemPageSheetComponent = ({
 
     const mutation = useMutation({
     mutationKey: ["tabs"],
-    mutationFn: getCampaignSheetTemplateTabs,
+    mutationFn: getSystemSheetTemplateTabs,
     onSuccess: (data) => {
         console.log(data)
         setData(data.sort((a, b) => {
@@ -80,7 +82,7 @@ export const SystemPageSheetComponent = ({
                 </Flex>
                     <Grid maxH={"66vh"} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
                         <For each={data}>
-                            {(item) => <CharacterSheetSection sectionTitle={item.nome} sectionId={item.id} handleEdit={fecharEforcar}/>}
+                            {(item) => <CharacterSheetSectionSystem sectionTitle={item.nome} sectionId={item.id} handleEdit={fecharEforcar}/>}
                         </For>
                     </Grid>
             

@@ -148,11 +148,11 @@ export const getSystemSheetTemplateTabs = async() =>{
     return data;
 }
 
-export const getSystemSheetTemplateSubTabs = async() =>{
+export const getSystemSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
     let systemId = sessionStorage.getItem('systemId')
     const { data } = await axiosInstace.get<SheetSubTab[]> (
         `/${ENDPOINT.GET_SYSTEM_SHEET_SUB_TABS}`,
-        { params: { id_sistema: systemId}}
+        { params: { id_sistema: systemId, id_aba_ficha:id_aba_ficha}}
     )
     return data
 }
