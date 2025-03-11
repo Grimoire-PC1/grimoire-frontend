@@ -1,7 +1,7 @@
-import { System, SystemType } from "@/interfaces/Models";
-import { CreateNewCampaignPayload, CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
+import { SheetSubTab, SheetTab, System, SystemMechanic, SystemRule, SystemType } from "@/interfaces/Models";
+import { CreateNewCampaignPayload, CreateNewSystemPayload, CreateSheetTabPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
 import { createNewCampaign } from "@/services/campaignService";
-import { createNewSystem } from "@/services/systemService";
+import { createMechanic, createNewSystem, createRule, createSheetTemplateSubTab, createSheetTemplateTab, getSystemMechanics, getSystemRules, getSystemSheetTemplateSubTabs, getSystemSheetTemplateTabs } from "@/services/systemService";
 import { useUserStore } from "@/stores/user/user.store";
 import {Alert, Box, Button, Flex, Input, Text } from "@chakra-ui/react"
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
@@ -78,8 +78,28 @@ export const DialogUserCampaigns = ({
         } catch (error) {
             console.log(error);
         }
-        
-        //newSystem.mutate(temporaryJson)
+
+        sessionStorage.setItem('systemId',String(system.id))
+        const originalSheetTab: SheetTab[] = await getSystemSheetTemplateTabs()
+        const originalSheetSubTab: SheetSubTab[] = await getSystemSheetTemplateSubTabs()
+        const originalRules: SystemRule[] = await getSystemRules()
+        const originalMechanics: SystemMechanic[] = await getSystemMechanics()
+
+        sessionStorage.setItem('systemId',String(systemCopy.id))
+        let currentSheetTab: SheetTab
+        let currentSheetSubTabGroup: SheetSubTab[]
+        for(let i = 0; i < originalSheetTab.length; i++) {
+            currentSheetTab = await createSheetTemplateTab({nome: data.nome})
+            currentSheetSubTabGroup = originalSheetSubTab.filter((subTab) => subTab.id_aba_ficha == currentSheetTab.id)
+            for(let j = 0; j < currentSheetSubTabGroup.length; j++) {
+                await createSheetTemplateSubTab({id_aba_ficha: currentSheetTab.id, tipo_sub_aba_ficha: currentSheetSubTabGroup[j].tipo_sub_aba_ficha, nome:currentSheetSubTabGroup[j].nome})
+            }
+        }
+        originalRules.forEach(async (rule) => await createRule({id_sistema:systemCopy.id, titulo:rule.titulo, descricao:rule.descricao}))
+        originalSheetTab.forEach(async (data) => await createSheetTemplateTab({nome: data.nome}))
+        originalMechanics.forEach(async (mechanic) => await createMechanic({nome:mechanic.nome, descricao:mechanic.descricao, acoes:JSON.parse(mechanic.acoes)[0].split(","), efeitos: JSON.parse(mechanic.efeitos)[0].split(",")}))
+
+        newSystem.mutate(temporaryJson)
     }
 
     const newSystem = useMutation({

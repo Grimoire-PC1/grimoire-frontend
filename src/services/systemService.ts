@@ -1,11 +1,11 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetSystemsResponse } from "../interfaces/ServiceResponse";
-import { SheetTab, System, SystemMechanic, SystemRule} from "@/interfaces/Models";
+import { SheetSubTab, SheetTab, System, SystemMechanic, SystemRule} from "@/interfaces/Models";
 import { CreateSheetSubTabPayload, CreateSheetTabPayload, NewMechanicPayload, NewRulePayload, TemporarySystemPayload, TemporaryUpdateSystemPayload, UpdateMechanicPayload, UpdateRulePayload, UpdateSheetSubTabPayload, UpdateSheetTabPayload, UpdateSystemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedSystems = async () => {
-
+ 
     const { data } = await axiosInstace.get<GetSystemsResponse>(
         `/${ENDPOINT.GET_SYSTEM_BY_ID}`
     );
@@ -148,11 +148,20 @@ export const getSystemSheetTemplateTabs = async() =>{
     return data;
 }
 
+export const getSystemSheetTemplateSubTabs = async() =>{
+    let systemId = sessionStorage.getItem('systemId')
+    const { data } = await axiosInstace.get<SheetSubTab[]> (
+        `/${ENDPOINT.GET_SYSTEM_SHEET_SUB_TABS}`,
+        { params: { id_sistema: systemId}}
+    )
+    return data
+}
+
 export const createSheetTemplateTab = async(payload:CreateSheetTabPayload) =>{
     let systemId = sessionStorage.getItem('systemId')
     console.log(payload);
     console.log(systemId)
-    const { data } = await axiosInstace.post<CreateSheetTabPayload>(
+    const { data } = await axiosInstace.post<SheetTab>(
         `/${ENDPOINT.CREATE_SHEET_TAB}`,
         payload,
         { params: { id_sistema: systemId} }
