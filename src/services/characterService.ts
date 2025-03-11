@@ -2,7 +2,7 @@ import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCharactersResponse } from "../interfaces/ServiceResponse";
 import { Character, CharacterRegister } from "@/interfaces/Models";
-import { CharacterSheetInfo, CreateCharacterPayload, GetCharacterSheetInfoPayload } from "@/interfaces/ServicePayload";
+import { CharacterSheetInfo, CreateCharacterPayload, CreateOrUpdateFieldPayload, GetCharacterSheetInfoPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCharacters = async () => {
 
@@ -43,6 +43,26 @@ export const getCharacterSheetContent = async(payload:GetCharacterSheetInfoPaylo
     const { data } = await axiosInstace.get<CharacterSheetInfo>(
         `/${ENDPOINT.GET_SHEET_CONTENT}`,
         { params: { id_personagem: payload.id_personagem,id_aba_ficha:payload.id_aba_ficha,id_sub_aba_ficha:payload.id_sub_aba_ficha} }
+    )
+    
+    return data;
+}
+
+export const updateCharacterSheetContent = async(payload:CreateOrUpdateFieldPayload) =>{
+    const { data } = await axiosInstace.put<CreateOrUpdateFieldPayload>(
+        `/${ENDPOINT.UPDATE_SHEET_CONTENT}`,
+        payload,
+        { params: { id_conteudo_ficha: payload.id_conteudo_ficha} }
+    )
+    
+    return data;
+}
+
+export const createCharacterSheetContent = async(payload:CreateOrUpdateFieldPayload) =>{
+    const { data } = await axiosInstace.post<CreateOrUpdateFieldPayload>(
+        `/${ENDPOINT.CREATE_SHEET_CONTENT}`,
+        payload,
+        { params: { id_personagem: payload.id_personagem,id_sub_aba_ficha:payload.id_sub_aba_ficha} }
     )
     
     return data;

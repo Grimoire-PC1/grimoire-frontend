@@ -3,11 +3,12 @@ import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { HiUpload } from "react-icons/hi";
 import { useEffect, useReducer, useState } from "react";
-import { LuDices } from "react-icons/lu";
+import { LuDices, LuSave } from "react-icons/lu";
 import { DialogRollDice } from "../Dialog/DialogRollDice";
 import { useMutation } from "@tanstack/react-query";
-import { getCharacterSheetContent } from "@/services/characterService";
+import { createCharacterSheetContent, getCharacterSheetContent, updateCharacterSheetContent } from "@/services/characterService";
 import { CharacterSheetInfo } from "@/interfaces/ServicePayload";
+import { Toaster, toaster } from "../ui/toaster";
 
 
 export interface CharacterSheetFieldProps {
@@ -28,6 +29,7 @@ export const CharacterSheetPlayerEditField = ({
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
     const [previousValue,setPreviousValue] = useState<string[]>();
+    const [contentId, setContentId] = useState(0);
     const [flag,setFlag] = useState(0);
     const [flag2,setFlag2] = useState(0);
 
@@ -37,7 +39,10 @@ export const CharacterSheetPlayerEditField = ({
         onSuccess: (data) => {
           console.log(data);
           setPreviousValue(data[0].conteudo);
+          setContentId((data[0].id||0));
           console.log(previousValue)
+          console.log("id do conteudo de ficha:")
+          console.log(contentId)
         },
         onError: (error) => {
           console.log(error);
@@ -50,9 +55,9 @@ export const CharacterSheetPlayerEditField = ({
             mutation.mutate({id_personagem:characterId,id_aba_ficha:sectionId,id_sub_aba_ficha:fieldId});
             setFlag(1);
         }
-    }, [previousValue]);
+    }, [characterId, fieldId, flag, mutation, previousValue, sectionId]);
 
-    const [fieldValue,setFieldValue] = useState(previousValue);
+    const [fieldValue,setFieldValue] = useState("");
     const [field1Value,setField1Value] = useState("0");
     const [field2Value,setField2Value] = useState("0");
     const [field3Value,setField3Value] = useState("0");
@@ -60,13 +65,14 @@ export const CharacterSheetPlayerEditField = ({
     useEffect(() => {
         if(flag2 == 0){
             if(previousValue){
+                setFieldValue(previousValue[0]);
                 setField1Value(previousValue[0]);
                 setField2Value(previousValue[1]);
                 setField3Value(previousValue[2]);
             }
             setFlag(1);
         }
-    }, [previousValue]);
+    }, [flag2, previousValue]);
 
     const [diceRoll, setDiceRoll] = useState(false);
     const [rollValue,setRollValue] = useState(0);
@@ -98,13 +104,80 @@ export const CharacterSheetPlayerEditField = ({
         setDiceRoll(true);
     }
 
+    const updateMutation = useMutation({
+        mutationKey: ["editInfo"],
+        mutationFn: updateCharacterSheetContent,
+        onSuccess: (data) => {
+          console.log(data);
+          toaster.create({
+            description: "Personagem salvo com sucesso!",
+            type: "success",
+            })
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema salvando o personagem",
+            type: "error",
+            })
+        },
+      });
+
+    const createMutation = useMutation({
+        mutationKey: ["createInfo"],
+        mutationFn: createCharacterSheetContent,
+        onSuccess: (data) => {
+          console.log(data);
+          toaster.create({
+            description: "Personagem salvo com sucesso!",
+            type: "success",
+            })
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema salvando o personagem",
+            type: "error",
+            })
+        },
+      });
+
+    const [disableSaveButton,setDisableSaveButton] = useState(false);
+    function saveCharacter(){
+        setDisableSaveButton(true);
+    
+        const changes = [];
+
+        const str = [];
+        if(fieldType === "DADO"){
+            str.push(document.getElementById(String(fieldId)+"_1")?.value||"0");
+            str.push(document.getElementById(String(fieldId)+"_2")?.value||"0");
+            str.push(document.getElementById(String(fieldId)+"_3")?.value||"0");
+        }else{
+            str.push(document.getElementById(String(fieldId))?.value)
+        }
+        changes.push({id_conteudo_ficha: contentId,novo_conteudo:str,id_personagem:characterId,id_sub_aba_ficha:fieldId,conteudo:str})
+
+        console.log(changes)
+
+        if(contentId == 0){
+            createMutation.mutate(changes[0]);
+        }else{
+            updateMutation.mutate(changes[0]);
+        }
+
+        //depois do processamento acabar, habilitar o botao novamente
+        setDisableSaveButton(false);
+    }
+
     return(
         <div>
-            <div className="grid grid-cols-6 place-items-around gap-x-4">
-                    <Text alignSelf={"center"} textAlign={"end"}>
+            <div className="grid grid-cols-9 place-items-around gap-x-4">
+                    <IconButton variant={"outline"} disabled={disableSaveButton} onClick={()=>saveCharacter()}><LuSave /></IconButton>
+                    <Text className="col-span-2" alignSelf={"center"} textAlign={"end"}>
                         {fieldTitle}
                     </Text>
-                    <div className="col-span-5">
+                    <div className="col-span-6">
                         {
                             fieldType === "TEXTO" ?
                                 <div>
@@ -155,6 +228,7 @@ export const CharacterSheetPlayerEditField = ({
             </div>
 
             <DialogRollDice open={diceRoll} handleClose={setDiceRoll} value={rollValue}/>
+            <Toaster/>
         </div>
     )
 }

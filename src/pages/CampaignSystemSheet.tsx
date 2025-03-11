@@ -3,20 +3,14 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import { Image, Flex, For, IconButton, Text} from "@chakra-ui/react"
+import { Image, IconButton, Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
-import { LuArrowRightLeft, LuPlus } from "react-icons/lu";
+import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 import { SystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/SystemPagePlayerSheetComponent";
-import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
-import { Avatar } from "@/components/ui/avatar";
-import { NewCharacterDialog } from "@/components/Dialog/NewCharacterDialog";
-import { useUserStore } from "@/stores/user/user.store";
-import { Campaign } from "@/interfaces/Models";
-import { IntermediarySystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/IntermediarySystemPagePlayerSheetComponent";
 
 export default function CampaignSystemSheet(){
 

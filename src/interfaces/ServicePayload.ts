@@ -63,7 +63,7 @@ export type UpdateSystemPayload = {
 
 export type TemporaryUpdateSystemPayload = {
     payload: UpdateSystemPayload;
-    id_sistema: Number;
+    id_sistema: number;
     tipo_sistema: SystemType;
 }
 
@@ -157,4 +157,12 @@ export type CharacterSheetInfo = {
     nome_sub_aba_ficha:string;
     tipo_sub_aba_ficha:SheetSubTabType;
     conteudo:string[];
+}
+
+export type CreateOrUpdateFieldPayload = {
+    id_conteudo_ficha: number;
+    novo_conteudo: string[];
+    id_personagem: number;
+    id_sub_aba_ficha: number;
+    conteudo: string[];
 }

@@ -57,4 +57,6 @@ export const ENDPOINT = {
     DELETE_SHEET_SUB_TAB: "character-sheet-template/delete/sub-tab",
 
     GET_SHEET_CONTENT: "character-sheet-content/get",
+    UPDATE_SHEET_CONTENT: "character-sheet-content/update",
+    CREATE_SHEET_CONTENT: "character-sheet-content/register",
 } as const;

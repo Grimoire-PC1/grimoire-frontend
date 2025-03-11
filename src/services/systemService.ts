@@ -150,6 +150,8 @@ export const getSystemSheetTemplateTabs = async() =>{
 
 export const createSheetTemplateTab = async(payload:CreateSheetTabPayload) =>{
     let systemId = sessionStorage.getItem('systemId')
+    console.log(payload);
+    console.log(systemId)
     const { data } = await axiosInstace.post<CreateSheetTabPayload>(
         `/${ENDPOINT.CREATE_SHEET_TAB}`,
         payload,
