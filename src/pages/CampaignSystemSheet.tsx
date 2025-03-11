@@ -3,7 +3,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import { Button, Flex, For, IconButton, Text} from "@chakra-ui/react"
+import { Image, Flex, For, IconButton, Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -16,20 +16,31 @@ import { Avatar } from "@/components/ui/avatar";
 import { NewCharacterDialog } from "@/components/Dialog/NewCharacterDialog";
 import { useUserStore } from "@/stores/user/user.store";
 import { Campaign } from "@/interfaces/Models";
+import { IntermediarySystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/IntermediarySystemPagePlayerSheetComponent";
 
 export default function CampaignSystemSheet(){
 
-    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
-    const [characterId,setCharacterId] = useState("");
-    const [newCharacter,setNewCharacter] = useState(false);
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
-    function createCharacter(){
-        setCharacterId("");
-        setNewCharacter(true);
+    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            setImg(data.image)
+            console.log(data)
     }
 
-
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    if(!img || img == "") {
+        getImage()
+    }
 
     return(
         <Presence 
@@ -65,8 +76,8 @@ export default function CampaignSystemSheet(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">
-                                {/* na box vai ser a imagem da campanha */}
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
+                                <Image src={img} w={"100vw"} h={"113vh"} />
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
@@ -77,19 +88,7 @@ export default function CampaignSystemSheet(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <Flex mb={8} align={"center"} placeContent={"space-between"}>
-                                                <div>
-                                                    <Text className="subtitle-s">SEUS PERSONAGENS</Text>
-                                                    <Flex wrap="wrap" mt='1'>
-                                                        <For each={['um','dois','tres',]}>
-                                                            {(item) => <Box onClick={()=>setCharacterId(item)}><CharacterProfile mt='1' mr='1' ml='1' mb="1" character={item}></CharacterProfile></Box>}
-                                                        </For>
-                                                        <Box onClick={()=>createCharacter()}><IconButton m={1} rounded={"full"} size={"xl"} variant={"outline"}><LuPlus/></IconButton></Box>
-                                                    </Flex>
-                                                </div>
-                                                <Avatar mr={20} scale={2} size={"2xl"} src=""></Avatar>
-                                            </Flex>
-                                            <SystemPagePlayerSheetComponent characterId={characterId} title="CRIE UM PERSONAGEM!" system={''}/>
+                                            <SystemPagePlayerSheetComponent/>
                                         </div>
                                     </div>
                                 </div>
@@ -101,8 +100,6 @@ export default function CampaignSystemSheet(){
                             {<LuArrowRightLeft />}
                         </IconButton>
                         <ToggleThemeXL/>
-
-                        <NewCharacterDialog open={newCharacter} handleClose={setNewCharacter} campaignId=""/>
                     </div>
                 }
             </Box>

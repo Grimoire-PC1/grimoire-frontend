@@ -1,19 +1,70 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Box, Button, Flex, Input, } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { Toaster,toaster } from '../ui/toaster';
+import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { createCharacter } from '@/services/characterService';
 
 
 export interface DialogCampaignCodeProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
+    handleCreate: (open: boolean) => void;
+    campaignId:number;
 }
 
 export const NewCharacterDialog = ({
     open,
     handleClose,
+    handleCreate,
     campaignId
 }: DialogCampaignCodeProps) => {
+
+    const [titulo,setTitulo] = useState("");
+    const [imgId, setImgid] = useState("");
+    const [flag,setFlag] = useState(0);
+
+    const createImage = async () => {
+        const resImg = await fetch("http://localhost:8081/upload", {
+            method:"POST",
+            headers: {
+            "content-type" : "application/json"
+            },
+            body: JSON.stringify({img: ''})
+        })
+        const data = await resImg.json()
+        setImgid(data.data._id);
+    }
+
+    useEffect(() => {
+        if(flag == 0){
+            createImage();
+            setFlag(1);
+        }
+    }, [imgId]);
+
+    const mutation = useMutation({
+        mutationKey: ["createCharacter"],
+        mutationFn: createCharacter,
+        onSuccess: () => {
+            toaster.create({
+                        description: "Personagem criado com sucesso!",
+                        type: "success",
+                        })
+            setTitulo("");
+            setImgid("");
+            setFlag(0);
+            handleCreate(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a criação do personagem.",
+                        type: "error",
+                        })
+        },
+    });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -38,17 +89,18 @@ export const NewCharacterDialog = ({
                                 </div>
                                 </div>
                                 <Form>
-                                    <Input mt={6} required placeholder="Nome do personagem"/>
+                                    <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={6} required placeholder="Nome do personagem"/>
                                 </Form>
 
                                 <Flex justifyContent={"center"}>
-                                    <Button mb={"4"} className="margin-top" >Criar personagem</Button>
+                                    <Button onClick={()=>mutation.mutate({id_campanha:campaignId,nome:titulo,id_foto:imgId})} mb={"4"} className="margin-top" >Criar personagem</Button>
                                 </Flex>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

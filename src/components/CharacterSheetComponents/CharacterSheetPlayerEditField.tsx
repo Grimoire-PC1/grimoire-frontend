@@ -2,35 +2,75 @@ import {Button, IconButton, Input, Text, Textarea, } from "@chakra-ui/react"
 import { NumberInputField, NumberInputRoot } from "../ui/number-input";
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { HiUpload } from "react-icons/hi";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { LuDices } from "react-icons/lu";
 import { DialogRollDice } from "../Dialog/DialogRollDice";
+import { useMutation } from "@tanstack/react-query";
+import { getCharacterSheetContent } from "@/services/characterService";
+import { CharacterSheetInfo } from "@/interfaces/ServicePayload";
 
 
 export interface CharacterSheetFieldProps {
     fieldTitle: string; // mudar para o tipo Rule depois. O tipo rule contém título e descrição, e talvez tag também 
     fieldType: string; //mudar para FieldType depois. O tipo FieldType pode ser string curta, string longa, numérico ou dado.
-    fieldId: string;
-    characterId:string;
+    fieldId: number;
+    sectionId:number;
+    characterId:number;
 }
 
 export const CharacterSheetPlayerEditField = ({
     fieldTitle,
     fieldType,
     fieldId,
+    sectionId,
     characterId
 }: CharacterSheetFieldProps) => {
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
-    const previousValue = "" //pegar isso da ficha do personagem, pegar o field id e casar com o character id pra pegar o valor anterior caso o jogador esteja atualizando sua ficha
+    const [previousValue,setPreviousValue] = useState<string[]>();
+    const [flag,setFlag] = useState(0);
+    const [flag2,setFlag2] = useState(0);
+
+    const mutation = useMutation({
+        mutationKey: ["getInfo"],
+        mutationFn: getCharacterSheetContent,
+        onSuccess: (data) => {
+          console.log(data);
+          setPreviousValue(data[0].conteudo);
+          console.log(previousValue)
+        },
+        onError: (error) => {
+          console.log(error);
+          setPreviousValue(['','','']);
+        },
+      });
+
+    useEffect(() => {
+        if(flag == 0){
+            mutation.mutate({id_personagem:characterId,id_aba_ficha:sectionId,id_sub_aba_ficha:fieldId});
+            setFlag(1);
+        }
+    }, [previousValue]);
 
     const [fieldValue,setFieldValue] = useState(previousValue);
-    const [field1Value,setField1Value] = useState(previousValue[0]);
-    const [field2Value,setField2Value] = useState(previousValue[1]);
-    const [field3Value,setField3Value] = useState(previousValue[2]);
+    const [field1Value,setField1Value] = useState("0");
+    const [field2Value,setField2Value] = useState("0");
+    const [field3Value,setField3Value] = useState("0");
+
+    useEffect(() => {
+        if(flag2 == 0){
+            if(previousValue){
+                setField1Value(previousValue[0]);
+                setField2Value(previousValue[1]);
+                setField3Value(previousValue[2]);
+            }
+            setFlag(1);
+        }
+    }, [previousValue]);
 
     const [diceRoll, setDiceRoll] = useState(false);
     const [rollValue,setRollValue] = useState(0);
+
 
 
     function update(value:string,num:number){
@@ -66,20 +106,20 @@ export const CharacterSheetPlayerEditField = ({
                     </Text>
                     <div className="col-span-5">
                         {
-                            fieldType === 'StringLonga' ?
+                            fieldType === "TEXTO" ?
                                 <div>
-                                    <Textarea onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
+                                    <Textarea onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
                             :
                             fieldType === 'StringCurta' ?
                                 <div>
-                                    <Input onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></Input>
+                                    <Input onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></Input>
                                 </div>
                             :
-                            fieldType === 'Numerico' ?
+                            fieldType === "INTEIRO" ?
                                 <div>
-                                    <NumberInputRoot>
-                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={fieldId} value={fieldValue} defaultValue={previousValue}></NumberInputField>
+                                    <NumberInputRoot value={fieldValue} onValueChange={(e) => setFieldValue(e.value)}>
+                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></NumberInputField>
                                     </NumberInputRoot>
                                 </div>
                             :
@@ -97,16 +137,16 @@ export const CharacterSheetPlayerEditField = ({
                             : //tipo dado
                             
                             <div className="flex gap-x-2 items-center">
-                                    <NumberInputRoot>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 1)} id={fieldId+"_1"} value={field1Value} defaultValue={previousValue[0]} placeholder="qtd"></NumberInputField>
+                                    <NumberInputRoot value={field1Value} onValueChange={(e) => update(e.value, 1)}>
+                                        <NumberInputField onChange={(e)=>update(e.target.value, 1)} id={fieldId+"_1"} value={field1Value} defaultValue={previousValue ? previousValue[0]:0} placeholder="qtd"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>d</Text>
-                                    <NumberInputRoot>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 2)} id={fieldId+"_2"} value={field2Value} defaultValue={previousValue[1]} placeholder="dado"></NumberInputField>
+                                    <NumberInputRoot value={field2Value} onValueChange={(e) => update(e.value, 2)}>
+                                        <NumberInputField onChange={(e)=>update(e.target.value, 2)} id={fieldId+"_2"} value={field2Value} defaultValue={previousValue ? previousValue[1]:0} placeholder="dado"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>+</Text>
-                                    <NumberInputRoot>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 3)} id={fieldId+"_3"} value={field3Value} defaultValue={previousValue[2]} placeholder="bonus"></NumberInputField>
+                                    <NumberInputRoot value={field3Value} onValueChange={(e) => update(e.value, 3)}>
+                                        <NumberInputField onChange={(e)=>update(e.target.value, 3)} id={fieldId+"_3"} value={field3Value} defaultValue={previousValue ? previousValue[2]:0} placeholder="bonus"></NumberInputField>
                                     </NumberInputRoot>
                                     <IconButton onClick={()=>rollDice()} disabled={(!document.getElementById(fieldId+"_1")?.value || !document.getElementById(fieldId+"_2")?.value)}><LuDices /></IconButton>
                             </div>

@@ -137,3 +137,24 @@ export type UpdateSheetSubTabPayload = {
     id_sub_aba_ficha:number;
     novo_nome:string;
 }
+
+export type CreateCharacterPayload = {
+    id_campanha:number;
+    nome:string;
+    id_foto:string;
+}
+
+export type GetCharacterSheetInfoPayload = {
+    id_personagem:number;
+    id_aba_ficha:number;
+    id_sub_aba_ficha:number;
+}
+
+export type CharacterSheetInfo = {
+    id:number;
+    id_personagem:number;
+    id_sub_aba_ficha:number;
+    nome_sub_aba_ficha:string;
+    tipo_sub_aba_ficha:SheetSubTabType;
+    conteudo:string[];
+}

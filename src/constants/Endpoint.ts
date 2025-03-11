@@ -13,8 +13,9 @@ export const ENDPOINT = {
     GET_CAMPAIGN_BY_ID: "campaign/get",
     UPDATE_CAMPAIGN: "campaign/update",
 
-    CREATE_NEW_CHARACTER: "createNewCharacter",
+    CREATE_NEW_CHARACTER: "character/register",
     GET_USER_CHARACTERS: "character/get/user",
+
     GET_USER_CREATED_SYSTEMS: "createdSystems",
     GET_CHARACTER_BY_ID: "characterById",
 
@@ -54,4 +55,6 @@ export const ENDPOINT = {
     CREATE_SHEET_SUB_TAB: "character-sheet-template/register/sub-tab",
     UPDATE_SHEET_SUB_TAB: "character-sheet-template/update/sub-tab",
     DELETE_SHEET_SUB_TAB: "character-sheet-template/delete/sub-tab",
+
+    GET_SHEET_CONTENT: "character-sheet-content/get",
 } as const;
