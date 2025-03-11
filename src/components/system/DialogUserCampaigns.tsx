@@ -25,7 +25,7 @@ export const DialogUserCampaigns = ({
 
     let ownSystem = false; 
 
-    if(system.id_criador === 0/*user.id*/) {
+    if(system.id_criador === user?.id) {
         ownSystem = true; 
     }
 

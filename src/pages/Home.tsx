@@ -54,6 +54,7 @@ export default function Home() {
         createdCampaign: campanhasCriadas,
         playedCampaign: campanhasJogadas,
         characters: personagens,
+        id: infoUsuario?.id,
         login: infoUsuario?.login,
         email: infoUsuario?.email,
         nome: infoUsuario?.nome,

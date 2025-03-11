@@ -1,6 +1,7 @@
 import { Campaign, Character, System } from "./Models";
 
 export type SignInResponse = {
+    id?: number;
     login?: string;
     email?: string;
     nome?: string;
