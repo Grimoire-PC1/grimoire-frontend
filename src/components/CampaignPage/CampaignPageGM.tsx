@@ -73,7 +73,7 @@ export const CampaignPageGM = () => {
             novo_titulo: title != "" ? title : campaign.titulo,
             nova_descricao: description != "" ? description : campaign.descricao,
             nova_id_foto: campaign?.id_foto,
-            id_novo_sistema: 4
+            id_novo_sistema: campaign.id_sistema
         }
         console.log(campaign?.id)
         const temporaryCampaignPayload: TemporaryCampaignPayload = {
