@@ -29,7 +29,6 @@ export const SystemListCard = ({
             })
             const data = await res.json()
             setImg(data.image)
-            console.log(data)
     }
 
     if(!img || img == "") {

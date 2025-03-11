@@ -40,6 +40,7 @@ export const DialogUserCampaigns = ({
     };
 
     async function copySystem(){
+        
         const resOriginImg = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
             method:"GET",
             headers: {
@@ -87,7 +88,6 @@ export const DialogUserCampaigns = ({
 
         sessionStorage.setItem('systemId',String(systemCopy.id))
         let currentSheetTab: SheetTab
-        console.log(`Length - ${originalSheetTab.length}`)
         for(let i = 0; i < originalSheetTab.length; i++) {
             console.log(originalSheetTab[i])
             currentSheetTab = await createSheetTemplateTab({nome: originalSheetTab[i].nome})
@@ -101,24 +101,10 @@ export const DialogUserCampaigns = ({
             }
         }
         originalRules.forEach(async (rule) => await createRule({id_sistema:systemCopy.id, titulo:rule.titulo, descricao:rule.descricao}))
-        originalSheetTab.forEach(async (data) => await createSheetTemplateTab({nome: data.nome}))
         originalMechanics.forEach(async (mechanic) => await createMechanic({nome:mechanic.nome, descricao:mechanic.descricao, acoes:JSON.parse(mechanic.acoes)[0].split(","), efeitos: JSON.parse(mechanic.efeitos)[0].split(",")}))
 
-        newSystem.mutate(temporaryJson)
+        //newSystem.mutate(temporaryJson)
     }
-
-    const newSystem = useMutation({
-        mutationKey: ["createNewSystem"],
-        mutationFn: createNewSystem,
-        onSuccess: (data: System) => {
-            console.log(data)
-            systemCopy = data
-            console.log(systemCopy)
-        },
-        onError: (error) => {
-            console.log(error);
-        },
-    });
 
     async function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre

@@ -34,6 +34,7 @@ export const getAllPublicSystems = async () => {
 }
 
 export const createNewSystem = async(temporarySystemPayload: TemporarySystemPayload) => {
+    console.log("AHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     const { data } = await axiosInstace.post<System>(
         `/${ENDPOINT.CREATE_NEW_SYSTEM}`,
         temporarySystemPayload.payload,
@@ -159,8 +160,7 @@ export const getSystemSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
 
 export const createSheetTemplateTab = async(payload:CreateSheetTabPayload) =>{
     let systemId = sessionStorage.getItem('systemId')
-    console.log(payload);
-    console.log(systemId)
+    console.log("ENTREI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     const { data } = await axiosInstace.post<SheetTab>(
         `/${ENDPOINT.CREATE_SHEET_TAB}`,
         payload,

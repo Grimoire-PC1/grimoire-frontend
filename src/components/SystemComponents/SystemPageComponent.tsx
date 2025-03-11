@@ -8,7 +8,7 @@ import { TemporaryUpdateSystemPayload, UpdateSystemPayload } from "@/interfaces/
 import { Toaster, toaster } from "../ui/toaster";
 import { updateSystem } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
-
+ 
 export const SystemPageComponent = () => {
 
     const [,forceUpdate] = useReducer(x=>x+1,0); 
@@ -127,7 +127,6 @@ export const SystemPageComponent = () => {
           })
           const data = await res.json()
           setImg(data.image)
-          console.log(data)
     }
 
     if(!img || img == "") {
