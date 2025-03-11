@@ -30,6 +30,7 @@ export const CharacterSheetDialog = ({
                         type: "success",
                         })
             handleCreate(false);
+            setTitulo("");
         },
         onError: (error) => {
             console.log(error);

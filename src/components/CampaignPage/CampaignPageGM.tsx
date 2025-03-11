@@ -166,7 +166,7 @@ export const CampaignPageGM = () => {
             setFlag(1);
             console.log(otherCharas)
         }
-    }, [allCharas]);
+    }, [allCharas, flag, otherCharas]);
 
 
     if(!img || img == "") {

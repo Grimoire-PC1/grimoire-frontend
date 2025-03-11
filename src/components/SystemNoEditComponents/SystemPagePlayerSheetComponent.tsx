@@ -1,6 +1,6 @@
 import {Text,Flex, Grid, IconButton, Box, For, } from "@chakra-ui/react";
-import { LuPlus, LuSave } from "react-icons/lu";
-import { Toaster, toaster } from "../ui/toaster";
+import { LuCamera, LuPlus, LuSave } from "react-icons/lu";
+import { toaster, Toaster, } from "../ui/toaster";
 import { useEffect, useReducer, useState } from "react";
 import { CharacterSheetPlayerEditSection } from "../CharacterSheetComponents/CharacterSheetPlayerEditSection";
 import { CharacterRegister, SheetTab } from "@/interfaces/Models";
@@ -8,7 +8,7 @@ import { getUserCharacters } from "@/services/characterService";
 import { useMutation } from "@tanstack/react-query";
 import { NewCharacterDialog } from "../Dialog/NewCharacterDialog";
 import { Avatar } from "../ui/avatar";
-import { getCampaignSheetTemplateSubTabs, getCampaignSheetTemplateTabs } from "@/services/campaignService";
+import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 
 export const SystemPagePlayerSheetComponent = () => {
@@ -45,85 +45,11 @@ export const SystemPagePlayerSheetComponent = () => {
             getCharacters.mutate();
             setFlag(1);
         }
-    }, [characters]);
+    }, [characters, flag, getCharacters]);
 
     function fecharEforcar(){
         getCharacters.mutate();
         setNewCharacter(false);
-    }
-
-    const [disableSaveButton,setDisableSaveButton] = useState(false);
-
-    const [ids,setIds] = useState<any[]>([])
-
-    const getTabsId = useMutation({
-        mutationKey: ["subTabs"],
-        mutationFn: getCampaignSheetTemplateSubTabs,
-        onSuccess: (data) => {
-            console.log(data)
-            const array = []
-            data.forEach((d) => array.push({id: d.id, tipo: d.tipo_sub_aba_ficha}))
-            setIds(array);
-        },
-        onError: (error) => {
-            console.log(error);
-        },
-        });
-
-    function saveCharacter(){
-        console.log('aAAAAAAAAAAAAAAAA')
-        setDisableSaveButton(true);
-        let dataLen = 0;
-        if(data){
-            dataLen = data.length;
-        }
-    
-        const changes = [];
-
-        if(data){
-            console.log('aAAAAAAAAAAAAAAAA')
-            for(let i of data){
-                console.log('aAAAAAAAAAAAAAAAA')
-                
-                getTabsId.mutate(i.id);
-
-                for(let j of ids){
-                    let str = "";
-                    if(j.tipo === "DADO"){
-                        str+= (document.getElementById(String(j.id)+"_1")?.value||"0");
-                        str+=","+(document.getElementById(String(j.id)+"_2")?.value||"0");
-                        str+=","+(document.getElementById(String(j.id)+"_3")?.value||"0");
-                    }else{
-                        str = document.getElementById(String(j.id))?.value
-                    }
-                    changes.push({id_ficha_Content: j.id,novo_conteudo:str,id_personagem:displayCharacter?.id,id_sub_aba_ficha:j.id,conteudo:str})
-                }
-            }
-        }
-        /*
-        for(let i = 1;i<dataLen;i++){
-            for(let i = 1; i < 6;i++){ //para todo fieldId associado ao sectionId atual, faça:
-                changes.push({id: 'field'+i,value:document.getElementById('field'+i)?.value}) //field+i sera trocado pelo fieldId atual da iteração
-                //adicionar condicional especial pro tipo dado, que tem 3 valores associados (a lógica vai depender de como estiver o esquema no BD)
-            }
-        }
-        */
-        console.log(changes)
-
-        const success = true;
-        //depois do processamento acabar, habilitar o botao novamente
-        setDisableSaveButton(false);
-        if(success){
-            toaster.create({
-            description: "Personagem salvo com sucesso!",
-            type: "success",
-            })
-        }else{
-            toaster.create({
-                description: "Houve um problema salvando o personagem",
-                type: "error",
-                })
-        }
     }
 
     const mutation = useMutation({
@@ -145,15 +71,17 @@ export const SystemPagePlayerSheetComponent = () => {
         if(flagTabs == 0){
             mutation.mutate();
         }
-    }, []);
+    }, [flagTabs, mutation]);
 
     function fecharEforcar2(){
         mutation.mutate();
         forceUpdate();
     }
 
-    const getImage = async (id:string) => {
-        const res = await fetch(`http://localhost:8081/get/${id}`, {
+    const [img,setImg] = useState("")
+
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${characters[0].id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"
@@ -161,7 +89,7 @@ export const SystemPagePlayerSheetComponent = () => {
             })
             const data = await res.json()
             console.log(data)
-            return data.image;
+            setImg(data.image);
     }
 
     function updateInfo(c:CharacterRegister){
@@ -169,20 +97,74 @@ export const SystemPagePlayerSheetComponent = () => {
         forceUpdate();
     }
 
+    if(characters && characters?.length > 0){
+        if(!img || img == "") {
+            getImage()
+        }
+    }
+
+    const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
+        const reader = new FileReader()
+        if(file) {
+          reader.readAsDataURL(file)
+          const data: string | ArrayBuffer | null = await new Promise((resolve,reject) => {
+            reader.onload = ()=> resolve(reader.result)
+            reader.onerror = (err) => reject(err)
+          })
+          return data
+        }
+      }
+      
+      const handleUploadImage = async (e: any) => {
+        console.log(e.acceptedFiles[0])
+        const file = e.acceptedFiles[0]
+        
+        const conversionResult: string | ArrayBuffer | null | undefined = await imagebase64(file)
+        if(typeof conversionResult === "string") {
+            const image: string = conversionResult
+            setImg(image)
+            console.log(image)
+        }
+      }
+      
+      const handleImageSubmit = async () =>{
+        if(img) {
+          const res = await fetch(`http://localhost:8081/update/${characters[0].id_foto}`, {
+            method:"PATCH",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({image: img})
+          })
+          const data = await res.json()
+          console.log(data)
+          toaster.create({
+                        description: `Foto de ${characters[0].nome} atualizada com sucesso!`,
+                        type: "success",
+                        })
+        }
+      }
+
     return(
 
         <Box>
             <Flex mb={8} align={"center"} placeContent={"space-between"}>
                 <div>
-                    <Text className="subtitle-s">SEUS PERSONAGENS</Text>
+                    <Text className="subtitle-s">SEU PERSONAGEM</Text>
                     <Flex wrap="wrap" mt='1' gapX={0.5}>
-                        <For each={characters}>
+                        {
+                            (characters?.length||0) > 0 ?
+                            <For each={characters}>
                             {(item) => <Box cursor={"pointer"} onClick={()=>updateInfo(item)}>
-                                            <Avatar size={"xl"} src={async ()=>getImage(item.id_foto)}></Avatar>
+                                            <Avatar size={"xl"} src={img}></Avatar>
                                         </Box>
                             }
-                        </For>
-                        <Box onClick={()=>createCharacter()}><IconButton rounded={"full"} size={"xl"} variant={"outline"}><LuPlus/></IconButton></Box>
+                            </For>
+                            :
+                            <Box onClick={()=>createCharacter()}><IconButton rounded={"full"} size={"xl"} variant={"outline"}><LuPlus/></IconButton></Box>
+                        }
+                        
+                        
                     </Flex>
                 </div>
                 {
@@ -190,7 +172,7 @@ export const SystemPagePlayerSheetComponent = () => {
                     <Box>
                         <FileUploadRoot cursor={"pointer"}>
                             <FileUploadTrigger>
-                                <Avatar cursor={"pointer"} mr={20} scale={2} size={"2xl"} src={async ()=>getImage(displayCharacter.id_foto)}></Avatar>
+                                <Avatar cursor={"pointer"} mr={20} scale={2} size={"2xl"} src={img}></Avatar>
                             </FileUploadTrigger>
                         </FileUploadRoot>
                     </Box>
@@ -209,8 +191,15 @@ export const SystemPagePlayerSheetComponent = () => {
                         </div>
                         {
                             displayCharacter ?
-                            <IconButton disabled={disableSaveButton}
-                            onClick={()=>saveCharacter()}><LuSave /></IconButton>
+                            <Flex gapX={2}>
+                            <FileUploadRoot maxFiles={1} onFileChange={handleUploadImage}>
+                                <FileUploadTrigger>
+                                    <IconButton><LuCamera/></IconButton>
+                                </FileUploadTrigger>
+                            </FileUploadRoot>
+                            <IconButton onClick={handleImageSubmit}><LuSave/></IconButton>
+
+                            </Flex>
                             :
                             <div></div>
                         }

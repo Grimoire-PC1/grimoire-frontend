@@ -27,6 +27,9 @@ export default function CampaignPage(){
             campaignInformation = allCreatedCampaign[i];
             console.log(campaignInformation)
             sessionStorage.setItem('currentCampaign',JSON.stringify(campaignInformation))
+            sessionStorage.setItem('systemId',String(campaignInformation.id_sistema));
+            console.log(campaignInformation.id_sistema)
+            console.log(sessionStorage.getItem('systemId'))
             break
         } 
     }

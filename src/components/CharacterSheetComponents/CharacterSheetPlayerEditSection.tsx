@@ -43,7 +43,7 @@ export const CharacterSheetPlayerEditSection = ({
         if(flag == 0){
             mutation.mutate(sectionId);
         }
-    }, [campos]);
+    }, [campos, flag, mutation, sectionId]);
     
     return(
         <div>
