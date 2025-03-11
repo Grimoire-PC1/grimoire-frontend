@@ -150,7 +150,7 @@ export const SystemPagePlayerSheetComponent = () => {
         <Box>
             <Flex mb={8} align={"center"} placeContent={"space-between"}>
                 <div>
-                    <Text className="subtitle-s">SEU PERSONAGEM</Text>
+                    <Text className="subtitle-s">SEUS PERSONAGENS</Text>
                     <Flex wrap="wrap" mt='1' gapX={0.5}>
                         {
                             (characters?.length||0) > 0 ?

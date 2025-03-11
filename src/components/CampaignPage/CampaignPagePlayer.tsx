@@ -1,4 +1,4 @@
-import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For,} from "@chakra-ui/react";
+import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box,} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignCharacters } from "@/services/campaignService";
@@ -6,6 +6,7 @@ import { Avatar } from "../ui/avatar";
 import { getUserCharacters } from "@/services/characterService";
 import { getCampaignSessions } from "@/services/sessionService";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
+import { useNavigate } from "react-router-dom";
 
 export const CampaignPagePlayer = () => {
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
@@ -93,7 +94,9 @@ export const CampaignPagePlayer = () => {
             updateOtherCharasArray();
             setFlag2(1);
         }
-    }, [allCharas]);
+    }, [allCharas, flag2]);
+
+    const navigate = useNavigate();
 
     return(
         <div>
@@ -114,7 +117,7 @@ export const CampaignPagePlayer = () => {
                             <Center>
                                 <Flex wrap="wrap" mt='1'>
                                     <For each={myCharas}>
-                                        {(item) => <Avatar size={"xl"} m={1} src={item.foto}/>}
+                                        {(item) => <Box cursor={"pointer"} onClick={()=>navigate("/grimoire/campaign/sheet")}><Avatar size={"xl"} m={1} src={item.foto}/></Box>}
                                     </For>
                                 </Flex>
                             </Center>
