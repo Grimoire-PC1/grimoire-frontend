@@ -1,9 +1,7 @@
-
 import { Button } from "@chakra-ui/react/button";
 import { Separator } from "@chakra-ui/react/separator";
 import { LuCornerDownLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-
 
 export interface SidebarSystemProps {
     system: string;

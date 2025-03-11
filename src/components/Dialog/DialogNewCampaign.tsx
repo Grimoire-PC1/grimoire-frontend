@@ -25,7 +25,10 @@ export const DialogNewCampaign = ({
     const [selectedSystem,setSelectedSystem] = useState("")
 
     const types = createListCollection({
-    items: userSystems,
+        items: userSystems.map(system => ({
+          label: system.nome,
+          value: system.id,
+        })),
     })
 
     const [title,setTitle] = useState("");
@@ -37,7 +40,7 @@ export const DialogNewCampaign = ({
 
     async function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
-        //navigate("/grimoire/campaign");
+        console.log(selectedSystem)
         const resImg = await fetch("http://localhost:8081/upload", {
             method:"POST",
             headers: {
@@ -51,7 +54,7 @@ export const DialogNewCampaign = ({
         const newCampaignPayload: CreateNewCampaignPayload = {
             titulo: title,
             id_foto: data.data._id,
-            id_sistema: 1,
+            id_sistema: Number(selectedSystem),
             descricao: '',
         }
         newCampaign.mutate(newCampaignPayload)
@@ -79,7 +82,7 @@ export const DialogNewCampaign = ({
             transition
             className="fixed inset-0 bg-gray-700/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
         />
-
+ 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Box className="rounded-lg" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
@@ -103,14 +106,14 @@ export const DialogNewCampaign = ({
                     </div>
                         <Form>
                             <Input mb={"2"} onChange={setCampaignTitle} required placeholder="Título da campanha"/>
-                            <SelectRoot mt={2} collection={types} >
+                            <SelectRoot mt={2} collection={types} onValueChange={({ value }) => setSelectedSystem(value[0])}>
                             <SelectTrigger>
                                 <SelectValueText placeholder="Sistema" />
                             </SelectTrigger>
                             <SelectContent>
                                 {types.items.map((type) => (
-                                <SelectItem item={type} key={type.id}>
-                                    {type.nome}
+                                <SelectItem item={type} key={String(type.value)}>
+                                    {type.label}
                                 </SelectItem>
                                 ))}
                             </SelectContent>

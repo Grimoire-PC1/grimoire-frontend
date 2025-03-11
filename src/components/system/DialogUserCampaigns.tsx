@@ -60,7 +60,7 @@ export const DialogUserCampaigns = ({
             
         const newSystemPayload: CreateNewSystemPayload = {
             id_foto: data.data._id,
-            nome: system.nome+" - Cópia privada",
+            nome: system.nome,
             descricao: system.descricao
         }
 

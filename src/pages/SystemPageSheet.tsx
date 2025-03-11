@@ -8,10 +8,13 @@ import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageSheetNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageSheetNoEditComponent";
+import { System } from "@/interfaces/Models";
 
 export default function SystemPageSheet(){
-
+ 
     const [isOwner, setIsOwner] = useState(true);
+
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
 
     return(
         <Presence 
@@ -32,12 +35,12 @@ export default function SystemPageSheet(){
                                         isOwner ?
                                     <SystemPageSheetComponent   title="COMO SEUS JOGADORES PODEM CONSTRUIR PERSONAGENS ÚNICOS?" 
                                                                 subtitle="Crie um modelo de ficha para dar vida aos personagens dentro do seu sistema" 
-                                                                system={"meu sistema"}/>
+                                                                system={String(system.id)}/>
 
                                                                 :
                                                                 
                                     <SystemPageSheetNoEditComponent   title="DESCUBRA COMO CRIAR PERSONAGENS ÚNICOS"
-                                                                system={"sistema de outra pessoa"}/>                                    
+                                                                system={String(system.id)}/>                                    
                                     }
                                 </div>
                             </div>

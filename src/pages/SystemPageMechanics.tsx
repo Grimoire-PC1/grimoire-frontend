@@ -8,11 +8,14 @@ import { IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { SystemPageMechanicsComponent } from "@/components/SystemComponents/SystemPageMechanicsComponent";
 import { SystemPageMechanicsNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageMechanicsNoEditComponent";
+import { System } from "@/interfaces/Models";
 
 export default function SystemPageMechanics(){
 
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    
     const [isOwner, setIsOwner] = useState(true);
-
+    
     return(
         <Presence 
             present={true}
@@ -32,12 +35,12 @@ export default function SystemPageMechanics(){
                                         isOwner ?
                                     <SystemPageMechanicsComponent   title="COMO JOGAR USANDO SEU SISTEMA?" 
                                                                 subtitle="Crie mecânicas únicas e personalizadas para diferentes situações que os jogadores podem vir a enfrentar." 
-                                                                system={"meu sistema"}
+                                                                system={String(system.id)}
                                                                 maxHeight="66vh"
                                                                 />
                                                                 :
                                     <SystemPageMechanicsNoEditComponent   title="TENHA TOTAL CONTROLE SOBRE AS MECÂNICAS DO SISTEMA" 
-                                                                system={"meu sistema"}
+                                                                system={String(system.id)}
                                                                 maxHeight="70vh"
                                                                 /> 
                                     }

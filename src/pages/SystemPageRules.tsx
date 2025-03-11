@@ -8,8 +8,11 @@ import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
+import { System } from "@/interfaces/Models";
 
 export default function SystemPageRules(){
+
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
 
     const [isOwner, setIsOwner] = useState(true);
 
@@ -32,12 +35,12 @@ export default function SystemPageRules(){
                                         isOwner ?
                                     <SystemPageRulesComponent   title="COMO SEU SISTEMA CONTA UMA HISTÓRIA?" 
                                                                 subtitle="Adicione regras para situar o mestre e os jogadores de como utilizar seu sistema" 
-                                                                system={"meu sistema"}
+                                                                system={String(system.id)}
                                                                 maxHeight="66vh"
                                                                 />
                                                                 :
                                     <SystemPageRulesNoEditComponent   title="DESCUBRA COMO ESTE SISTEMA CONTA UMA HISTÓRIA" 
-                                                                system={"sistema de outra pessoa"}
+                                                                system={String(system.id)}
                                                                 maxHeight="70vh"
                                     />       
                                     }
