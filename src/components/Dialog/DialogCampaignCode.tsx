@@ -1,21 +1,26 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Alert, Box, Button, Input, Presence,Text } from "@chakra-ui/react";
+import { toaster, Toaster } from '../ui/toaster';
 
 
 export interface DialogCampaignCodeProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
 }
 
 export const DialogCampaignCode = ({
     open,
     handleClose,
-    campaignId
 }: DialogCampaignCodeProps) => {
+
+    const campaignId = sessionStorage.getItem('currentCampaignId')||"";
 
     function copiarCodigo(){
         navigator.clipboard.writeText(campaignId);
+        toaster.create({
+            description: "Código copiado!",
+            type: "success",
+            })
     }
 
     return(
@@ -62,6 +67,7 @@ export const DialogCampaignCode = ({
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }
