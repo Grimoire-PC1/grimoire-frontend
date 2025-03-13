@@ -1,4 +1,4 @@
-import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box,} from "@chakra-ui/react";
+import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box, Button,} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignCharacters } from "@/services/campaignService";
@@ -7,6 +7,7 @@ import { getUserCharacters } from "@/services/characterService";
 import { getCampaignSessions } from "@/services/sessionService";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 import { useNavigate } from "react-router-dom";
+import { DialogLeaveCampaign } from "../Dialog/DialogLeaveCampaign";
 
 export const CampaignPagePlayer = () => {
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
@@ -98,48 +99,48 @@ export const CampaignPagePlayer = () => {
 
     const navigate = useNavigate();
 
+    const [leaveCampaign,setLeaveCampaign] = useState(false);
     return(
         <div>
 
             <div className="grid grid-cols-3 gap-x-8 content-padding">
-                <div className="col-span-1">
-                    {/* aqui vem a descrição da campanha */}
+                <Flex flexDirection={"column"} h={"80vh"} justifyContent={"space-between"}>
                     <Text className="text" textAlign={"justify"}>{campaign.descricao}</Text>
-                </div>
-                <div className="col-span-1 max-h-[80vh]">
+                    <Button onClick={()=>setLeaveCampaign(true)} mr={16} ml={16} color={"white"} backgroundColor={"red.700"}>Sair da campanha</Button>
+                </Flex>
+                    <Flex gapY={4} h={"80vh"} className="flex-col">
+                        <CardRoot h={"full"}>
+                            <CardHeader>
+                                <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
+                                <Separator></Separator>
+                            </CardHeader>
+                            <CardBody overflowY={"auto"}  className="flex">
+                                <Center>
+                                    <Flex wrap="wrap" mt='1'>
+                                        <For each={myCharas}>
+                                            {(item) => <Box cursor={"pointer"} onClick={()=>navigate("/grimoire/campaign/sheet")}><Avatar size={"xl"} m={1} src={item.foto}/></Box>}
+                                        </For>
+                                    </Flex>
+                                </Center>
+                            </CardBody>
+                        </CardRoot>
 
-                    <CardRoot className="w-full h-[36vh]">
-                        <CardHeader>
-                            <CardTitle className="text-center padding-bottom">MEUS PERSONAGENS</CardTitle>
-                            <Separator></Separator>
-                        </CardHeader>
-                        <CardBody overflowY={"auto"}  className="flex">
-                            <Center>
-                                <Flex wrap="wrap" mt='1'>
-                                    <For each={myCharas}>
-                                        {(item) => <Box cursor={"pointer"} onClick={()=>navigate("/grimoire/campaign/sheet")}><Avatar size={"xl"} m={1} src={item.foto}/></Box>}
-                                    </For>
-                                </Flex>
-                            </Center>
-                        </CardBody>
-                    </CardRoot>
-
-                    <CardRoot mt={"4"} className="w-full h-[36vh]">
-                        <CardHeader>
-                            <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
-                            <Separator></Separator>
-                        </CardHeader>
-                        <CardBody overflowY={"auto"}  className="flex">
-                            <Center>
-                                <Flex alignItems={"center"} wrap="wrap" mt='1'>
-                                    <For each={otherCharas}>
-                                        {(item) => <Avatar size={"xl"} m={1} src={item.foto}/>}
-                                    </For>
-                                </Flex>
-                            </Center>
-                        </CardBody>
-                    </CardRoot>
-                </div>
+                        <CardRoot h={"full"}>
+                            <CardHeader>
+                                <CardTitle className="text-center padding-bottom">PERSONAGENS DOS OUTROS JOGADORES</CardTitle>
+                                <Separator></Separator>
+                            </CardHeader>
+                            <CardBody overflowY={"auto"}  className="flex">
+                                <Center>
+                                    <Flex alignItems={"center"} wrap="wrap" mt='1'>
+                                        <For each={otherCharas}>
+                                            {(item) => <Avatar size={"xl"} m={1} src={item.foto}/>}
+                                        </For>
+                                    </Flex>
+                                </Center>
+                            </CardBody>
+                        </CardRoot>
+                    </Flex>
                 <CardRoot className="max-h-[80vh] col-span-1">
                     <CardHeader>
                         <CardTitle className="text-center padding-bottom">REVISITAR AVENTURAS</CardTitle>
@@ -155,7 +156,7 @@ export const CampaignPagePlayer = () => {
                     </CardBody>
                 </CardRoot>
             </div>
-            
+            <DialogLeaveCampaign open={leaveCampaign} handleClose={setLeaveCampaign} campaignId={campaign.id} campaignTitle={campaign.titulo}/>
         </div>
     )
 }
