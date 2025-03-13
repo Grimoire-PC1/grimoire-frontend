@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image,Button, FileUploadTrigger,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image,Button, FileUploadTrigger, Box, Grid,} from "@chakra-ui/react";
 import { FileUploadRoot, FileUploadDropzone,FileUploadList } from "../ui/file-upload";
 import {RadioGroup, Radio } from "../ui/radio";
 import { useReducer, useState } from "react";
@@ -235,9 +235,15 @@ export const SystemPageComponent = () => {
                 </div>
                 <div className="text-end">
                 {!modifiedSystem ?
-                            <Button mt={"4"} disabled>Salvar alterações</Button> 
+                            <Grid gap={2} mt={4} className="grid-cols-6">
+                              <Button ml={4} className="col-start-4" disabled>Salvar alterações</Button>
+                              <Button ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
+                            </Grid>
                             :
-                            <Button mt={"4"} onClick={saveChanges}>Salvar alterações</Button>
+                            <Grid gap={2} mt={4} className="grid-cols-6">
+                              <Button ml={4} className="col-start-4" onClick={saveChanges}>Salvar alterações</Button>
+                              <Button ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
+                            </Grid>
                 }
 
                 </div>

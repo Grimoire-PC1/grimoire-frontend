@@ -1,5 +1,5 @@
 import { System } from "@/interfaces/Models"
-import {CardBody, CardRoot, Image, Text } from "@chakra-ui/react"
+import {CardBody, CardRoot, Image, Skeleton, Text } from "@chakra-ui/react"
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -45,15 +45,16 @@ export const SystemListCard = ({
         <MenuRoot>
             <MenuTrigger asChild>
                 <CardRoot className="" cursor={"pointer"}>
-                        {system.id_foto && system.id_foto != '' ?
-                            <Image
-                            src={img}
-                            className={"max-h-[20vh] rounded-t-sm"}
-                            />
+                        {img != '' ?
+                            <Image 
+                                src={img}
+                                w={"full"}
+                                h={"20vh"}
+                                className="rounded-t-sm"/>
                         :
-                            <div
-                            className={"h-[20vh] bg-indigo-900 rounded-t-sm"}
-                            />
+                            <Skeleton 
+                            w={"full"}
+                            h={"20vh"} />
                         }
                     <CardBody>
                         <Text fontSize={"lg"}>{system.nome}</Text>

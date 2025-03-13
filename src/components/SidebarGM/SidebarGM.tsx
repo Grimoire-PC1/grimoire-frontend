@@ -17,6 +17,8 @@ export const SidebarGM = () => {
             <div className="margin-top w-11/12 overflow-x-hidden">
                 <Button onClick={()=>navigate("/grimoire/campaign")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
                 <br></br>
+                <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Compartilhar</Button>
+                <br></br>
                 <Button onClick={()=>navigate("/grimoire/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/campaign/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
@@ -26,8 +28,6 @@ export const SidebarGM = () => {
                 <Button onClick={()=>navigate("/grimoire/campaign/journal")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
                 <br></br>
                 <Button disabled onClick={()=>navigate("/grimoire/campaign/archive")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
-                <br></br>
-                <Button disabled textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mapa</Button>
                 <br></br>
                 <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
             </div>

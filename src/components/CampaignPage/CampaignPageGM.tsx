@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, FileUploadTrigger,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, FileUploadTrigger, Box, Grid,} from "@chakra-ui/react";
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
@@ -266,9 +266,15 @@ export const CampaignPageGM = () => {
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
                         <Textarea defaultValue={campaign.descricao} resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
                         {!modifiedCampaign ?
-                            <Button mt={"4"} disabled>Salvar alterações</Button> 
+                          <Grid gap={2} mt={4} className="grid-cols-6">
+                              <Button disabled className="col-span-2">Salvar alterações</Button>
+                              <Button color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
+                          </Grid>
                             :
-                            <Button mt={"4"} onClick={saveChanges}>Salvar alterações</Button>
+                            <Grid gap={2} mt={4} className="grid-cols-6">
+                              <Button onClick={saveChanges} className="col-span-2">Salvar alterações</Button>
+                              <Button color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
+                            </Grid>
                         }
                     </div>
                 </div>

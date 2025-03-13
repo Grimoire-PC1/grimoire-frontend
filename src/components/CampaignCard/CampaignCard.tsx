@@ -45,6 +45,7 @@ export const CampaignCard = ({
                     src={img}
                     w={"full"}
                     h={"20vh"}
+                    className="rounded-t-sm"
                     onClick={navigateCampaignPage}
                     />
                     :
