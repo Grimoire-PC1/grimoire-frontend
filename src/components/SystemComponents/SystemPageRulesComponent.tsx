@@ -16,7 +16,7 @@ export interface SystemPageComponentProps {
 export const SystemPageRulesComponent = ({
     system,
     title,
-    subtitle,
+    subtitle, 
     maxHeight
 }: SystemPageComponentProps) => {
     const [addNewRule,setAddNewRule] = useState(false);

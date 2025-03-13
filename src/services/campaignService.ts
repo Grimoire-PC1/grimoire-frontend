@@ -59,7 +59,17 @@ export const updateCampaign = async (temporaryCampaignPayload: TemporaryCampaign
     );
   
     return data;
-  };
+};
+
+export const deleteCampaign = async (id:number) => {
+
+    const { data } = await axiosInstace.delete(
+    `/${ENDPOINT.DELETE_CAMPAIGN}`,
+    { params: { id_campanha: id} }
+    );
+
+    return data;
+};
 
 export const getCampaignCharacters = async() =>{
     let id = sessionStorage.getItem('currentCampaignId')

@@ -8,7 +8,6 @@ export interface SidebarSystemProps {
 }
 
 export const SidebarSystem = ({
-    system,
 }: SidebarSystemProps) => {
     const navigate = useNavigate();
     

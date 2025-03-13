@@ -8,8 +8,11 @@ import { TemporaryUpdateSystemPayload, UpdateSystemPayload } from "@/interfaces/
 import { Toaster, toaster } from "../ui/toaster";
 import { updateSystem } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
+import { DialogDeleteSystem } from "../Dialog/DialogDeleteSystem";
  
 export const SystemPageComponent = () => {
+
+    const [deleteSystemDialog,setDeleteSystemDialog] = useState(false);
 
     const [,forceUpdate] = useReducer(x=>x+1,0); 
     console.log(sessionStorage.getItem('currentSystem'))
@@ -234,21 +237,14 @@ export const SystemPageComponent = () => {
                     </div>
                 </div>
                 <div className="text-end">
-                {!modifiedSystem ?
-                            <Grid gap={2} mt={4} className="grid-cols-6">
-                              <Button ml={4} className="col-start-4" disabled>Salvar alterações</Button>
-                              <Button ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
-                            </Grid>
-                            :
-                            <Grid gap={2} mt={4} className="grid-cols-6">
-                              <Button ml={4} className="col-start-4" onClick={saveChanges}>Salvar alterações</Button>
-                              <Button ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
-                            </Grid>
-                }
-
+                      <Grid gap={2} mt={4} className="grid-cols-6">
+                        <Button ml={4} className="col-start-4" disabled={!modifiedSystem} onClick={saveChanges}>Salvar alterações</Button>
+                        <Button onClick={()=>setDeleteSystemDialog(true)} ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
+                      </Grid>
                 </div>
             
             </div>
+            <DialogDeleteSystem open={deleteSystemDialog} handleClose={setDeleteSystemDialog} systemId={system.id} systemTitle={system.nome}/>
             <Toaster/>
         </div>
     )

@@ -12,6 +12,7 @@ export const ENDPOINT = {
     GET_USER_PLAYED_CAMPAIGNS: "playedCampaigns",
     GET_CAMPAIGN_BY_ID: "campaign/get",
     UPDATE_CAMPAIGN: "campaign/update",
+    DELETE_CAMPAIGN: "campaign/delete",
 
     CREATE_NEW_CHARACTER: "character/register",
     GET_USER_CHARACTERS: "character/get/user",
@@ -24,6 +25,7 @@ export const ENDPOINT = {
     GET_PUBLIC_SYSTEMS: "engine/get-public",
     GET_SYSTEM_BY_ID: "engine/get", 
     UPDATE_SYSTEM: "engine/update",
+    DELETE_SYSTEM: "engine/delete",
 
     GET_SYSTEM_RULES: "engine-rule/get",
     CREATE_SYSTEM_RULE: "engine-rule/register",

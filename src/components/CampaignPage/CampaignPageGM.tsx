@@ -10,9 +10,12 @@ import { HiUpload } from "react-icons/hi";
 import { toaster, Toaster } from "../ui/toaster";
 import { getCampaignSessions } from "@/services/sessionService";
 import { Avatar } from "../ui/avatar";
+import { DialogDeleteCampaign } from "../Dialog/DialogDeleteCampaign";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
+
+    const [deleteCampaignDialog,setDeletCampaignDialog] = useState(false);
 
     const {data: sessoesDaCampanha} = useQuery({
       queryKey: ["sessoes"],
@@ -265,17 +268,11 @@ export const CampaignPageGM = () => {
                         <Input defaultValue={campaign.titulo} onChange={titleChange} id="TituloCampanha"></Input>
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
                         <Textarea defaultValue={campaign.descricao} resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
-                        {!modifiedCampaign ?
-                          <Grid gap={2} mt={4} className="grid-cols-6">
-                              <Button disabled className="col-span-2">Salvar alterações</Button>
-                              <Button color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
-                          </Grid>
-                            :
-                            <Grid gap={2} mt={4} className="grid-cols-6">
-                              <Button onClick={saveChanges} className="col-span-2">Salvar alterações</Button>
-                              <Button color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
-                            </Grid>
-                        }
+                        
+                        <Grid gap={2} mt={4} className="grid-cols-6">
+                            <Button onClick={saveChanges} disabled={!modifiedCampaign} className="col-span-2">Salvar alterações</Button>
+                            <Button onClick={()=>setDeletCampaignDialog(true)} color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
+                        </Grid>
                     </div>
                 </div>
                 <div className="grid grid-cols-28 margin-top-s">
@@ -303,6 +300,7 @@ export const CampaignPageGM = () => {
                     </div>
                 </div>
             </div>
+            <DialogDeleteCampaign open={deleteCampaignDialog} handleClose={setDeletCampaignDialog} campaignId={campaign.id} campaignTitle={campaign.titulo}/>
             <Toaster />
         </div>
     )

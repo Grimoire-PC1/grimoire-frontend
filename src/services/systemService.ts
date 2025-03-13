@@ -57,6 +57,16 @@ export const updateSystem = async (updatedSystem: TemporaryUpdateSystemPayload) 
     return data;
 };
 
+export const deleteSystem = async (id:number) => {
+
+    const { data } = await axiosInstace.delete(
+    `/${ENDPOINT.DELETE_SYSTEM}`,
+    { params: { id_sistema: id} }
+    );
+
+    return data;
+};
+
 export const getSystemById = async (systemId: string) => {
     const { data } = await axiosInstace.get<System>(
         `/${ENDPOINT.GET_SYSTEM_BY_ID}/${systemId}`
