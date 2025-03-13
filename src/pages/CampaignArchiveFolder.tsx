@@ -11,11 +11,36 @@ import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { ArchiveFolderGM } from "@/components/ArchiveComponents/ArchiveFolderGM";
 import { ArchiveFolderPlayer } from "@/components/ArchiveComponents/ArchiveFolderPlayer";
+import { getUser } from "@/services/userService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CampaignArchiveFolder(){
 
-    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+    const {data: user} = useQuery({
+        queryKey: ["getUser"],
+        queryFn: getUser
+        })
+        const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            setImg(data.image)
+            console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
+    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
+    
     const folder = JSON.parse(sessionStorage.getItem('pastaAtual')||'');
 
     return(
@@ -28,10 +53,10 @@ export default function CampaignArchiveFolder(){
 
                 {isGameMaster ? //mostre a visão do mestre
                     <div>
-                        <CampaignHeader  campaign="minha campanha"/>
+                        <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarGM campaign=""></SidebarGM>
+                                <SidebarGM></SidebarGM>
                             </div>
                             <div className="col-span-9">
                                 <div>
@@ -55,7 +80,7 @@ export default function CampaignArchiveFolder(){
                                 <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
-                                <CampaignHeaderPlayer  campaign="campanha muito legal dos meus amigos"/>
+                                <CampaignHeaderPlayer/>
                                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                                     <div className="col-span-2 sticky">
                                         <SidebarPlayer campaign=""></SidebarPlayer>

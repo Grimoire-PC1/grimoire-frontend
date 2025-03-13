@@ -13,10 +13,15 @@ import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { useUserStore } from "@/stores/user/user.store";
 import { Campaign } from "@/interfaces/Models";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "@/services/userService";
 
 export default function CampaignPage(){
 
-    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
+    const {data: user} = useQuery({
+        queryKey: ["getUser"],
+        queryFn: getUser
+      })
 
     const allCreatedCampaign = useUserStore.getState().createdCampaigns;
     let campaignInformation: Campaign = allCreatedCampaign[0];
@@ -50,6 +55,8 @@ export default function CampaignPage(){
     if(!img || img == "") {
         getImage()
     }
+    
+    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaignInformation.id_mestre)));
 
     return(
         <Presence 

@@ -31,7 +31,7 @@ export const Journal = ({
 
     return(
         <div>
-            <Flex alignItems={"center"} placeContent={"space-between"}>
+            <Flex placeContent={"space-between"}>
                 <Text className="subtitle-s">REVISITE OU PLANEJE UMA SESSÃO!</Text>
                 
                 <IconButton onClick={()=>setNewEntry(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Novo Registro de Sessão"> 

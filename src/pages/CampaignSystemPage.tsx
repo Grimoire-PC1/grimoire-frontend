@@ -12,15 +12,19 @@ import { useState } from "react";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
-import { useUserStore } from "@/stores/user/user.store";
-import { Campaign } from "@/interfaces/Models";
+import { getUser } from "@/services/userService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CampaignSystemPage(){
+
+    const {data: user} = useQuery({
+        queryKey: ["getUser"],
+        queryFn: getUser
+        })
 
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [openDialogLg, setOpenDialogLg] = useState(false)
-    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
     const [img,setImg] = useState("")
     
@@ -40,6 +44,8 @@ export default function CampaignSystemPage(){
         getImage()
     }
 
+    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
+
     return(
         <Presence 
             present={true}
@@ -58,7 +64,7 @@ export default function CampaignSystemPage(){
                             <div className="col-span-9">
                                 <div className="grid h-[85vh] grid-cols-1 content-between">
                                     <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
-                                    <Box mt={6}>
+                                    <Box>
                                         <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
                                                                     subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 
                                                                     system={String(campaign.id_sistema)}

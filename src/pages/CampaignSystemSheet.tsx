@@ -11,12 +11,16 @@ import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPageSheetComponent";
 import { SystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/SystemPagePlayerSheetComponent";
+import { getUser } from "@/services/userService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CampaignSystemSheet(){
 
+    const {data: user} = useQuery({
+        queryKey: ["getUser"],
+        queryFn: getUser
+        })
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
-
-    const [isGameMaster,setIsGameMaster] = useState(true); //depois mudar pra uma verificação com o id do mestre e o id do usuario
 
     const [img,setImg] = useState("")
     
@@ -36,6 +40,8 @@ export default function CampaignSystemSheet(){
         getImage()
     }
 
+    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
+    
     return(
         <Presence 
             present={true}
