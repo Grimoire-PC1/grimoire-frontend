@@ -63,4 +63,10 @@ export const ENDPOINT = {
     CREATE_SHEET_CONTENT: "character-sheet-content/register",
 
     LEAVE_CAMPAIGN: "participant/delete",
+
+    CREATE_FOLDER: "campaign-package/register",
+    CREATE_CHARACTER_FOLDER: "campaign-package/register/character",
+    DELETE_FOLDER: "campaign-package/delete",
+    UPDATE_FOLDER: "campaign-package/update",
+    GET_FOLDER: "campaign-package/get",
 } as const;

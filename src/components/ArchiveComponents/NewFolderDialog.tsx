@@ -2,10 +2,15 @@ import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Box,Button,Input,Text } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { Radio, RadioGroup } from '../ui/radio';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { createFolder } from '@/services/campaignService';
+import { Toaster,toaster } from '../ui/toaster';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
+    handleCreate: (open: boolean) => void;
     campaignId:string;
     pastaMaeId:string;
 }
@@ -13,9 +18,35 @@ export interface DialogLgProps {
 export const NewFolderDialog = ({
     open,
     handleClose,
+    handleCreate,
     campaignId,
     pastaMaeId,
 }: DialogLgProps) => {
+
+    const [publica,setPublica] = useState("nao");
+    const [titulo,setTitulo] = useState("");
+
+    const mutation = useMutation({
+        mutationKey: ["newFolder"],
+        mutationFn: createFolder, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Pasta criada com sucesso!",
+                type: "success",
+            })
+            setPublica("nao");
+            setTitulo("");
+            handleCreate(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema durante a criação da pasta",
+            type: "error",
+            })
+        },
+      });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -36,20 +67,23 @@ export const NewFolderDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} placeholder='Nome da pasta'/>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Nome da pasta'/>
                                         <Text mt={4} className='text'>Essa pasta será visível para os jogadores?</Text>
-                                        <RadioGroup mt={"4"} display={"flex"} columnGap={4} defaultValue="nao">
+                                        <RadioGroup onValueChange={({value})=>setPublica(value)} mt={"4"} display={"flex"} columnGap={4} defaultValue="nao">
                                             <Radio value="nao">Não, a pasta será privada</Radio>
                                             <Radio value="sim">Sim, a pasta será pública</Radio>
                                         </RadioGroup>
                                     </Form>
-                                    <Button mt={"6"} mb={"4"}>Criar</Button>
+                                    <Button onClick={()=>mutation.mutate({  id_campanha:parseInt(campaignId),
+                                                                            publica: publica === "sim" ? true : false,
+                                                                            nome:titulo})} mt={"6"} mb={"4"}>Criar</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

@@ -1,23 +1,44 @@
 import { Box, Flex,For,IconButton,Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { LuFolder, LuFolderLock, LuPlus } from "react-icons/lu";
 import { NewFolderDialog } from "./NewFolderDialog";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { getFolders } from "@/services/campaignService";
+import { Folder } from "@/interfaces/Models";
 
 export interface ArchiveGMProps {
-    campaign: string; //depois mudar pra Campaign
+    campaign: string;
 }
 
 export const ArchiveGM = ({
     campaign,
 }: ArchiveGMProps) => {
+    const [,forceUpdate] = useReducer(x=>x+1,0);
     const navigate = useNavigate();
+    const [campaign_folders, setFolders] = useState<Folder[]>([]);
+    const [flag,setFlag] = useState(0);
 
-    const campaign_folders = [{ nome: "Público", pasta_mae: "", publica: true}, {nome: "Private", pasta_mae: "", publica: false}, {nome: "NPCs", pasta_mae: "Private", publica: false},{nome: "Personagem 1 com nome longo", pasta_mae: "", publica: false},{nome: "Personagem 2", pasta_mae: "", publica: false},{nome: "Personagem 3 nome medio", pasta_mae: "", publica: false}];
+    const foldersMutation = useMutation({
+        mutationKey: ["getFolders"],
+        mutationFn: getFolders,
+        onSuccess: (data) => {
+          console.log(data)
+          setFolders(data);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      
+    useEffect(() => {
+        if(flag < 2){
+            foldersMutation.mutate({id_campanha:parseInt(campaign)});
+            setFlag(flag+1);
+        }
+    }, [flag]);
 
-    //const files = [{nome: "Ficha P1", pasta: "P1", tipo: "FICHA"}, {nome: "Cajado", pasta: "P1", tipo: "ITEM"},{nome: "Pista 1", pasta: "Public", tipo: "IMAGEM"},{nome: "Documento 1", pasta: "Public", tipo: "TEXTO"}]
-
-    function goToFolder(folder:unknown){ //mudar para o tipo folder depois
+    function goToFolder(folder:Folder){ //mudar para o tipo folder depois
         console.log(folder);
         sessionStorage.setItem('pastaAtual',JSON.stringify(folder));
         navigate(`/grimoire/campaign/archive/${(folder.nome).toLowerCase()}`)
@@ -25,6 +46,11 @@ export const ArchiveGM = ({
 
     const [showNewFolder,setShowNewFolder] = useState(false);
 
+    function fecharEforcar(){
+        foldersMutation.mutate({id_campanha:parseInt(campaign)});
+        setShowNewFolder(false);
+        forceUpdate();
+    }
     return(
         <div>
             <Flex alignItems={"center"} placeContent={"space-between"}>
@@ -38,7 +64,7 @@ export const ArchiveGM = ({
 
             <Box mt={6} maxH={"70vh"} gap={"4"} overflowY={"auto"}>
                 <Flex flexWrap={"wrap"} gap={4}>
-                <For each={campaign_folders.filter((folder) => folder.pasta_mae == "")}>
+                <For each={campaign_folders.filter((folder) => folder.id_pacote_pai == null)}>
                     {(folder)=><Box onClick={()=>goToFolder(folder)} cursor={"pointer"} w={"100px"} placeItems={"center"}>
                                     {folder.publica ? <LuFolder size={48} strokeWidth={1.25}/> : <LuFolderLock size={48} strokeWidth={1.25}/>}
                                     <Text textAlign={"center"}>{folder.nome}</Text>
@@ -47,7 +73,7 @@ export const ArchiveGM = ({
                 </Flex>
             </Box>
 
-            <NewFolderDialog open={showNewFolder} handleClose={setShowNewFolder} campaignId={campaign} pastaMaeId=""/>
+            <NewFolderDialog open={showNewFolder} handleCreate={fecharEforcar} handleClose={setShowNewFolder} campaignId={campaign} pastaMaeId=""/>
         </div>
     )
 }

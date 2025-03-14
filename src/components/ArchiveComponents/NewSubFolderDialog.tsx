@@ -1,20 +1,51 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Alert, Box,Button,Input,Text } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { createFolder } from '@/services/campaignService';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
-    pastaMaeId:string;
+    handleConfirm: (open: boolean) => void;
+    campaignId:number;
+    pastaMaeId:number;
+    publica:boolean;
 }
 
 export const NewSubFolderDialog = ({
     open,
     handleClose,
+    handleConfirm,
     campaignId,
     pastaMaeId,
+    publica,
 }: DialogLgProps) => {
+
+    const [titulo,setTitulo] = useState("");
+
+    const mutation = useMutation({
+        mutationKey: ["newFolder"],
+        mutationFn: createFolder, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Sub-pasta criada com sucesso!",
+                type: "success",
+            })
+            setTitulo("");
+            handleConfirm(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toaster.create({
+            description: "Houve um problema durante a criação da sub-pasta",
+            type: "error",
+            })
+        },
+      });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -35,19 +66,23 @@ export const NewSubFolderDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input mt={4} placeholder='Nome da pasta'/>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Nome da pasta'/>
                                         <Alert.Root  maxW={"360px"}  mt={4} status="info" title="This is the alert title">
                                             <Alert.Indicator />
                                             <Alert.Title>Esta sub-pasta terá a mesma visibilidade da pasta mãe.</Alert.Title>
                                         </Alert.Root>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Criar</Button>
+                                    <Button onClick={()=>mutation.mutate({  id_campanha:campaignId,
+                                                                            publica: publica,
+                                                                            id_pacote_pai:pastaMaeId,
+                                                                            nome:titulo})} mt={"4"} mb={"4"}>Criar</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

@@ -16,10 +16,11 @@ export const SystemPagePlayerSheetComponent = () => {
 
     const [displayCharacter,setDisplayCharacter] = useState<CharacterRegister>();
     const [newCharacter,setNewCharacter] = useState(false);
-    const [characters,setCharacters] = useState<CharacterRegister[]>();
+    const [characters,setCharacters] = useState<CharacterRegister[]>([]);
     const [flag,setFlag] = useState(0);
     const [data, setData] = useState<SheetTab[]>();
     const [flagTabs,setFlagTabs] = useState(0);
+    const campaignId = sessionStorage.getItem('currentCampaignId')||"";
 
     function createCharacter(){
         setNewCharacter(true);
@@ -29,10 +30,11 @@ export const SystemPagePlayerSheetComponent = () => {
         mutationKey: ["getCharacters"],
         mutationFn: getUserCharacters,
         onSuccess: (data) => {
-          console.log(data);
-          setCharacters(data);
-          if(data.length > 0){
-            setDisplayCharacter(data[0]);
+          const filteredData = data.filter((d) => d.id_campanha === parseInt(campaignId))
+          console.log(filteredData);
+          setCharacters(filteredData);
+          if(filteredData.length > 0){
+            setDisplayCharacter(filteredData[0]);
           }
         },
         onError: (error) => {

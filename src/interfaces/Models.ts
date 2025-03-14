@@ -105,3 +105,13 @@ export type SheetSubTab = {
 }
 
 export type SheetSubTabType = "TEXTO" | "INTEIRO" | "DADO";
+
+export type Folder = {
+    id: number;
+    id_usuario: number;
+    id_campanha: number;
+    id_campanha_mestre: number;
+    id_pacote_pai: number|null;
+    nome: string;
+    publica: boolean;
+}

@@ -15,12 +15,8 @@ import { getUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
 
 export default function CampaignArchiveFolder(){
-
-    const {data: user} = useQuery({
-        queryKey: ["getUser"],
-        queryFn: getUser
-        })
-        const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [img,setImg] = useState("")
     
@@ -62,7 +58,7 @@ export default function CampaignArchiveFolder(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <ArchiveFolderGM folder={folder} campaign="minha campanha"/>
+                                    <ArchiveFolderGM folder={folder} campaign={campaign.id}/>
                                 </div>
                                 
                                 {

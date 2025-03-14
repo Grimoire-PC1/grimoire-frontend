@@ -3,23 +3,16 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {IconButton, Text} from "@chakra-ui/react"
+import {Text} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
-import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { ArchiveGM } from "@/components/ArchiveComponents/ArchiveGM";
 import { ArchivePlayer } from "@/components/ArchiveComponents/ArchivePlayer";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/services/userService";
 
 export default function CampaignArchive(){
-    const {data: user} = useQuery({
-        queryKey: ["getUser"],
-        queryFn: getUser
-        })
-        const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [img,setImg] = useState("")
     
@@ -39,8 +32,6 @@ export default function CampaignArchive(){
         getImage()
     }
     const isGameMaster = sessionStorage.getItem('isGameMaster');
-    
-    //const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
    
     return(
         <Presence 
@@ -59,7 +50,7 @@ export default function CampaignArchive(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <ArchiveGM campaign="minha campanha"/>
+                                    <ArchiveGM campaign={campaign.id}/>
                                 </div>
                                 
                                 {
@@ -89,7 +80,7 @@ export default function CampaignArchive(){
                                         <SidebarPlayer campaign=""></SidebarPlayer>
                                     </div>
                                     <div className="col-span-9">
-                                            <ArchivePlayer campaign="minha campanha"/>
+                                            <ArchivePlayer campaign={campaign.id}/>
                                     </div>
                                 </div>
                                 

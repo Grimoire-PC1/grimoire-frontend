@@ -1,22 +1,45 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Alert, Box,Button,Input,Text } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { deleteFolder } from '@/services/campaignService';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
-    pastaId:string;
+    handleConfirm: () => void;
+    pastaId:number;
     pastaNome:string;
 }
 
 export const DeleteSubFolderDialog = ({
     open,
     handleClose,
-    campaignId,
+    handleConfirm,
     pastaId,
     pastaNome
 }: DialogLgProps) => {
+
+    const mutation = useMutation({
+            mutationKey: ["deleteFolder"],
+            mutationFn: deleteFolder, 
+            onSuccess: (data) => {
+                console.log(data)
+                toaster.create({
+                    description: "Pasta excluída com sucesso!",
+                    type: "success",
+                })
+                handleConfirm();
+            },
+            onError: (error) => {
+                console.log(error);
+                toaster.create({
+                description: "Houve um problema durante a deleção da pasta",
+                type: "error",
+                })
+            },
+            });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -42,13 +65,14 @@ export const DeleteSubFolderDialog = ({
                                             <Alert.Title>Ao apagar uma pasta, todos os arquivos e sub-pastas dentro dela serão permanentemente excluídos.</Alert.Title>
                                         </Alert.Root>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Deletar pasta</Button>
+                                    <Button onClick={()=>mutation.mutate(pastaId)} mt={"4"} mb={"4"}>Deletar pasta</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

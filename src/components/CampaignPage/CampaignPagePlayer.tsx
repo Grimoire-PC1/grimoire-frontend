@@ -1,6 +1,6 @@
 import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box, Button,} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCampaignCharacters } from "@/services/campaignService";
 import { Avatar } from "../ui/avatar";
 import { getUserCharacters } from "@/services/characterService";
@@ -8,9 +8,16 @@ import { getCampaignSessions } from "@/services/sessionService";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 import { useNavigate } from "react-router-dom";
 import { DialogLeaveCampaign } from "../Dialog/DialogLeaveCampaign";
+import { getUser } from "@/services/userService";
+import { CharacterRegister } from "@/interfaces/Models";
 
 export const CampaignPagePlayer = () => {
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
+
+    const {data: user} = useQuery({
+        queryKey: ["getUser"],
+        queryFn: getUser
+      })
 
     const {data: sessoesDaCampanha} = useQuery({
         queryKey: ["sessoes"],
@@ -60,7 +67,7 @@ export const CampaignPagePlayer = () => {
                 updatedMyCharas.push({ id: c.id, foto: f });
             }
 
-            // Atualiza o estado
+            console.log("atualizando meus personagens")
             setMyCharas(updatedMyCharas);
         };
 
@@ -70,12 +77,32 @@ export const CampaignPagePlayer = () => {
         }
     }, [userCharas]);
 
-    let {data: allCharas} = useQuery({
-        queryKey: ["getCampaignCharacters"],
-        queryFn: getCampaignCharacters
-      })
-      allCharas = allCharas?.filter((c) => c.id_usuario != c.id_campanha_mestre && !(userCharas?.includes(c))).sort((a, b) => {
-          return a.id - b.id;
+    const [allCharas,setAllCharas] = useState<CharacterRegister[]>([]);
+
+      const allCharasMutation = useMutation({
+        mutationKey: ["getCampaignCharacters"],
+        mutationFn: getCampaignCharacters, 
+        onSuccess: async (data) => {
+            console.log(data)
+            setAllCharas(data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != user?.id).sort((a, b) => {
+                return a.id - b.id;
+            }));
+
+            const updatedOtherCharas = [];
+
+            for (let c of allCharas || []) {
+                const f = await getImage(c.id_foto);
+                updatedOtherCharas.push({ id: c.id, foto: f });
+            }
+
+            console.log("atualizando os outros personagens")
+            setOtherCharas(updatedOtherCharas);
+
+            console.log(updatedOtherCharas);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
       });
 
     useEffect(() => {
@@ -87,13 +114,16 @@ export const CampaignPagePlayer = () => {
                 updatedOtherCharas.push({ id: c.id, foto: f });
             }
 
-            // Atualiza o estado
+            console.log("atualizando os outros personagens")
             setOtherCharas(updatedOtherCharas);
+
+            console.log(updatedOtherCharas);
         };
 
-        if (allCharas && (flag2 == 0)) {
-            updateOtherCharasArray();
-            setFlag2(1);
+        if (allCharas && (flag2 < 2)) {
+            allCharasMutation.mutate();
+            //updateOtherCharasArray();
+            setFlag2(flag2+1);
         }
     }, [allCharas, flag2]);
 

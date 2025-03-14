@@ -5,7 +5,7 @@ import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText }
 import { useMutation } from '@tanstack/react-query';
 import { useUserStore } from '@/stores/user/user.store';
 import { CreateNewCampaignPayload } from '@/interfaces/ServicePayload';
-import { createNewCampaign } from '@/services/campaignService';
+import { createFolder, createNewCampaign } from '@/services/campaignService';
 import { useState } from 'react';
 import { System } from '@/interfaces/Models';
 
@@ -69,12 +69,46 @@ export const DialogNewCampaign = ({
             .setCreatedCampaigns([...useUserStore.getState().createdCampaigns, data]);
             console.log(data)
             sessionStorage.setItem('currentCampaignId', data.id);
+            let publicFolderPayload = {
+                id_campanha: parseInt(data.id),
+                publica: true,
+                nome:"Public",
+            }
+            let privateFolderPayload = {
+                id_campanha: parseInt(data.id),
+                publica: false,
+                nome:"Private",
+            }
+            
+            sessionStorage.setItem('currentCampaignId', data.id);
+            sessionStorage.setItem('currentCampaign',JSON.stringify(data))
+            sessionStorage.setItem('systemId',String(data.id_sistema));
+            sessionStorage.setItem('isGameMaster',"true");
+
+            newFolder.mutate(publicFolderPayload);
+            newFolder.mutate(privateFolderPayload);
+
+
+
             navigate("/grimoire/campaign");
         },
         onError: (error) => {
           console.log(error);
         },
     });
+
+    const newFolder = useMutation({
+        mutationKey: ["createFolder"],
+        mutationFn: createFolder,
+        onSuccess: (data) => {
+            console.log(data)
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
+
+
 
     return(
         <Dialog open={open} onClose={handleClose} className="relative z-10">

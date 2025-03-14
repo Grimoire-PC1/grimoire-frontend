@@ -12,18 +12,27 @@ import { getCampaignSessions } from "@/services/sessionService";
 import { Avatar } from "../ui/avatar";
 import { DialogDeleteCampaign } from "../Dialog/DialogDeleteCampaign";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
+import { CharacterRegister, Session } from "@/interfaces/Models";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
 
     const [deleteCampaignDialog,setDeletCampaignDialog] = useState(false);
+    const [sessoesDaCampanha,setSessoes] = useState<Session[]>();
 
-    const {data: sessoesDaCampanha} = useQuery({
-      queryKey: ["sessoes"],
-      queryFn: getCampaignSessions
-    })
-    sessoesDaCampanha?.sort((a, b) => {
-        return a.id - b.id;
+    const sessionsMutation = useMutation({
+      mutationKey: ["sessoes"],
+      mutationFn: getCampaignSessions,
+      onSuccess: (data) => {
+        console.log(data)
+        setSessoes(data.sort((a, b) => {
+          return a.id - b.id;
+      }))
+      },
+      onError: (error) => {
+        console.log(error);
+        
+      },
     });
 
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
@@ -143,14 +152,31 @@ export const CampaignPageGM = () => {
 
     const [otherCharas, setOtherCharas] = useState<MyCharas[]>([]);
     const [flag,setFlag] = useState(0);
+    const [allCharas,setAllCharas] = useState<CharacterRegister[]>();
+    const [flag2,setFlag2] = useState(0);
 
-    let {data: allCharas} = useQuery({
-        queryKey: ["getCampaignCharacters"],
-        queryFn: getCampaignCharacters
-      })
-      allCharas = allCharas?.filter((c) => c.id_usuario != c.id_campanha_mestre).sort((a, b) => {
+
+    const charasMutation = useMutation({
+      mutationKey: ["getCampaignCharacters"],
+      mutationFn: getCampaignCharacters,
+      onSuccess: (data) => {
+        console.log(data)
+        setAllCharas(data.filter((c) => c.id_usuario != c.id_campanha_mestre).sort((a, b) => {
           return a.id - b.id;
-      });
+      }))
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+
+    useEffect(()=>{
+      if(flag2 < 2){
+        charasMutation.mutate();
+        sessionsMutation.mutate();
+        setFlag2(flag2+1);
+      }
+    },[flag2])
 
     useEffect(() => {
         const updateOtherCharasArray = async () => {
@@ -168,9 +194,11 @@ export const CampaignPageGM = () => {
         if (allCharas && (flag == 0)) {
             updateOtherCharasArray();
             setFlag(1);
-            console.log(otherCharas)
+            //console.log(otherCharas)
         }
     }, [allCharas, flag, otherCharas]);
+
+
 
 
     if(!img || img == "") {
@@ -281,7 +309,7 @@ export const CampaignPageGM = () => {
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
                         <For each={sessoesDaCampanha}>
                             {(item) => item.id_campanha == campaign.id && item.fixada ? 
-                                <PinnedDiaryListCardNoEdit titulo={item.titulo} descricao={item.descricao} data={item.data} id={item.id} tipo={item.tipo_sessao} fixada={item.fixada} /> 
+                                <PinnedDiaryListCardNoEdit titulo={item.titulo} descricao={item.descricao} data={item.data} /> 
                             : <div></div>
                             }
                         </For>

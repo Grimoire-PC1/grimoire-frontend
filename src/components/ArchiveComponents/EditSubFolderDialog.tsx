@@ -1,22 +1,49 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Alert, Box,Button,Input,Text } from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
+import { Toaster, toaster } from '../ui/toaster';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { updateFolder } from '@/services/campaignService';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    campaignId:string;
-    pastaId:string;
+    handleConfirm: (novo:string) => void;
+    pastaId:number;
     pastaNome:string;
 }
 
 export const EditSubFolderDialog = ({
     open,
     handleClose,
-    campaignId,
+    handleConfirm,
     pastaId,
     pastaNome
 }: DialogLgProps) => {
+
+    const [titulo,setTitulo] = useState(pastaNome);
+
+    const mutation = useMutation({
+        mutationKey: ["updateFolder"],
+        mutationFn: updateFolder, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Pasta renomeada com sucesso!",
+                type: "success",
+            })
+            setTitulo("");
+            handleConfirm(titulo);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema durante a edição da pasta",
+            type: "error",
+            })
+        },
+        });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -37,19 +64,21 @@ export const EditSubFolderDialog = ({
                                 </div>
                                 <div className="px-4 py-3 grid-cols-1 place-content-center place-items-center gap-y-8">
                                     <Form>
-                                        <Input defaultValue={pastaNome} mt={4} placeholder='Nome da pasta'/>
+                                        <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Nome da pasta'/>
                                         <Alert.Root  maxW={"360px"}  mt={4} status="warning" title="This is the alert title">
                                             <Alert.Indicator />
                                             <Alert.Title>Não é possível editar a visibilidade desta pasta.</Alert.Title>
                                         </Alert.Root>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Salvar alterações</Button>
+                                    <Button onClick={()=>mutation.mutate({  id_pacote:pastaId,
+                                                                            novo_nome:titulo})} mt={"4"} mb={"4"}>Salvar alterações</Button>
                                 </div>
 
                             </DialogPanel>
                         </Box>
                         </div>
                     </div>
+                    <Toaster/>
     </Dialog>
     )
 }

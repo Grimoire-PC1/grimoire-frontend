@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
-import { Campaign, CharacterRegister, SheetSubTab, SheetTab } from "@/interfaces/Models";
-import { CreateNewCampaignPayload, TemporaryCampaignPayload } from "@/interfaces/ServicePayload";
+import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab } from "@/interfaces/Models";
+import { CreateNewCampaignPayload, GetFolderPayload, NewFolderPayload, TemporaryCampaignPayload, UpdateFolderPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
 
@@ -73,10 +73,14 @@ export const deleteCampaign = async (id:number) => {
 
 export const getCampaignCharacters = async() =>{
     let id = sessionStorage.getItem('currentCampaignId')
+    console.log(id);
     const { data } = await axiosInstace.get<CharacterRegister[]>(
         `/${ENDPOINT.GET_CAMPAIGN_CHARACTERS}`,
-        { params: { id_campanha: id} }
+        { params: { id_campanha: parseInt(id||"")} }
     )
+
+    console.log("a porra dos personagens:")
+    console.log(data);
     return data;
 }
 
@@ -107,3 +111,50 @@ export const leaveCampaign = async(id_campanha:number) =>{
     )
     return data;
 }
+
+export const createFolder = async(newFolder:NewFolderPayload) => {
+    console.log(newFolder)
+
+    const { data } = await axiosInstace.post<Folder>(
+        `/${ENDPOINT.CREATE_FOLDER}`,
+        newFolder,
+        { params: { id_campanha: newFolder.id_campanha, publica: newFolder.publica} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const updateFolder = async(payload:UpdateFolderPayload) => {
+
+    const { data } = await axiosInstace.put<Folder>(
+        `/${ENDPOINT.UPDATE_FOLDER}`,
+        payload,
+        { params: { id_pacote:payload.id_pacote} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const deleteFolder = async(id:number) => {
+
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_FOLDER}`,
+        { params: { id_pacote:id} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const getFolders = async(payload:GetFolderPayload) => {
+    const { data } = await axiosInstace.get<Folder[]>(
+        `/${ENDPOINT.GET_FOLDER}`,
+        { params: { id_campanha: payload.id_campanha, id_pacote_pai: payload.id_pacote_pai} }
+    )
+
+    console.log(data)
+    return data;
+}
+

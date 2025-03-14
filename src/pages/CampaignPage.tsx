@@ -5,22 +5,12 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {IconButton, Image, Text} from "@chakra-ui/react"
+import { Image,} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
-import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/services/userService";
-
 export default function CampaignPage(){
-
-    const {data: user} = useQuery({
-        queryKey: ["getUser"],
-        queryFn: getUser
-      })
-
 
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 

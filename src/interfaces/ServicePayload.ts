@@ -166,3 +166,22 @@ export type CreateOrUpdateFieldPayload = {
     id_sub_aba_ficha: number;
     conteudo: string[];
 }
+
+export type NewFolderPayload = {
+    id_campanha:number;
+    publica: boolean;
+    id_pacote_pai?: number;
+    nome:string;
+}
+
+export type UpdateFolderPayload = {
+    id_pacote:number;
+    publica?: boolean;
+    novo_id_pacote_pai?: number;
+    novo_nome:string;
+}
+
+export type GetFolderPayload = {
+    id_campanha:number;
+    id_pacote_pai?: number;
+}
