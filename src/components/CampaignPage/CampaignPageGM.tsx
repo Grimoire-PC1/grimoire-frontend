@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, FileUploadTrigger, Box, Grid,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, FileUploadTrigger, Box, Grid, IconButton,} from "@chakra-ui/react";
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from "../ui/file-upload";
 import { PinnedDiaryListCard } from "../PinnedDiaryView/PinnedDiaryListCard";
 import { CharacterProfile } from "../CharacterProfile/CharacterProfile";
@@ -13,6 +13,7 @@ import { Avatar } from "../ui/avatar";
 import { DialogDeleteCampaign } from "../Dialog/DialogDeleteCampaign";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 import { CharacterRegister, Session } from "@/interfaces/Models";
+import { LuCamera, LuSave, LuTrash2 } from "react-icons/lu";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
@@ -281,14 +282,7 @@ export const CampaignPageGM = () => {
                             :
                             <div className="uploadBox">
                             <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950" src={img}></Image>
-                                <FileUploadRoot marginTop={'1'} alignItems="stretch" maxFiles={1} onFileChange={handleUploadImage}>
-                                <FileUploadTrigger asChild>
-                                    <Button variant="outline" size="sm">
-                                    <HiUpload /> Upload file
-                                    </Button>
-                                </FileUploadTrigger>
-                                <FileUploadList />
-                                </FileUploadRoot>
+                                
                             </div>
                         }
                     </div>
@@ -298,10 +292,20 @@ export const CampaignPageGM = () => {
                         <Text className="text" mt={"4"}>Descreva sua história</Text>
                         <Textarea defaultValue={campaign.descricao} resize={"none"} onChange={descriptionChange} id="DescricaoCampanha"></Textarea>
                         
-                        <Grid gap={2} mt={4} className="grid-cols-6">
-                            <Button onClick={saveChanges} disabled={!modifiedCampaign} className="col-span-2">Salvar alterações</Button>
-                            <Button onClick={()=>setDeletCampaignDialog(true)} color={"white"} backgroundColor={"red.700"} className="col-start-5 col-span-2">Excluir campanha</Button>
-                        </Grid>
+                        <Flex justifyContent={"end"} gap={2} mt={4}>
+                        {
+                            img == "" ?
+                              <div></div>
+                            :
+                              <FileUploadRoot maxFiles={1} onFileChange={handleUploadImage}>
+                                <FileUploadTrigger asChild>
+                                  <IconButton><LuCamera/></IconButton>
+                                </FileUploadTrigger>
+                              </FileUploadRoot>
+                        }
+                            <IconButton onClick={saveChanges} disabled={!modifiedCampaign}><LuSave/></IconButton>
+                            <IconButton onClick={()=>setDeletCampaignDialog(true)} color={"white"} backgroundColor={"red.700"}><LuTrash2/></IconButton>
+                        </Flex>
                     </div>
                 </div>
                 <div className="grid grid-cols-28 margin-top-s">

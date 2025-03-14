@@ -1,4 +1,4 @@
-import { Input, Text, Textarea, Image,Button, FileUploadTrigger, Box, Grid,} from "@chakra-ui/react";
+import { Input, Text, Textarea, Image,Button, FileUploadTrigger, Box, Grid, IconButton, Flex,} from "@chakra-ui/react";
 import { FileUploadRoot, FileUploadDropzone,FileUploadList } from "../ui/file-upload";
 import {RadioGroup, Radio } from "../ui/radio";
 import { useReducer, useState } from "react";
@@ -9,6 +9,7 @@ import { Toaster, toaster } from "../ui/toaster";
 import { updateSystem } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
 import { DialogDeleteSystem } from "../Dialog/DialogDeleteSystem";
+import { LuCamera, LuSave, LuTrash2 } from "react-icons/lu";
  
 export const SystemPageComponent = () => {
 
@@ -213,14 +214,6 @@ export const SystemPageComponent = () => {
                           :
                           <div className="uploadBox">
                           <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950" src={img}></Image>
-                              <FileUploadRoot marginTop={'1'} alignItems="stretch" maxFiles={1} onFileChange={handleUploadImage}>
-                              <FileUploadTrigger asChild>
-                                  <Button variant="outline" size="sm">
-                                  <HiUpload /> Upload file
-                                  </Button>
-                              </FileUploadTrigger>
-                              <FileUploadList />
-                              </FileUploadRoot>
                           </div>
                       }
                     </div>
@@ -236,11 +229,23 @@ export const SystemPageComponent = () => {
                         </RadioGroup>
                     </div>
                 </div>
-                <div className="text-end">
-                      <Grid gap={2} mt={4} className="grid-cols-6">
-                        <Button ml={4} className="col-start-4" disabled={!modifiedSystem} onClick={saveChanges}>Salvar alterações</Button>
-                        <Button onClick={()=>setDeleteSystemDialog(true)} ml={4} className="col-start-6" color={"white"} backgroundColor={"red.700"}>Excluir sistema</Button>
-                      </Grid>
+                <div className="grid grid-cols-2">
+                  <Flex ml={4} className="col-start-2" justifyContent={"end"} gap={2} mt={4}>
+                      {
+                          img == "" ?
+                            <div></div>
+                          :
+                            <FileUploadRoot maxFiles={1} onFileChange={handleUploadImage}>
+                              <FileUploadTrigger asChild>
+                                <IconButton><LuCamera/></IconButton>
+                              </FileUploadTrigger>
+                            </FileUploadRoot>
+                      }
+                          <IconButton disabled={!modifiedSystem} onClick={saveChanges}><LuSave/></IconButton>
+                          <IconButton onClick={()=>setDeleteSystemDialog(true)} color={"white"} backgroundColor={"red.700"}><LuTrash2/></IconButton>
+                
+                    
+                  </Flex>
                 </div>
             
             </div>
