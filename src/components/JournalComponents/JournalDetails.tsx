@@ -135,9 +135,9 @@ export const JournalDetails = ({
                                                 <Editable.Preview />
                                                 <Editable.Input  />
                                             </Editable.Root>
-                                            <Editable.Root value={data} onInput={e => setData(e.target.value)} ref={withMask("99/99/9999")} w={"160px"} fontSize={"2xl"} defaultValue={journalEntryDate}>
+                                            <Editable.Root value={data} onInput={e => setData(e.target.value)} w={"160px"} fontSize={"2xl"} defaultValue={journalEntryDate}>
                                                 <Editable.Preview />
-                                                <Editable.Input ref={withMask("99/99/9999")} />
+                                                <Editable.Input />
                                             </Editable.Root>
                                         </Flex>
                                 </div>

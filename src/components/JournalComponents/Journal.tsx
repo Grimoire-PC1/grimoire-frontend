@@ -1,10 +1,11 @@
 import {Box, CardBody, CardHeader, CardRoot, CardTitle, Flex, For, IconButton, Separator, Text} from '@chakra-ui/react'
 import { LuPlus } from 'react-icons/lu';
 import { PinnedDiaryListCard } from '../PinnedDiaryView/PinnedDiaryListCard';
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { JournalNewEntry } from './JournalNewEntry';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation} from '@tanstack/react-query';
 import { getCampaignSessions } from '@/services/sessionService';
+import { Session } from '@/interfaces/Models';
 
 export interface JournalProps {
    campaign:string; //mudar para Campaign
@@ -16,18 +17,43 @@ export const Journal = ({
 
     const [newEntry,setNewEntry] = useState(false);
 
+    const [,forceUpdate] = useReducer(x=>x+1,0);
+
+    const [data,setData] = useState<Session[]>();
+    const [flag,setFlag] = useState(0);
+    
+
+    const mutation = useMutation({
+        mutationKey: ["sessoes"],
+        mutationFn: getCampaignSessions,
+        onSuccess: (data) => {
+            console.log(data)
+            setData(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
+            setFlag(1);
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+        });
+
+    useEffect(() => {
+        if(flag == 0){
+            mutation.mutate();
+        }
+    }, [data]);
+
     function fecharEforcar(){
+        mutation.mutate();
         setNewEntry(false);
-        location.reload();
+        forceUpdate();
     }
 
-    const {data} = useQuery({
-        queryKey: ["sessoes"],
-        queryFn: getCampaignSessions
-    })
-    data?.sort((a, b) => {
-        return a.id - b.id;
-    });
+    function fecharEforcar2(){
+        mutation.mutate();
+        forceUpdate();
+    }
 
     return(
         <div>
@@ -48,7 +74,7 @@ export const Journal = ({
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
                         <For each={data?.filter((s) => s.id_campanha === parseInt(campaign) && s.fixada == true)}>
-                            {(s)=><PinnedDiaryListCard titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
+                            {(s)=><PinnedDiaryListCard handleConfirm={fecharEforcar2} titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
                         </For>
                     </CardBody>
                 </CardRoot>
@@ -59,7 +85,7 @@ export const Journal = ({
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
                     <For each={data?.filter((s) => s.id_campanha === parseInt(campaign) && s.tipo_sessao === "PASSADA")}>
-                        {(s)=><PinnedDiaryListCard titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
+                        {(s)=><PinnedDiaryListCard handleConfirm={fecharEforcar2} titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
                     </For>
                     </CardBody>
                 </CardRoot>
@@ -71,7 +97,7 @@ export const Journal = ({
                     </CardHeader>
                     <CardBody  overflowY={"auto"}>
                         <For each={data?.filter((s) => s.id_campanha === parseInt(campaign) && s.tipo_sessao === "FUTURA")}>
-                            {(s)=><PinnedDiaryListCard titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
+                            {(s)=><PinnedDiaryListCard handleConfirm={fecharEforcar2} titulo={s.titulo} descricao={s.descricao} data={s.data} id={s.id} tipo={s.tipo_sessao} fixada={s.fixada}/>}
                         </For>
                     </CardBody>
                 </CardRoot>

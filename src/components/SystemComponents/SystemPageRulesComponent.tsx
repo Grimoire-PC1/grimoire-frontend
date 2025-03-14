@@ -1,10 +1,11 @@
 import { Text, Flex,Grid, IconButton, For,  } from "@chakra-ui/react";
 import { RulesCard } from "../RulesCard/RulesCard";
 import { LuPlus } from "react-icons/lu";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { RulesCardDialog } from "../RulesCard/RulesCardDialog";
 import { getSystemRules } from "@/services/systemService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { SystemRule } from "@/interfaces/Models";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -21,17 +22,42 @@ export const SystemPageRulesComponent = ({
 }: SystemPageComponentProps) => {
     const [addNewRule,setAddNewRule] = useState(false);
 
-    const {data: regras} = useQuery({
-        queryKey: ["regras"],
-        queryFn: getSystemRules
-    })
-    regras?.sort((a, b) => {
-        return a.id - b.id;
-    });
+    const [,forceUpdate] = useReducer(x=>x+1,0);
+
+    const [regras,setRegras] = useState<SystemRule[]>();
+    const [flag,setFlag] = useState(0);
+    
+
+    const mutation = useMutation({
+        mutationKey: ["regras"],
+        mutationFn: getSystemRules,
+        onSuccess: (data) => {
+            console.log(data)
+            setRegras(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
+            setFlag(1);
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+        });
+
+    useEffect(() => {
+        if(flag == 0){
+            mutation.mutate();
+        }
+    }, [regras]);
 
     function fecharEforcar(){
+        mutation.mutate();
         setAddNewRule(false);
-        location.reload();
+        forceUpdate();
+    }
+
+    function fecharEforcar2(){
+        mutation.mutate();
+        forceUpdate();
     }
 
     sessionStorage.setItem('systemId',system);
@@ -54,7 +80,7 @@ export const SystemPageRulesComponent = ({
                 </Flex>
                     <Grid maxH={maxHeight} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
                         <For each={regras}>
-                            {(regra)=><RulesCard ruleId={String(regra.id)} ruleTitle={regra.titulo} ruleDesc={regra.descricao}/>}
+                            {(regra)=><RulesCard handleConfirm={fecharEforcar2} ruleId={String(regra.id)} ruleTitle={regra.titulo} ruleDesc={regra.descricao}/>}
                         </For>
                     </Grid>
 

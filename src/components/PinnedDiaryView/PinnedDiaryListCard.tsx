@@ -11,6 +11,7 @@ export interface JournalProps {
     id:number;
     tipo:SessionType;
     fixada:boolean;
+    handleConfirm: (open: boolean) => void;
 }
 
 export const PinnedDiaryListCard = ({
@@ -19,13 +20,14 @@ export const PinnedDiaryListCard = ({
     data,
     id,
     tipo,
-    fixada
+    fixada,
+    handleConfirm
 }:JournalProps) => {
     const [showJournalDetails,setShowJournalDetails] = useState(false);
 
     function fecharEforcar(){
         setShowJournalDetails(false);
-        location.reload();
+        handleConfirm(false);
     }
     
     return(

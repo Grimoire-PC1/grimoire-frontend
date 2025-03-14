@@ -169,13 +169,7 @@ export const SystemPagePlayerSheetComponent = () => {
                 </div>
                 {
                     displayCharacter ?
-                    <Box>
-                        <FileUploadRoot cursor={"pointer"}>
-                            <FileUploadTrigger>
-                                <Avatar cursor={"pointer"} mr={20} scale={2} size={"2xl"} src={img}></Avatar>
-                            </FileUploadTrigger>
-                        </FileUploadRoot>
-                    </Box>
+                        <Avatar mr={20} scale={2} size={"2xl"} src={img}></Avatar>
                     :
                     <div></div>
                 }

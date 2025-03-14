@@ -61,4 +61,6 @@ export const ENDPOINT = {
     GET_SHEET_CONTENT: "character-sheet-content/get",
     UPDATE_SHEET_CONTENT: "character-sheet-content/update",
     CREATE_SHEET_CONTENT: "character-sheet-content/register",
+
+    LEAVE_CAMPAIGN: "participant/delete",
 } as const;

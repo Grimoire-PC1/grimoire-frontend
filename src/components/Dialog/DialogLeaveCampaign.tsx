@@ -3,7 +3,7 @@ import { Alert, Box, Button, Input, Presence,Text } from "@chakra-ui/react";
 import { toaster, Toaster } from '../ui/toaster';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { deleteCampaign } from '@/services/campaignService';
+import { deleteCampaign, leaveCampaign } from '@/services/campaignService';
 
 
 export interface DialogProps {
@@ -21,14 +21,14 @@ export const DialogLeaveCampaign = ({
 }: DialogProps) => {
     const navigate = useNavigate();
 
-    /*
+    
     const mutation = useMutation({
         mutationKey: ["leaveCampaign"],
         mutationFn: leaveCampaign,
         onSuccess: () => {
             toaster.create({
                         description: "Você saiu da campanha!",
-                        type: "success",
+                        type: "success"
                         })
             navigate('/grimoire/home');
         },
@@ -40,7 +40,7 @@ export const DialogLeaveCampaign = ({
                         })
         },
     });
-    */
+    
 
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -71,7 +71,7 @@ export const DialogLeaveCampaign = ({
                                         <Alert.Indicator />
                                         <Alert.Title>Você pode entrar na campanha novamente caso o mestre o convide, mas precisará recomeçar sua ficha e seu inventário.</Alert.Title>
                                     </Alert.Root>
-                                    <Button mt={"4"} mb={"4"}>Sair da campanha</Button>
+                                    <Button onClick={()=>mutation.mutate(campaignId)} mt={"4"} mb={"4"}>Sair da campanha</Button>
                                 </div>
 
                             </DialogPanel>

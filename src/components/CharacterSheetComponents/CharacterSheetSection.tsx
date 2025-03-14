@@ -58,7 +58,7 @@ export const CharacterSheetSection = ({
     function fecharEforcar2(){
         setEditSection(false);
         setDeleteSection(false);
-        //location.reload();
+        //location.reload(); 
         handleEdit(false);
     }
     

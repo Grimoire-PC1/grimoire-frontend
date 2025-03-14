@@ -98,3 +98,12 @@ export const getCampaignSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
     )
     return data;
 }
+
+
+export const leaveCampaign = async(id_campanha:number) =>{
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.LEAVE_CAMPAIGN}`,
+        { params: { id_campanha: id_campanha} }
+    )
+    return data;
+}

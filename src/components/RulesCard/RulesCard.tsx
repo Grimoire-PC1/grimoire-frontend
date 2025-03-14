@@ -10,12 +10,14 @@ export interface RulesCardProps {
     ruleTitle: string; // mudar para o tipo Rule depois. O tipo rule contém título e descrição, e talvez tag também 
     ruleDesc: string;
     ruleId: string;
+    handleConfirm: (open: boolean) => void;
 }
 
 export const RulesCard = ({
     ruleTitle,
     ruleDesc,
-    ruleId
+    ruleId,
+    handleConfirm
 }: RulesCardProps) => {
 
     const [editDialog,setEditDialog] = useState(false);
@@ -24,7 +26,7 @@ export const RulesCard = ({
     function fecharEforcar(){
         setEditDialog(false);
         setDeleteDialog(false);
-        location.reload();
+        handleConfirm(false);
     }
 
     return(

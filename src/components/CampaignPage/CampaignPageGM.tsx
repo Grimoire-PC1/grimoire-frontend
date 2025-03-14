@@ -11,6 +11,7 @@ import { toaster, Toaster } from "../ui/toaster";
 import { getCampaignSessions } from "@/services/sessionService";
 import { Avatar } from "../ui/avatar";
 import { DialogDeleteCampaign } from "../Dialog/DialogDeleteCampaign";
+import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
@@ -280,7 +281,7 @@ export const CampaignPageGM = () => {
                         <Text className="subtitle-s">HISTÓRICO DE SESSÕES</Text>
                         <For each={sessoesDaCampanha}>
                             {(item) => item.id_campanha == campaign.id && item.fixada ? 
-                                <PinnedDiaryListCard titulo={item.titulo} descricao={item.descricao} data={item.data} id={item.id} tipo={item.tipo_sessao} fixada={item.fixada} /> 
+                                <PinnedDiaryListCardNoEdit titulo={item.titulo} descricao={item.descricao} data={item.data} id={item.id} tipo={item.tipo_sessao} fixada={item.fixada} /> 
                             : <div></div>
                             }
                         </For>

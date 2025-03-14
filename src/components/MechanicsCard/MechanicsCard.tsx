@@ -13,6 +13,7 @@ export interface MechanicsCardProps {
     mechanicDesc:string;
     mechanicActions:string[];
     mechanicEffects:string[];
+    handleConfirm: (open: boolean) => void;
 }
 
 export const MechanicsCard = ({
@@ -21,6 +22,7 @@ export const MechanicsCard = ({
     mechanicDesc,
     mechanicActions,
     mechanicEffects,
+    handleConfirm
 }: MechanicsCardProps) => {
 
     const [editDialog,setEditDialog] = useState(false);
@@ -34,7 +36,7 @@ export const MechanicsCard = ({
     function fecharEforcar(){
         setEditDialog(false);
         setDeleteDialog(false);
-        location.reload();
+        handleConfirm(false);
     }
 
     return(
