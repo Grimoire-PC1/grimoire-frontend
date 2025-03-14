@@ -9,7 +9,7 @@ export const ENDPOINT = {
 
     CREATE_NEW_CAMPAIGN: "campaign/register",
     GET_USER_CREATED_CAMPAIGNS: "campaign/get",
-    GET_USER_PLAYED_CAMPAIGNS: "playedCampaigns",
+    GET_USER_PLAYED_CAMPAIGNS: "campaign/get-participating",
     GET_CAMPAIGN_BY_ID: "campaign/get",
     UPDATE_CAMPAIGN: "campaign/update",
     DELETE_CAMPAIGN: "campaign/delete",

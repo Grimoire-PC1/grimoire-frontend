@@ -1,5 +1,7 @@
 import { Campaign } from "@/interfaces/Models"
+import { useUserStore } from "@/stores/user/user.store";
 import {CardBody, CardRoot, Image, Skeleton, Text } from "@chakra-ui/react"
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +19,36 @@ export const CampaignCard = ({
     function navigateCampaignPage() {
         sessionStorage.setItem('currentCampaignId', campaign.id);
         console.log(campaign.id)
+        
+        const myCampaigns = useUserStore.getState().createdCampaigns;
+        const participatingCampaigns = useUserStore.getState().playedCampaigns;
+        myCampaigns.forEach(
+            (c) => {
+                console.log(c)
+                if(c.id == campaign.id){
+                    sessionStorage.setItem('currentCampaign',JSON.stringify(c))
+                    sessionStorage.setItem('systemId',String(c.id_sistema));
+                    sessionStorage.setItem('isGameMaster',"true");
+
+                    console.log('achei a campanha, id: '+c.id)
+                }
+            }
+        )
+        participatingCampaigns.forEach(
+            (c) => {
+                console.log(c)
+                if(c.id == campaign.id){
+                    sessionStorage.setItem('currentCampaign',JSON.stringify(c))
+                    sessionStorage.setItem('systemId',String(c.id_sistema));
+                    sessionStorage.setItem('isGameMaster',"false");
+
+                    console.log('achei a campanha, id: '+c.id)
+                }
+            }
+        )
+
+        console.log('campanha atual:')
+        console.log(sessionStorage.getItem('currentCampaign'))
         navigate("/grimoire/campaign");
     }
 

@@ -38,7 +38,9 @@ export default function CampaignArchive(){
     if(!img || img == "") {
         getImage()
     }
-    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
+    const isGameMaster = sessionStorage.getItem('isGameMaster');
+    
+    //const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
    
     return(
         <Presence 
@@ -48,7 +50,7 @@ export default function CampaignArchive(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
-                {isGameMaster ? //mostre a visão do mestre
+                {isGameMaster === "true" ? //mostre a visão do mestre
                     <div>
                         <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -60,9 +62,13 @@ export default function CampaignArchive(){
                                     <ArchiveGM campaign="minha campanha"/>
                                 </div>
                                 
-                                <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                                    {<LuArrowRightLeft />}
-                                </IconButton>
+                                {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                                 <ToggleTheme/>
                             </div>
                         </div>
@@ -90,9 +96,13 @@ export default function CampaignArchive(){
                             </div>
                         </div>
                         
-                        <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                            {<LuArrowRightLeft />}
-                        </IconButton>
+                        {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                         <ToggleThemeXL/>
                     </div>
                 }

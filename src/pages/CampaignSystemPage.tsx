@@ -44,7 +44,9 @@ export default function CampaignSystemPage(){
         getImage()
     }
 
-    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
+    const isGameMaster = sessionStorage.getItem('isGameMaster');
+    
+    //const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
 
     return(
         <Presence 
@@ -54,7 +56,7 @@ export default function CampaignSystemPage(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}>
 
-                {isGameMaster ?
+                {isGameMaster === "true" ?
                     <div className="max-h-[100vh] overflow-y-hidden">
                         <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -73,9 +75,13 @@ export default function CampaignSystemPage(){
                                     </Box>
                                 </div>
                                 
-                                <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                                    {<LuArrowRightLeft />}
-                                </IconButton>
+                                {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                                 <ToggleTheme/>
                             </div>
                         </div>
@@ -110,9 +116,13 @@ export default function CampaignSystemPage(){
                             </div>
                         </div>
                         
-                        <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                            {<LuArrowRightLeft />}
-                        </IconButton>
+                        {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                         <ToggleThemeXL/>
                     </div>
                 }

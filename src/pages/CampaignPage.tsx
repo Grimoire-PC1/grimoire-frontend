@@ -11,8 +11,6 @@ import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPl
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
-import { useUserStore } from "@/stores/user/user.store";
-import { Campaign } from "@/interfaces/Models";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/services/userService";
 
@@ -23,26 +21,13 @@ export default function CampaignPage(){
         queryFn: getUser
       })
 
-    const allCreatedCampaign = useUserStore.getState().createdCampaigns;
-    let campaignInformation: Campaign = allCreatedCampaign[0];
-    console.log(allCreatedCampaign)
 
-    for(let i = 0; i < allCreatedCampaign.length; i++) {
-        if(allCreatedCampaign[i].id == sessionStorage.getItem('currentCampaignId')) {
-            campaignInformation = allCreatedCampaign[i];
-            console.log(campaignInformation)
-            sessionStorage.setItem('currentCampaign',JSON.stringify(campaignInformation))
-            sessionStorage.setItem('systemId',String(campaignInformation.id_sistema));
-            console.log(campaignInformation.id_sistema)
-            console.log(sessionStorage.getItem('systemId'))
-            break
-        } 
-    }
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
 
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaignInformation?.id_foto}`, {
+        const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"
@@ -56,7 +41,9 @@ export default function CampaignPage(){
         getImage()
     }
     
-    const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaignInformation.id_mestre)));
+    const isGameMaster = sessionStorage.getItem('isGameMaster');
+    
+    //const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
 
     return(
         <Presence 
@@ -66,7 +53,7 @@ export default function CampaignPage(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
-                {isGameMaster ? //mostre a visão do mestre
+                {isGameMaster === "true" ? //mostre a visão do mestre
                     <div>
                         <CampaignHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
@@ -78,9 +65,13 @@ export default function CampaignPage(){
                                     <CampaignPageGM></CampaignPageGM>
                                 </div>
                                 
-                                <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                                    {<LuArrowRightLeft />}
-                                </IconButton>
+                                {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                                 <ToggleTheme/>
                             </div>
                         </div>
@@ -92,7 +83,6 @@ export default function CampaignPage(){
                         <div>
                             <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
                             <Image src={img} w={"100vw"} h={"113vh"} />
-                                <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
                             </Box>
                             <div className="h-[100vh]">
                                 <CampaignHeaderPlayer/>
@@ -109,10 +99,14 @@ export default function CampaignPage(){
                                 
                             </div>
                         </div>
+                        {
+                            /*
+                            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
+                                {<LuArrowRightLeft />}
+                            </IconButton>
+                            */
+                        }
                         
-                        <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsGameMaster(!isGameMaster)} variant="outline" size="sm">
-                            {<LuArrowRightLeft />}
-                        </IconButton>
                         <ToggleThemeXL/>
                     </div>
                 }

@@ -70,6 +70,10 @@ export default function Home() {
         useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
     }
 
+    if(campanhasJogadas != undefined){
+        useUserStore.getState().setPlayedCampaigns(campanhasJogadas);
+    }
+
     if(sistemasUsuario != undefined){
         useUserStore.getState().setUserSystems(sistemasUsuario);
     }
