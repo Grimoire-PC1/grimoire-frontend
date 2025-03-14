@@ -1,5 +1,5 @@
 import { Box, Flex,For,Icon,IconButton,Text } from "@chakra-ui/react";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { LuArrowBigLeft, LuBackpack, LuChevronLeft, LuFile, LuFileImage, LuFileText, LuFolder, LuFolderLock, LuNotebookPen, LuPencil, LuPlus, LuUserRoundPen } from "react-icons/lu";
 import { NewFolderDialog } from "./NewFolderDialog";
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger, MenuTriggerItem } from "../ui/menu";
@@ -12,10 +12,13 @@ import { NewImgFileDialog } from "./NewImgFileDialog";
 import { NewItemFileDialog } from "./NewItemFileDialog";
 import { NewSheetFileDialog } from "./NewSheetFileDialog";
 import { ArchiveFileComponent } from "./ArchiveFileComponent";
+import { Folder } from "@/interfaces/Models";
+import { useMutation } from "@tanstack/react-query";
+import { getFolders } from "@/services/campaignService";
 
 export interface ArchivePlayerProps {
-    campaign: string; //depois mudar pra Campaign
-    folder:unknown; //mudar para Folder depois
+    campaign: number;
+    folder:Folder;
 }
 
 export const ArchiveFolderPlayer = ({
@@ -24,11 +27,34 @@ export const ArchiveFolderPlayer = ({
 }: ArchivePlayerProps) => {
     const navigate = useNavigate();
 
-    const campaign_folders = [{ nome: "Público", pasta_mae: "", publica: true}, {nome: "Private", pasta_mae: "", publica: false}, {nome: "NPCs", pasta_mae: "Private", publica: false},{nome: "Personagem 1 com nome longo", pasta_mae: "", publica: false},{nome: "Personagem 2", pasta_mae: "", publica: false},{nome: "Personagem 3 nome medio", pasta_mae: "", publica: false}];
+    const [,forceUpdate] = useReducer(x=>x+1,0); 
+
+    const [campaign_folders, setFolders] = useState<Folder[]>([]);
+    const [flag,setFlag] = useState(0);
+
+    const foldersMutation = useMutation({
+        mutationKey: ["getFolders"],
+        mutationFn: getFolders,
+        onSuccess: (data) => {
+          console.log(data)
+          setFolders(data);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      
+    useEffect(() => {
+        if(flag < 2){
+            console.log("id da campanha: "+campaign)
+            foldersMutation.mutate({id_campanha:campaign});
+            setFlag(flag+1);
+        }
+    }, [flag]);
 
     const files = [{nome: "Ficha P1", pasta: "Personagem 1 com nome longo", tipo: "FICHA"}, {nome: "Cajado", pasta: "Private", tipo: "ITEM"},{nome: "Pista 1", pasta: "Private", tipo: "IMAGEM"},{nome: "Documento 1", pasta: "Personagem 1 com nome longo", tipo: "TEXTO"}]
 
-    function goToFolder(f:unknown){ //mudar para o tipo folder depois
+    function goToFolder(f:Folder){ //mudar para o tipo folder depois
         console.log(f);
         sessionStorage.setItem('pastaAtual',JSON.stringify(f));
         navigate(`/grimoire/campaign/archive/${(f.nome).toLowerCase()}`)
@@ -36,8 +62,8 @@ export const ArchiveFolderPlayer = ({
     }
 
     function goBack(){
-        if(folder.pasta_mae != ""){
-            goToFolder(campaign_folders.filter((f) => f.nome === folder.pasta_mae)[0]) /* depois mudar simplesmente para folder.pasta_mae, que vai ter uma relação com outro folder */
+        if(folder.id_pacote_pai != null){
+            goToFolder(campaign_folders.filter((f) => f.id === folder.id_pacote_pai)[0]) /* depois mudar simplesmente para folder.id_pacote_pai, que vai ter uma relação com outro folder */
         }else{
             navigate(`/grimoire/campaign/archive`)
         }
@@ -63,7 +89,7 @@ export const ArchiveFolderPlayer = ({
                     </IconButton>
                     <Text className="subtitle-s">{folder.nome}</Text>
                 </Flex>
-                
+                {/*
                 <MenuRoot>
                     <MenuTrigger asChild>
                         <IconButton rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Editar pasta"> 
@@ -77,12 +103,13 @@ export const ArchiveFolderPlayer = ({
                             <MenuItem onClick={()=>setShowNewSheet(true)} cursor={"pointer"} value="ficha">Personagem</MenuItem>
                     </MenuContent>
                 </MenuRoot>
+                */}
                                         
             </Flex>
 
             <Box mt={6} maxH={"70vh"} gap={"4"} overflowY={"auto"}>
                 <Flex alignItems={"end"} flexWrap={"wrap"} gap={4}>
-                <For each={campaign_folders.filter((f) => f.pasta_mae === folder.nome)}>
+                <For each={campaign_folders.filter((f) => f.id_pacote_pai === folder.id)}>
                     {(folder)=><Box onClick={()=>goToFolder(folder)} cursor={"pointer"} w={"100px"} placeItems={"center"}>
                                     {folder.publica ? <LuFolder size={48} strokeWidth={1.25}/> : <LuFolderLock size={48} strokeWidth={1.25}/>}
                                     <Text mt={3} textAlign={"center"}>{folder.nome}</Text>
@@ -94,14 +121,18 @@ export const ArchiveFolderPlayer = ({
                 </Flex>
             </Box>
 
-            <NewSubFolderDialog open={showNewFolder} handleClose={setShowNewFolder} campaignId={campaign} pastaMaeId={folder.nome /* mudar para id depois */}/>
-            <DeleteSubFolderDialog open={showDeleteFolder} handleClose={setShowDeleteFolder} campaignId={campaign} pastaId={folder.nome /* mudar para id depois */} pastaNome={folder.nome}/>
-            <EditSubFolderDialog open={showEditFolder} handleClose={setShowEditFolder} campaignId={campaign} pastaId={folder.nome /* mudar para id depois */} pastaNome={folder.nome}/>
-        
-            <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} pastaId={folder.name /* mudar para id depois */}/>
-            <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} pastaId={folder.name /* mudar para id depois */}/>
-            <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} pastaId={folder.name /* mudar para id depois */}/>
-            <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={folder.name /* mudar para id depois */}/>
+            {
+                /*
+                <NewSubFolderDialog open={showNewFolder} handleClose={setShowNewFolder} campaignId={campaign} pastaMaeId={folder.id}/>
+                <DeleteSubFolderDialog open={showDeleteFolder} handleClose={setShowDeleteFolder} campaignId={campaign} pastaId={folder.nome} pastaNome={folder.nome}/>
+                <EditSubFolderDialog open={showEditFolder} handleClose={setShowEditFolder} campaignId={campaign} pastaId={folder.nome} pastaNome={folder.nome}/>
+            
+                <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} pastaId={folder.nome}/>
+                <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} pastaId={folder.nome}/>
+                <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} pastaId={folder.nome}/>
+                <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={folder.nome}/>
+                */
+            }
         </div>
     )
 }

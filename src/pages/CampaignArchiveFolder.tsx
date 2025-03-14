@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function CampaignArchiveFolder(){
     
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    console.log(campaign);
 
     const [img,setImg] = useState("")
     
@@ -58,7 +59,7 @@ export default function CampaignArchiveFolder(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <ArchiveFolderGM folder={folder} campaign={campaign.id}/>
+                                    <ArchiveFolderGM folder={folder} campaign={campaign.id_campanha}/>
                                 </div>
                                 
                                 {
@@ -88,7 +89,7 @@ export default function CampaignArchiveFolder(){
                                         <SidebarPlayer campaign=""></SidebarPlayer>
                                     </div>
                                     <div className="col-span-9">
-                                        <ArchiveFolderPlayer folder={folder} campaign="minha campanha"/>
+                                        <ArchiveFolderPlayer folder={folder} campaign={campaign.id}/>
                                     </div>
                                 </div>
                                 

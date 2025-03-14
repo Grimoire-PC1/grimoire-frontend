@@ -19,7 +19,7 @@ import { getFolders } from "@/services/campaignService";
 export interface ArchiveGMProps {
     campaign: string;
     folder:Folder;
-}
+} 
 
 export const ArchiveFolderGM = ({
     campaign,
