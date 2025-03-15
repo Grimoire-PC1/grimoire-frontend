@@ -1,26 +1,33 @@
 import { Box, IconButton, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuFileText, LuFileImage, LuBackpack, LuUserRoundPen, LuFile } from "react-icons/lu";
 import { OpenTxtFileDialog } from "./OpenTxtFileDialog";
 import { OpenImgFileDialog } from "./OpenImgFileDialog";
 import { OpenItemFileDialog } from "./OpenItemFileDialog";
 import { useNavigate } from "react-router-dom";
-import { File } from "@/interfaces/Models";
+import { File, Item } from "@/interfaces/Models";
+import { useMutation } from "@tanstack/react-query";
+import { getItem } from "@/services/campaignService";
 
 export interface ArchiveGMProps {
     campaign: string; //depois mudar pra Campaign
     folderId:string;
     file: File; //mudar para File depois
     handleConfirm: (open: boolean) => void;
+    item: Item|undefined;
 }
 
 export const ArchiveFileComponent = ({
     campaign,
     folderId,
     file,
-    handleConfirm
+    handleConfirm,
+    item
 }: ArchiveGMProps) => {
     const navigate = useNavigate();
+
+    //const [item,setItem] = useState<Item>();
+    const [flag,setFlag] = useState(0);
 
     const [showTXT,setShowTXT] = useState(false);
     const [showIMG,setShowIMG] = useState(false);
@@ -51,6 +58,13 @@ export const ArchiveFileComponent = ({
 
     }
 
+    useEffect(() => {
+        if(flag < 2){
+            setFlag(flag+1);
+            console.log(item);
+        }
+    }, [flag]);
+
     return(
         <div>
             <Box onClick={()=>openFile(file)} cursor={"pointer"} w={"100px"} placeItems={"center"}><IconButton size={"2xl"} variant={"ghost"}>
@@ -63,9 +77,14 @@ export const ArchiveFileComponent = ({
                 <Text textAlign={"center"}>{file.nome}</Text>
             </Box>
 
-            <OpenTxtFileDialog handleConfirm={handleConfirm} open={showTXT} handleClose={setShowTXT} file={file}/>
-            <OpenImgFileDialog handleConfirm={handleConfirm} open={showIMG} handleClose={setShowIMG} file={file}/>
-            <OpenItemFileDialog open={showItem} handleClose={setShowItem} file={file}/>
+            {file.tipo === "TEXTO" ?
+                <OpenTxtFileDialog handleConfirm={handleConfirm} open={showTXT} handleClose={setShowTXT} file={file}/>
+            : file.tipo === "IMAGEM" ?
+                <OpenImgFileDialog handleConfirm={handleConfirm} open={showIMG} handleClose={setShowIMG} file={file}/>
+            : file.tipo === "ITEM" ?
+                <OpenItemFileDialog handleConfirm={handleConfirm} open={showItem} handleClose={setShowItem} file={file} item={item}/>
+            : <div></div>
+            }
         </div>
     )
 }

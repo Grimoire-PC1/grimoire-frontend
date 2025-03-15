@@ -27,7 +27,6 @@ export const OpenImgFileDialog = ({
     const file_criador = sessionStorage.getItem('isGameMaster');
     const [img,setImg] = useState("")
     const [titulo,setTitulo] = useState(file.nome);
-    const [conteudo,setConteudo] = useState(file.conteudo);
 
     const mutationEdit = useMutation({
         mutationKey: ["updateFile"],

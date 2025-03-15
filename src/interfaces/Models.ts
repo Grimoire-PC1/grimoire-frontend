@@ -125,3 +125,16 @@ export type File = {
 }
 
 export type FileType = "TEXTO" | "ITEM" | "IMAGEM" | "PERSONAGEM";
+
+export type Item = {
+    id:number;
+    id_campanha:number;
+    id_campanha_mestre:number;
+    nome:string;
+    descricao:string;
+    qtd_dados:number;
+    tipo_dado:number;
+    bonus_dado:number;
+    rolar_dado:string;
+    quantidade:number;
+}

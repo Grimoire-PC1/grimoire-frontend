@@ -10,7 +10,7 @@ import { HiUpload } from 'react-icons/hi';
 
 export interface DialogLgProps {
     open:boolean,
-    handleClose: (open: boolean) => void;
+    handleClose: (open: boolean) => void; 
     handleConfirm: (open: boolean) => void;
     pastaId:number;
 }
@@ -161,7 +161,7 @@ export const NewImgFileDialog = ({
                                                                         tipo_arquivo: "IMAGEM",
                                                                         nome:titulo,
                                                                         conteudo:imgId,
-                                })}>Criar arquivo</Button>
+                                })}>Criar arquivo</Button> 
                             </Flex>
                         </Box>
 

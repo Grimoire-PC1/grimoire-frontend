@@ -74,4 +74,9 @@ export const ENDPOINT = {
     CREATE_FILE: "campaign-package/file/register",
     DELETE_FILE: "campaign-package/file/delete",
     UPDATE_FILE: "campaign-package/file/update",
+
+    CREATE_ITEM: "item/register",
+    GET_ITEM: "item/get",
+    UPDATE_ITEM: "item/update",
+    DELETE_ITEM: "item/delete",
 } as const;

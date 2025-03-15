@@ -204,3 +204,24 @@ export type UpdateFilePayload = {
     novo_nome?:string;
     novo_conteudo?:string;
 }
+
+export type NewItemPayload = {
+    nome:string;
+    descricao:string;
+    qtd_dados:number;
+    tipo_dado:number;
+    bonus_dado:number;
+    rolar_dado:string;
+    quantidade:number;
+}
+
+export type UpdateItemPayload = {
+    id:number;
+    novo_nome?:string;
+    nova_descricao?:string;
+    nova_qtd_dados?:number;
+    novo_tipo_dado?:number;
+    novo_bonus_dado?:number;
+    novo_rolar_dado?:string;
+    nova_quantidade?:number;
+}

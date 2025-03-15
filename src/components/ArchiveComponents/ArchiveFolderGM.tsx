@@ -12,9 +12,9 @@ import { NewImgFileDialog } from "./NewImgFileDialog";
 import { NewItemFileDialog } from "./NewItemFileDialog";
 import { NewSheetFileDialog } from "./NewSheetFileDialog";
 import { ArchiveFileComponent } from "./ArchiveFileComponent";
-import { File, Folder } from "@/interfaces/Models";
+import { File, Folder, Item } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
-import { getFiles, getFolders } from "@/services/campaignService";
+import { getFiles, getFolders, getItem } from "@/services/campaignService";
 
 export interface ArchiveGMProps {
     campaign: string;
@@ -33,6 +33,7 @@ export const ArchiveFolderGM = ({
     const [campaign_folders, setFolders] = useState<Folder[]>([]);
     const [flag,setFlag] = useState(0);
     const [files, setFiles] = useState<File[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
 
     const foldersMutation = useMutation({
         mutationKey: ["getFolders"],
@@ -61,11 +62,26 @@ export const ArchiveFolderGM = ({
           console.log(error);
         },
       });
+
+      const itemsMutation = useMutation({
+          mutationKey: ["getCampaignItems"],
+          mutationFn: getItem,
+          onSuccess: (data) => {
+            console.log(data)
+            setItems(data.sort((a, b) => {
+              return a.id - b.id;
+          }));
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        });
       
     useEffect(() => {
         if(flag < 2){
             foldersMutation.mutate({id_campanha:parseInt(campaign), id_pacote_pai: folder.id});
             filesMutation.mutate({id_campanha:parseInt(campaign)});
+            itemsMutation.mutate(parseInt(campaign));
             console.log(files);
             setFlag(flag+1);
         }
@@ -149,7 +165,7 @@ export const ArchiveFolderGM = ({
             </Flex>
 
             <Box mt={6} maxH={"70vh"} gap={"4"} overflowY={"auto"}>
-                <Flex alignItems={"end"} flexWrap={"wrap"} gap={4}>
+                <Flex flexWrap={"wrap"} gap={4}>
                 <For each={campaign_folders}>
                     {(f)=><Box onClick={()=>goToFolder(f)} cursor={"pointer"} w={"100px"} placeItems={"center"}>
                                     {f.publica ? <LuFolder size={48} strokeWidth={1.25}/> : <LuFolderLock size={48} strokeWidth={1.25}/>}
@@ -157,7 +173,7 @@ export const ArchiveFolderGM = ({
                                 </Box>}
                 </For>
                 <For each={files.filter((f) => f.id_pacote_pai === folder.id)}>
-                    {(file)=><ArchiveFileComponent handleConfirm={fecharEforcar} campaign={campaign} folderId={folder.nome} file={file}/>}
+                    {(file)=><ArchiveFileComponent handleConfirm={fecharEforcar} campaign={campaign} folderId={folder.nome} file={file} item={items.filter((i)=>i.id === parseInt(file.conteudo))[0]}/>}
                 </For>
                 </Flex>
             </Box>
@@ -168,7 +184,7 @@ export const ArchiveFolderGM = ({
         
             <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} handleConfirm={fecharEforcar} pastaId={folder.id}/>
             <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} handleConfirm={fecharEforcar} pastaId={folder.id}/>
-            <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} pastaId={String(folder.id)}/>
+            <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} handleConfirm={fecharEforcar} pastaId={folder.id}/>
             <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={String(folder.id)}/>
         </div>
     )

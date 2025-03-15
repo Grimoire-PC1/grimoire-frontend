@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
-import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File } from "@/interfaces/Models";
-import { CreateNewCampaignPayload, GetFilesPayload, GetFolderPayload, NewFilePayload, NewFolderPayload, TemporaryCampaignPayload, UpdateFilePayload, UpdateFolderPayload } from "@/interfaces/ServicePayload";
+import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File, Item } from "@/interfaces/Models";
+import { CreateNewCampaignPayload, GetFilesPayload, GetFolderPayload, NewFilePayload, NewFolderPayload, NewItemPayload, TemporaryCampaignPayload, UpdateFilePayload, UpdateFolderPayload, UpdateItemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
 
@@ -195,6 +195,54 @@ export const deleteFile = async(id:number) => {
     const { data } = await axiosInstace.delete<string>(
         `/${ENDPOINT.DELETE_FILE}`,
         { params: { id_arquivo:id} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const createItem = async(payload:NewItemPayload) => {
+    let campaignId = sessionStorage.getItem('currentCampaignId')
+
+    const { data } = await axiosInstace.post<Item>(
+        `/${ENDPOINT.CREATE_ITEM}`,
+        payload,
+        { params: { id_campanha:campaignId} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const getItem = async(id:number) => {
+    //let campaignId = sessionStorage.getItem('currentCampaignId')
+
+    const { data } = await axiosInstace.get<Item[]>(
+        `/${ENDPOINT.GET_ITEM}`,
+        { params: { id_campanha:id} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const deleteItem = async(id:number) => {
+
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_ITEM}`,
+        { params: { id_item:id} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const updateItem = async(payload:UpdateItemPayload) => {
+
+    const { data } = await axiosInstace.put<Item>(
+        `/${ENDPOINT.UPDATE_ITEM}`,
+        payload,
+        { params: { id_item:payload.id} }
     )
 
     console.log(data)
