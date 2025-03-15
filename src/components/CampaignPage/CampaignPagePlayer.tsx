@@ -9,22 +9,40 @@ import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCar
 import { useNavigate } from "react-router-dom";
 import { DialogLeaveCampaign } from "../Dialog/DialogLeaveCampaign";
 import { getUser } from "@/services/userService";
-import { CharacterRegister } from "@/interfaces/Models";
+import { CharacterRegister, Session } from "@/interfaces/Models";
+import { useUserStore } from "@/stores/user/user.store";
+import { SignInResponse } from "@/interfaces/ServiceResponse";
 
 export const CampaignPagePlayer = () => {
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
+    const [sessoesDaCampanha,setSessoes] = useState<Session[]>();
+    const [userId,setUserId] = useState<number|undefined>(0);
 
-    const {data: user} = useQuery({
-        queryKey: ["getUser"],
-        queryFn: getUser
-      })
+    const userMutation = useMutation({
+        mutationKey: ["usuario"],
+        mutationFn: getUser,
+        onSuccess: (data) => {
+          console.log(data)
+          setUserId(data.id);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
 
-    const {data: sessoesDaCampanha} = useQuery({
-        queryKey: ["sessoes"],
-        queryFn: getCampaignSessions
-    })
-    sessoesDaCampanha?.sort((a, b) => {
-        return a.id - b.id;
+    const sessionsMutation = useMutation({
+      mutationKey: ["sessoes"],
+      mutationFn: getCampaignSessions,
+      onSuccess: (data) => {
+        console.log(data)
+        setSessoes(data.sort((a, b) => {
+          return a.id - b.id;
+      }))
+      },
+      onError: (error) => {
+        console.log(error);
+        
+      },
     });
 
     type MyCharas = {
@@ -71,11 +89,12 @@ export const CampaignPagePlayer = () => {
             setMyCharas(updatedMyCharas);
         };
 
-        if (userCharas && (flag1 == 0)) {
+        if (flag1 == 0) {
             updateMyCharasArray();
+            sessionsMutation.mutate();
             setFlag1(1);
         }
-    }, [userCharas]);
+    }, [flag1]);
 
     const [allCharas,setAllCharas] = useState<CharacterRegister[]>([]);
 
@@ -84,7 +103,7 @@ export const CampaignPagePlayer = () => {
         mutationFn: getCampaignCharacters, 
         onSuccess: async (data) => {
             console.log(data)
-            setAllCharas(data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != user?.id).sort((a, b) => {
+            setAllCharas(data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != userId).sort((a, b) => {
                 return a.id - b.id;
             }));
 
@@ -106,26 +125,14 @@ export const CampaignPagePlayer = () => {
       });
 
     useEffect(() => {
-        const updateOtherCharasArray = async () => {
-            const updatedOtherCharas = [];
-
-            for (let c of allCharas || []) {
-                const f = await getImage(c.id_foto);
-                updatedOtherCharas.push({ id: c.id, foto: f });
-            }
-
-            console.log("atualizando os outros personagens")
-            setOtherCharas(updatedOtherCharas);
-
-            console.log(updatedOtherCharas);
-        };
-
-        if (allCharas && (flag2 < 2)) {
+        if (flag2 < 2) {
+            userMutation.mutate();
             allCharasMutation.mutate();
             //updateOtherCharasArray();
+            sessionsMutation.mutate();
             setFlag2(flag2+1);
         }
-    }, [allCharas, flag2]);
+    }, [flag2]);
 
     const navigate = useNavigate();
 
