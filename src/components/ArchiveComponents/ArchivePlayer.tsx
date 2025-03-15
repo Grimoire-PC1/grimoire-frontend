@@ -11,7 +11,7 @@ export interface ArchivePlayerProps {
     campaign: string; //depois mudar pra Campaign
 }
 
-export const ArchivePlayer = ({
+export const ArchivePlayer = ({ 
     campaign,
 }: ArchivePlayerProps) => {
     const [,forceUpdate] = useReducer(x=>x+1,0);

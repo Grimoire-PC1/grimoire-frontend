@@ -1,5 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
-import { Box,Button,Editable,Flex,Input,Presence,Text, Textarea,Image, IconButton} from "@chakra-ui/react";
+import { Box,Button,Editable,Flex,Input,Presence,Text, Textarea,Image, IconButton, Separator} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { FileUploadDropzone, FileUploadList, FileUploadRoot, FileUploadTrigger } from '../ui/file-upload';
 import { StepperInput } from '../ui/stepper-input';
@@ -19,7 +19,7 @@ export interface DialogLgProps {
     handleClose: (open: boolean) => void;
     handleConfirm: (open: boolean) => void;
     file:File;
-    item:Item;
+    item:Item|undefined;
 }
 
 export const OpenItemFileDialog = ({
@@ -32,28 +32,27 @@ export const OpenItemFileDialog = ({
     console.log("arquivo numero "+file.id)
     console.log(item);
 
-    const [rollDice,setRollDice] = useState(item.rolar_dado); //pegar do próprio item nesse caso
+    const [rollDice,setRollDice] = useState(item ? item.rolar_dado : "nao"); //pegar do próprio item nesse caso
     const file_criador = sessionStorage.getItem('isGameMaster');
-    const file_image = true;
 
-    const [titulo,setTitulo] = useState(item.nome);
-    const [descricao, setDescricao] = useState(item.descricao);
-    const [qtd, setQtd] = useState(item.quantidade);
-    const [qtdDado, setQtdDado] = useState(item.qtd_dados);
-    const [tipoDado, setTipoDado] = useState(item.tipo_dado);
-    const [bonusDado, setBonusDado] = useState(item.bonus_dado);
+    const [titulo,setTitulo] = useState(item ? item.nome:"");
+    const [descricao, setDescricao] = useState(item?item.descricao:"");
+    const [qtd, setQtd] = useState(item?item.quantidade:0);
+    const [qtdDado, setQtdDado] = useState(item?item.qtd_dados:0);
+    const [tipoDado, setTipoDado] = useState(item?item.tipo_dado:0);
+    const [bonusDado, setBonusDado] = useState(item?item.bonus_dado:0);
 
     const [diceRoll, setDiceRoll] = useState(false);
     const [rollValue,setRollValue] = useState(0);
 
     function rollDices(){
         let v = 0;
-        for(let i = 0; i < item.qtd_dados;i++){
-            const r = Math.floor(Math.random() * (item.tipo_dado) + 1)
+        for(let i = 0; i < (item?item.qtd_dados:0);i++){
+            const r = Math.floor(Math.random() * (item?item.tipo_dado:0) + 1)
             v+=r;
         }
 
-        if(item.bonus_dado){
+        if(item && item.bonus_dado){
             v+=item.bonus_dado;
         }
 
@@ -100,7 +99,7 @@ export const OpenItemFileDialog = ({
         mutationKey: ["deleteFile"],
         mutationFn: deleteFile, 
         onSuccess: () => {
-            mutationDeleteItem.mutate(item.id);
+            mutationDeleteItem.mutate(item?item.id:0);
         },
         onError: (error) => {
             console.log(error);
@@ -184,7 +183,7 @@ export const OpenItemFileDialog = ({
                                             <StepperInput defaultValue={qtd} onValueChange={({value})=>setQtd(value)} />
                                         </Flex>
                                         <Text mt={2} className='text'>Este item dispara uma rolagem de dado?</Text>
-                                        <RadioGroup onValueChange={({value})=>setRollDice(value)} mt={"4"} display={"flex"} columnGap={4} defaultValue={item.rolar_dado}>
+                                        <RadioGroup onValueChange={({value})=>setRollDice(value)} mt={"4"} display={"flex"} columnGap={4} defaultValue={rollDice}>
                                             <Radio value="nao">Não</Radio>
                                             <Radio value="sim">Sim</Radio>
                                         </RadioGroup>
@@ -226,7 +225,7 @@ export const OpenItemFileDialog = ({
                                     
                                     <Flex gapX={1}>
                                         <IconButton onClick={()=>mutationEditItem.mutate({
-                                                id:item.id,
+                                                id:(item?item.id:0),
                                                 novo_nome:titulo,
                                                 nova_descricao:descricao,
                                                 nova_qtd_dados:qtdDado,
@@ -261,26 +260,26 @@ export const OpenItemFileDialog = ({
                                         */
                                     }
                                     <Box w={"full"}>
-                                        <Text className='text'>{item.descricao}</Text>
+                                        <Text className='text'>{descricao}</Text>
+                                        <Separator mt={4} mb={4}/>
                                         <Flex mt={4} gapX={4} alignItems={"center"}>
-                                            <Text className='text'>Quantidade</Text>
-                                            <StepperInput value={item.quantidade} />
+                                            <Text className='text'>Quantidade de {titulo} disponível: {qtd}</Text>
                                         </Flex>
                                         {
-                                            rollDice ?
+                                            rollDice === "sim" ?
                                             <div>
                                                 <Text mt={4} className='text'>Este item dispara uma rolagem de dado.</Text>
                                                 <Box mt={4} className="flex gap-x-2 items-center">
-                                                    <NumberInputRoot disabled>
-                                                        <NumberInputField defaultValue={item.qtd_dados}></NumberInputField>
+                                                    <NumberInputRoot w={"5vw"} disabled>
+                                                        <NumberInputField defaultValue={qtdDado}></NumberInputField>
                                                     </NumberInputRoot>
                                                     <Text>d</Text>
-                                                    <NumberInputRoot disabled>
-                                                        <NumberInputField defaultValue={item.tipo_dado}></NumberInputField>
+                                                    <NumberInputRoot w={"5vw"}disabled>
+                                                        <NumberInputField defaultValue={tipoDado}></NumberInputField>
                                                     </NumberInputRoot>
                                                     <Text>+</Text>
-                                                    <NumberInputRoot disabled>
-                                                        <NumberInputField defaultValue={item.bonus_dado}></NumberInputField>
+                                                    <NumberInputRoot w={"5vw"}disabled>
+                                                        <NumberInputField defaultValue={bonusDado}></NumberInputField>
                                                     </NumberInputRoot>
                                                     <IconButton onClick={()=>rollDices()}><LuDices/></IconButton>
                                                 </Box>

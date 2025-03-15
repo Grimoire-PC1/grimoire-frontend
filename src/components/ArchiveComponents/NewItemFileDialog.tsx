@@ -122,6 +122,7 @@ export const NewItemFileDialog = ({
             setImgid("");
             setFlag(0);
             handleConfirm(false);
+            location.reload();
         },
         onError: (error) => {
             console.log(error);

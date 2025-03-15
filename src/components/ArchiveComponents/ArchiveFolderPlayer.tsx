@@ -12,9 +12,9 @@ import { NewImgFileDialog } from "./NewImgFileDialog";
 import { NewItemFileDialog } from "./NewItemFileDialog";
 import { NewSheetFileDialog } from "./NewSheetFileDialog";
 import { ArchiveFileComponent } from "./ArchiveFileComponent";
-import { Folder } from "@/interfaces/Models";
+import { File, Folder, Item } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
-import { getFolders } from "@/services/campaignService";
+import { getFiles, getFolders, getItem } from "@/services/campaignService" ;
 
 export interface ArchivePlayerProps {
     campaign: number;
@@ -31,6 +31,8 @@ export const ArchiveFolderPlayer = ({
 
     const [campaign_folders, setFolders] = useState<Folder[]>([]);
     const [flag,setFlag] = useState(0);
+    const [files, setFiles] = useState<File[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
 
     const foldersMutation = useMutation({
         mutationKey: ["getFolders"],
@@ -43,16 +45,43 @@ export const ArchiveFolderPlayer = ({
           console.log(error);
         },
       });
-      
+    
+    const filesMutation = useMutation({
+        mutationKey: ["getFiles"],
+        mutationFn: getFiles,
+        onSuccess: (data) => {
+            console.log(data)
+            setFiles(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+        });
+
+    const itemsMutation = useMutation({
+            mutationKey: ["getCampaignItems"],
+            mutationFn: getItem,
+            onSuccess: (data) => {
+            console.log(data)
+            setItems(data.sort((a, b) => {
+                return a.id - b.id;
+            }));
+            },
+            onError: (error) => {
+            console.log(error);
+            },
+        });
+
     useEffect(() => {
         if(flag < 2){
-            console.log("id da campanha: "+campaign)
-            foldersMutation.mutate({id_campanha:campaign});
+            foldersMutation.mutate({id_campanha:campaign, id_pacote_pai: folder.id});
+            filesMutation.mutate({id_campanha:campaign});
+            itemsMutation.mutate(campaign);
             setFlag(flag+1);
         }
     }, [flag]);
-
-    const files = [{nome: "Ficha P1", pasta: "Personagem 1 com nome longo", tipo: "FICHA"}, {nome: "Cajado", pasta: "Private", tipo: "ITEM"},{nome: "Pista 1", pasta: "Private", tipo: "IMAGEM"},{nome: "Documento 1", pasta: "Personagem 1 com nome longo", tipo: "TEXTO"}]
 
     function goToFolder(f:Folder){ //mudar para o tipo folder depois
         console.log(f);
@@ -69,6 +98,7 @@ export const ArchiveFolderPlayer = ({
         }
     }
 
+    /*
     const [showNewFolder,setShowNewFolder] = useState(false);
     const [showDeleteFolder,setShowDeleteFolder] = useState(false);
     const [showEditFolder,setShowEditFolder] = useState(false);
@@ -77,8 +107,11 @@ export const ArchiveFolderPlayer = ({
     const [showNewIMG,setShowNewIMG] = useState(false);
     const [showNewItem,setShowNewItem] = useState(false);
     const [showNewSheet,setShowNewSheet] = useState(false);
+    */
 
-
+    function fecharEforcar(){
+        
+    }
 
     return(
         <div>
@@ -115,8 +148,8 @@ export const ArchiveFolderPlayer = ({
                                     <Text mt={3} textAlign={"center"}>{folder.nome}</Text>
                                 </Box>}
                 </For>
-                <For each={files.filter((f) => f.pasta === folder.nome)}>
-                    {(file)=><ArchiveFileComponent campaign="" folderId={folder.nome} file={file}/>}
+                <For each={files.filter((f) => f.id_pacote_pai === folder.id)}>
+                    {(file)=><ArchiveFileComponent handleConfirm={fecharEforcar} campaign={String(campaign)} folderId={folder.nome} file={file} item={items.filter((i)=>i.id === parseInt(file.conteudo))[0]}/>}
                 </For>
                 </Flex>
             </Box>

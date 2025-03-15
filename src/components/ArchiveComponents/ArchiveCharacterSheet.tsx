@@ -26,7 +26,6 @@ export const ArchiveCharacterSheet = ({
     const navigate = useNavigate();
     const [,forceUpdate] = useReducer(x=>x+1,0); 
     
-    const [disableSaveButton,setDisableSaveButton] = useState(false);
     const is_creator = sessionStorage.getItem('isGameMaster');
     const [displayCharacter,setDisplayCharacter] = useState<CharacterRegister>();
     const [flag,setFlag] = useState(0);

@@ -3,7 +3,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {IconButton, Text} from "@chakra-ui/react"
+import {Image} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -21,6 +21,24 @@ export default function CampaignCharacterSheet(){
     const characterName = sessionStorage.getItem('fichaAtualNome');
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
     const isGameMaster = sessionStorage.getItem('isGameMaster');
+
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
+            })
+            const data = await res.json()
+            setImg(data.image)
+            console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
 
     return(
         <Presence 
@@ -58,9 +76,8 @@ export default function CampaignCharacterSheet(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">
-                                {/* na box vai ser a imagem da campanha */}
-                                <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
+                            <Image src={img} w={"100vw"} h={"113vh"} />
                             </Box>
                             <div className="h-[100vh]">
                                 <CampaignHeaderPlayer/>
@@ -69,7 +86,7 @@ export default function CampaignCharacterSheet(){
                                         <SidebarPlayer campaign=""></SidebarPlayer>
                                     </div>
                                     <div className="col-span-9">
-                                    <ArchiveCharacterSheet characterId={characterId || ''} campaign={campaign}/>
+                                    <ArchiveCharacterSheet characterId={characterId || ''} campaign={campaign} characterName={characterName||""}/>
                                     </div>
                                 </div>
                                 

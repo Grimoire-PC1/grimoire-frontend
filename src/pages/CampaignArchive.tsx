@@ -3,7 +3,7 @@ import { SidebarGM } from "@/components/SidebarGM/SidebarGM";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { Box } from "@chakra-ui/react/box";
 import { Presence } from "@chakra-ui/react/presence";
-import {Text} from "@chakra-ui/react"
+import {Image} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
@@ -69,10 +69,9 @@ export default function CampaignArchive(){
                     
                     <div>
                         <div>
-                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center bg-linear-to-b from-purple-900 to-transparent">
-                                {/* na box vai ser a imagem da campanha */}
-                                <Text p={"12"} className="title agreloy" lineClamp={1} lineHeight={"taller"}>campanha muito legal dos meus amigos</Text>
-                            </Box>
+                            <Box border="none" outline={"none"} m="0" p="0" w={"full"} h={"100vh"} className="grid content-center text-center gradiente">
+                                <Image src={img} w={"100vw"} h={"113vh"} />
+                                </Box>
                             <div className="h-[100vh]">
                                 <CampaignHeaderPlayer/>
                                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
