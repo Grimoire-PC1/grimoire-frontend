@@ -30,7 +30,7 @@ export const getUserCharacters = async() =>{
 export const createCharacter = async(payload:CreateCharacterPayload) =>{
     console.log(payload)
 
-    const { data } = await axiosInstace.post<CreateCharacterPayload>(
+    const { data } = await axiosInstace.post<CharacterRegister>(
         `/${ENDPOINT.CREATE_NEW_CHARACTER}`,
         payload,
         { params: { id_campanha: payload.id_campanha} }

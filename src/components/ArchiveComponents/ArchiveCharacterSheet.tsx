@@ -1,57 +1,147 @@
-import {Text,Flex, Grid, IconButton, } from "@chakra-ui/react";
-import { LuChevronLeft, LuSave } from "react-icons/lu";
+import {Text,Flex, Grid, IconButton, For, } from "@chakra-ui/react";
+import { LuCamera, LuChevronLeft, LuSave } from "react-icons/lu";
 import { Toaster, toaster } from "../ui/toaster";
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { CharacterSheetPlayerEditSection } from "../CharacterSheetComponents/CharacterSheetPlayerEditSection";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "../ui/avatar";
 import { CharacterSheetPlayerNoEditSection } from "../CharacterSheetComponents/CharacterSheetPlayerNoEditSection";
+import { Campaign, CharacterRegister, SheetTab } from "@/interfaces/Models";
+import { useMutation } from "@tanstack/react-query";
+import { getCampaignCharacters, getCampaignSheetTemplateTabs } from "@/services/campaignService";
+import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 
 export interface SystemPageComponentProps {
-    system: string; //depois mudar pra System
-    campaign: string;
-    sheetTemplate: string;
+    campaign: Campaign;
     characterId:string;
+    characterName:string;
 }
 
 export const ArchiveCharacterSheet = ({
     characterId,
+    campaign,
+    characterName
 }: SystemPageComponentProps) => {
 
     const navigate = useNavigate();
+    const [,forceUpdate] = useReducer(x=>x+1,0); 
     
-    const characterName = characterId; //depois mudar pra um get q pega o nome do personagem
     const [disableSaveButton,setDisableSaveButton] = useState(false);
-    const is_creator = true;
+    const is_creator = sessionStorage.getItem('isGameMaster');
+    const [displayCharacter,setDisplayCharacter] = useState<CharacterRegister>();
+    const [flag,setFlag] = useState(0);
+    const [data, setData] = useState<SheetTab[]>();
+    const [flagTabs,setFlagTabs] = useState(0);
 
-    function saveCharacter(){
-        setDisableSaveButton(true);
+    const getCharacters = useMutation({
+        mutationKey: ["getNPC"],
+        mutationFn: getCampaignCharacters,
+        onSuccess: (data) => {
+          const filteredData = data.filter((d) => d.id === parseInt(characterId))
+          console.log(filteredData);
+          if(filteredData.length > 0){
+            setDisplayCharacter(filteredData[0]);
+          }
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
     
-        const changes = [];
-        for(let i = 1;i<5;i++){ //para todo section na tabela sectionId associado ao system atual, faça:
-            for(let i = 1; i < 6;i++){ //para todo fieldId associado ao sectionId atual, faça:
-                changes.push({id: 'field'+i,value:document.getElementById('field'+i)?.value}) //field+i sera trocado pelo fieldId atual da iteração
-                //adicionar condicional especial pro tipo dado, que tem 3 valores associados (a lógica vai depender de como estiver o esquema no BD)
-            }
+    useEffect(() => {
+        if(flag <2){
+            getCharacters.mutate();
+            setFlag(flag+1);
         }
+    }, [flag, getCharacters]);
 
-        console.log(changes)
+    const mutation = useMutation({
+        mutationKey: ["tabs"],
+        mutationFn: getCampaignSheetTemplateTabs,
+        onSuccess: (data) => {
+            console.log(data)
+            setData(data.sort((a, b) => {
+                return a.id - b.id;
+            }));
+            setFlagTabs(1);
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
 
-        const success = true;
-        //depois do processamento acabar, habilitar o botao novamente
-        setDisableSaveButton(false);
-        if(success){
-            toaster.create({
-            description: "Personagem salvo com sucesso!",
-            type: "success",
+    useEffect(() => {
+        if(flagTabs == 0){
+            mutation.mutate();
+        }
+    }, [flagTabs, mutation]);
+
+    function fecharEforcar2(){
+        mutation.mutate();
+        forceUpdate();
+    }
+
+    const [img,setImg] = useState("")
+    
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${displayCharacter.id_foto}`, {
+            method:"GET",
+            headers: {
+                "content-type" : "application/json"
+            }
             })
-        }else{
-            toaster.create({
-                description: "Houve um problema salvando o personagem",
-                type: "error",
-                })
+            const data = await res.json()
+            console.log(data)
+            setImg(data.image);
+    }
+
+    if(displayCharacter){
+        if(!img || img == "") {
+            getImage()
         }
     }
+
+    const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
+        const reader = new FileReader()
+        if(file) {
+          reader.readAsDataURL(file)
+          const data: string | ArrayBuffer | null = await new Promise((resolve,reject) => {
+            reader.onload = ()=> resolve(reader.result)
+            reader.onerror = (err) => reject(err)
+          })
+          return data
+        }
+      }
+      
+      const handleUploadImage = async (e: any) => {
+        console.log(e.acceptedFiles[0])
+        const file = e.acceptedFiles[0]
+        
+        const conversionResult: string | ArrayBuffer | null | undefined = await imagebase64(file)
+        if(typeof conversionResult === "string") {
+            const image: string = conversionResult
+            setImg(image)
+            console.log(image)
+        }
+      }
+      
+      const handleImageSubmit = async () =>{
+        if(img) {
+          const res = await fetch(`http://localhost:8081/update/${displayCharacter.id_foto}`, {
+            method:"PATCH",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({image: img})
+          })
+          const data = await res.json()
+          console.log(data)
+          toaster.create({
+                        description: `Foto de ${characterName} atualizada com sucesso!`,
+                        type: "success",
+                        })
+        }
+      }
 
     function goBack(){
         const f = JSON.parse(sessionStorage.getItem('pastaAtual')||'');
@@ -71,19 +161,23 @@ export const ArchiveCharacterSheet = ({
                             </IconButton>
                             <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
                         </Flex>
-                        <Flex  gapX={2} align={"end"}>
-                            <Avatar m={6} scale={1.5} size={"2xl"} src=""></Avatar>
-                            <IconButton disabled={disableSaveButton} onClick={()=>saveCharacter()}><LuSave /></IconButton>
+                        <Flex  gapX={2} align={"center"}>
+                            <Avatar m={6} scale={1.7} size={"2xl"} src={img}></Avatar>
+                            <Flex flexDirection={"column"} gapY={2}>
+                            <FileUploadRoot maxFiles={1} onFileChange={handleUploadImage}>
+                                <FileUploadTrigger>
+                                    <IconButton><LuCamera/></IconButton>
+                                </FileUploadTrigger>
+                            </FileUploadRoot>
+                            <IconButton onClick={handleImageSubmit}><LuSave/></IconButton>
+                            </Flex>
                         </Flex>
                     </Flex>
 
                     <Grid mt={2} maxH={"72vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
-                        <CharacterSheetPlayerEditSection sectionTitle="Identidade do Personagem" sectionId="section1" fields="field1" characterId={characterId}/>
-                        <CharacterSheetPlayerEditSection sectionTitle="História" sectionId="section2" fields="field2" characterId={characterId}/>
-                        <CharacterSheetPlayerEditSection sectionTitle="Atributos" sectionId="section3" fields="field3" characterId={characterId}/>
-                        <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
-                        <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
-                        <CharacterSheetPlayerEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
+                        <For each={data}>
+                            {(item) =><CharacterSheetPlayerEditSection sectionTitle={item.nome} sectionId={item.id} characterId={displayCharacter?.id||0} handleEdit={fecharEforcar2}/>}
+                        </For>
                     </Grid>
                 
                     <Toaster />
@@ -96,17 +190,14 @@ export const ArchiveCharacterSheet = ({
                                 <LuChevronLeft />
                             </IconButton>
                             <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                            <Avatar size={"2xl"} src=""></Avatar>
+                            <Avatar m={6} scale={1.7} size={"2xl"} src={img}></Avatar>
                         </Flex>
                     </Flex>
                         <Grid mt={2} maxH={"72vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="Identidade do Personagem" sectionId="section1" fields="field1" characterId={characterId}/>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="História" sectionId="section2" fields="field2" characterId={characterId}/>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="Atributos" sectionId="section3" fields="field3" characterId={characterId}/>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
-                            <CharacterSheetPlayerNoEditSection sectionTitle="Magias" sectionId="section4" fields="field4" characterId={characterId}/>
-                        </Grid>
+                        <For each={data}>
+                            {(item) =><CharacterSheetPlayerNoEditSection sectionTitle={item.nome} sectionId={item.id} characterId={displayCharacter?.id||0} handleEdit={fecharEforcar2}/>}
+                        </For>
+                    </Grid>
                 
                 </div>
             }

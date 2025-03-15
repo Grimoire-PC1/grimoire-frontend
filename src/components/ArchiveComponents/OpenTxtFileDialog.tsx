@@ -82,7 +82,7 @@ export const OpenTxtFileDialog = ({
                     >
                         <Box m={2} maxH={"74vh"} overflowY={"auto"}>
                             {
-                                file_criador ?
+                                file_criador === "true" ?
                                 <div>
                                     <Editable.Root p={2} fontSize={"2xl"} value={titulo} onInput={e => setTitulo(e.target.value)}>
                                         <Editable.Preview />

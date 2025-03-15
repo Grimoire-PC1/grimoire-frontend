@@ -185,7 +185,7 @@ export const ArchiveFolderGM = ({
             <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} handleConfirm={fecharEforcar} pastaId={folder.id}/>
             <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} handleConfirm={fecharEforcar} pastaId={folder.id}/>
             <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} handleConfirm={fecharEforcar} pastaId={folder.id}/>
-            <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={String(folder.id)}/>
+            <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} handleConfirm={fecharEforcar} campaignId={parseInt(campaign)} pastaId={folder.id}/>
         </div>
     )
 }

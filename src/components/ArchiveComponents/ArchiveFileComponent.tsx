@@ -48,7 +48,8 @@ export const ArchiveFileComponent = ({
                 break;
             }
             case 'PERSONAGEM': {
-                sessionStorage.setItem('fichaAtual',file.nome);
+                sessionStorage.setItem('fichaAtual',file.conteudo);
+                sessionStorage.setItem('fichaAtualNome',file.nome);
                 navigate(`/grimoire/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
                 break;
             }default:{

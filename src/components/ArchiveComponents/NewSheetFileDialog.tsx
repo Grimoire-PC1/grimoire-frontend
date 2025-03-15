@@ -1,28 +1,92 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Box,Button,Flex,Input,Text } from "@chakra-ui/react";
 import { Form, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { createCharacter } from '@/services/characterService';
+import { createFile } from '@/services/campaignService';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    pastaId:string;
+    handleConfirm: (open: boolean) => void;
+    pastaId:number;
+    campaignId:number;
 }
 
 export const NewSheetFileDialog = ({
     open,
     handleClose,
     pastaId,
+    campaignId,
+    handleConfirm
 }: DialogLgProps) => {
     const navigate = useNavigate();
 
-    const [characterName, setCharacterName] = useState("");
+    const [titulo,setTitulo] = useState("");
+    const [imgId, setImgid] = useState("");
+    const [flag,setFlag] = useState(0);
 
-    function createSheet(){
-        //createNewSheetFile (manda pro backend criar esse arquivo na pasta)
-        sessionStorage.setItem('fichaAtual',characterName);
-        navigate(`/grimoire/campaign/sheet/${characterName}`); //pode ser o id ao inves do nome, tanto faz
+    const createImage = async () => {
+        const resImg = await fetch("http://localhost:8081/upload", {
+            method:"POST",
+            headers: {
+            "content-type" : "application/json"
+            },
+            body: JSON.stringify({img: ''})
+        })
+        const data = await resImg.json()
+        setImgid(data.data._id);
     }
+
+    useEffect(() => {
+        if(flag == 0){
+            createImage();
+            setFlag(1);
+        }
+    }, [imgId]);
+
+    const mutation = useMutation({
+        mutationKey: ["createCharacter"],
+        mutationFn: createCharacter,
+        onSuccess: (data) => {
+            mutationFile.mutate({ id_pacote_pai:pastaId,
+                tipo_arquivo: "PERSONAGEM",
+                nome:titulo,
+                conteudo:String(data.id),
+                })
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a criação do personagem.",
+                        type: "error",
+                        })
+        },
+    });
+
+    const mutationFile = useMutation({
+        mutationKey: ["createFile"],
+        mutationFn: createFile,
+        onSuccess: () => {
+            toaster.create({
+                        description: "Personagem criado com sucesso!",
+                        type: "success",
+                        })
+            setTitulo("");
+            setImgid("");
+            setFlag(0);
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+                        description: "Houve um problema durante a criação do personagem.",
+                        type: "error",
+                        })
+        },
+    });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -42,11 +106,11 @@ export const NewSheetFileDialog = ({
                             <Text fontSize={"2xl"}>Crie um novo NPC (Personagem não jogável)!</Text>
 
                             <Form>
-                                <Input onChange={(e)=>setCharacterName(e.target.value)} value={characterName} mt={4} placeholder='Nome do personagem'></Input>
+                                <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} placeholder='Nome do personagem'></Input>
                             </Form>
                             
                             <Flex mt={8} justifyContent={"center"}>
-                                <Button disabled={characterName === ""} onClick={()=>createSheet()}>Criar ficha</Button>
+                                <Button disabled={titulo === ""} onClick={()=>mutation.mutate({id_campanha:campaignId,nome:titulo,id_foto:imgId})}>Criar ficha</Button>
                             </Flex>
                         </Box>
 
@@ -54,6 +118,7 @@ export const NewSheetFileDialog = ({
                 </Box>
             </div>
         </div>
+        <Toaster/>
     </Dialog>
     )
 }
