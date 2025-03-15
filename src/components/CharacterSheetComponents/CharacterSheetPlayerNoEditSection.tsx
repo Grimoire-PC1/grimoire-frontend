@@ -6,6 +6,7 @@ import { SheetSubTab } from "@/interfaces/Models";
 import { getCampaignSheetTemplateSubTabs } from "@/services/campaignService";
 import { useMutation } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
+import { CharacterSheetPlayerNoEditField } from "./CharacterSheetPlayerNoEditField";
 
 export interface CharacterSheetSectionProps {
     sectionTitle: string; // mudar para o tipo CharacterSheetSection depois. O tipo CharacterSheetSection contém id, título e um array de CharacterSheetField associado a ele

@@ -151,7 +151,7 @@ export const ArchiveCharacterSheet = ({
     return(
         <div className="">
             {
-                is_creator ?
+                is_creator === "true" ?
                 <div className="margin-right">
                     <Flex align={"center"} placeContent={"space-between"}>
                         <Flex gapX={4} alignItems={"center"}>
@@ -189,8 +189,9 @@ export const ArchiveCharacterSheet = ({
                                 <LuChevronLeft />
                             </IconButton>
                             <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                            <Avatar m={6} scale={1.7} size={"2xl"} src={img}></Avatar>
+                            
                         </Flex>
+                        <Avatar m={8} scale={2} size={"2xl"} src={img}></Avatar>
                     </Flex>
                         <Grid mt={2} maxH={"72vh"} overflowY={"auto"} className="grid-cols-2" mb={12} gap={4}>
                         <For each={data}>

@@ -16,7 +16,7 @@ import { File, Folder, Item } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getFiles, getFolders, getItem } from "@/services/campaignService";
 
-export interface ArchiveGMProps {
+export interface ArchiveGMProps { 
     campaign: string;
     folder:Folder;
 } 

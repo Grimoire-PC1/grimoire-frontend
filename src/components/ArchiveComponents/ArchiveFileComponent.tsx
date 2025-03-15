@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { File, Item } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getItem } from "@/services/campaignService";
+import { OpenNPCFileDialog } from "./OpenNPCFileDialog";
 
 export interface ArchiveGMProps {
     campaign: string; //depois mudar pra Campaign
@@ -32,6 +33,7 @@ export const ArchiveFileComponent = ({
     const [showTXT,setShowTXT] = useState(false);
     const [showIMG,setShowIMG] = useState(false);
     const [showItem,setShowItem] = useState(false);
+    const [showNPC,setShowNPC] = useState(false);
 
     function openFile(f:File){
         switch (f.tipo){
@@ -50,7 +52,11 @@ export const ArchiveFileComponent = ({
             case 'PERSONAGEM': {
                 sessionStorage.setItem('fichaAtual',file.conteudo);
                 sessionStorage.setItem('fichaAtualNome',file.nome);
-                navigate(`/grimoire/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
+                if(sessionStorage.getItem('isGameMaster') === "true"){
+                    navigate(`/grimoire/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
+                }else{
+                    setShowNPC(true);
+                }
                 break;
             }default:{
                 break;
@@ -84,7 +90,8 @@ export const ArchiveFileComponent = ({
                 <OpenImgFileDialog handleConfirm={handleConfirm} open={showIMG} handleClose={setShowIMG} file={file}/>
             : file.tipo === "ITEM" ?
                 <OpenItemFileDialog handleConfirm={handleConfirm} open={showItem} handleClose={setShowItem} file={file} item={item}/>
-            : <div></div>
+            :   
+                <OpenNPCFileDialog open={showNPC} handleClose={setShowNPC} file={file}/>
             }
         </div>
     )

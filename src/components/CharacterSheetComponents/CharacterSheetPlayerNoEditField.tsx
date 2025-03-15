@@ -173,26 +173,25 @@ export const CharacterSheetPlayerNoEditField = ({
     return(
         <div>
             <div className="grid grid-cols-9 place-items-around gap-x-4">
-                    <IconButton variant={"outline"} disabled={disableSaveButton} onClick={()=>saveCharacter()}><LuSave /></IconButton>
                     <Text className="col-span-2" alignSelf={"center"} textAlign={"end"}>
                         {fieldTitle}
                     </Text>
-                    <div className="col-span-6">
+                    <div className="col-span-7">
                         {
                             fieldType === "TEXTO" ?
                                 <div>
-                                    <Textarea onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
+                                    <Textarea cursor={"default"} disabled id={String(fieldId)} value={fieldValue} defaultValue={previousValue} maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
                             :
                             fieldType === 'StringCurta' ?
                                 <div>
-                                    <Input onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></Input>
+                                    <Input cursor={"default"} disabled id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></Input>
                                 </div>
                             :
                             fieldType === "INTEIRO" ?
                                 <div>
-                                    <NumberInputRoot value={fieldValue} onValueChange={(e) => setFieldValue(e.value)}>
-                                        <NumberInputField onChange={(e)=>setFieldValue(e.target.value)} id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></NumberInputField>
+                                    <NumberInputRoot value={fieldValue} cursor={"default"} disabled>
+                                        <NumberInputField cursor={"default"} disabled id={String(fieldId)} value={fieldValue} defaultValue={previousValue}></NumberInputField>
                                     </NumberInputRoot>
                                 </div>
                             :
@@ -210,16 +209,16 @@ export const CharacterSheetPlayerNoEditField = ({
                             : //tipo dado
                             
                             <div className="flex gap-x-2 items-center">
-                                    <NumberInputRoot value={field1Value} onValueChange={(e) => update(e.value, 1)}>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 1)} id={fieldId+"_1"} value={field1Value} defaultValue={previousValue ? previousValue[0]:0} placeholder="qtd"></NumberInputField>
+                                    <NumberInputRoot value={field1Value} cursor={"default"} disabled>
+                                        <NumberInputField cursor={"default"} disabled id={fieldId+"_1"} value={field1Value} defaultValue={previousValue ? previousValue[0]:0} placeholder="qtd"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>d</Text>
-                                    <NumberInputRoot value={field2Value} onValueChange={(e) => update(e.value, 2)}>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 2)} id={fieldId+"_2"} value={field2Value} defaultValue={previousValue ? previousValue[1]:0} placeholder="dado"></NumberInputField>
+                                    <NumberInputRoot value={field2Value} cursor={"default"} disabled>
+                                        <NumberInputField cursor={"default"} disabled id={fieldId+"_2"} value={field2Value} defaultValue={previousValue ? previousValue[1]:0} placeholder="dado"></NumberInputField>
                                     </NumberInputRoot>
                                     <Text>+</Text>
-                                    <NumberInputRoot value={field3Value} onValueChange={(e) => update(e.value, 3)}>
-                                        <NumberInputField onChange={(e)=>update(e.target.value, 3)} id={fieldId+"_3"} value={field3Value} defaultValue={previousValue ? previousValue[2]:0} placeholder="bonus"></NumberInputField>
+                                    <NumberInputRoot value={field3Value} cursor={"default"} disabled>
+                                        <NumberInputField cursor={"default"} disabled id={fieldId+"_3"} value={field3Value} defaultValue={previousValue ? previousValue[2]:0} placeholder="bonus"></NumberInputField>
                                     </NumberInputRoot>
                                     <IconButton onClick={()=>rollDice()} disabled={(!document.getElementById(fieldId+"_1")?.value || !document.getElementById(fieldId+"_2")?.value)}><LuDices /></IconButton>
                             </div>
