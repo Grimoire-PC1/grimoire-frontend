@@ -1,6 +1,6 @@
 import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box, Button,} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation,} from "@tanstack/react-query";
 import { getCampaignCharacters } from "@/services/campaignService";
 import { Avatar } from "../ui/avatar";
 import { getUserCharacters } from "@/services/characterService";
@@ -8,27 +8,17 @@ import { getCampaignSessions } from "@/services/sessionService";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 import { useNavigate } from "react-router-dom";
 import { DialogLeaveCampaign } from "../Dialog/DialogLeaveCampaign";
-import { getUser } from "@/services/userService";
-import { CharacterRegister, Session } from "@/interfaces/Models";
-import { useUserStore } from "@/stores/user/user.store";
-import { SignInResponse } from "@/interfaces/ServiceResponse";
+import { Session } from "@/interfaces/Models";
 
-export const CampaignPagePlayer = () => {
+export interface PageProps {
+    userId:number;
+}
+
+export const CampaignPagePlayer = ({
+    userId
+}: PageProps) => {
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
     const [sessoesDaCampanha,setSessoes] = useState<Session[]>();
-    const [userId,setUserId] = useState<number|undefined>(0);
-
-    const userMutation = useMutation({
-        mutationKey: ["usuario"],
-        mutationFn: getUser,
-        onSuccess: (data) => {
-          console.log(data)
-          setUserId(data.id);
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
 
     const sessionsMutation = useMutation({
       mutationKey: ["sessoes"],
@@ -67,57 +57,24 @@ export const CampaignPagePlayer = () => {
             console.log(data)
             return data.image;
     }
-
-    let {data: userCharas} = useQuery({
-        queryKey: ["getCampaignCharacters"],
-        queryFn: getUserCharacters
-      })
-      userCharas = userCharas?.filter((c)=> c.id_campanha == campaign.id).sort((a, b) => {
-          return a.id - b.id;
-      });
-
-    useEffect(() => {
-        const updateMyCharasArray = async () => {
+      const myCharasMutation = useMutation({
+        mutationKey: ["meusPersonagensCampanha"],
+        mutationFn: getUserCharacters, 
+        onSuccess: async (data) => {
+            console.log(data)
             const updatedMyCharas = [];
+            const filteredData = data.filter((c) => c.id_campanha === campaign.id).sort((a, b) => {
+                return a.id - b.id;
+            })
 
-            for (let c of userCharas || []) {
+            for (let c of filteredData || []) {
                 const f = await getImage(c.id_foto);
                 updatedMyCharas.push({ id: c.id, foto: f });
             }
 
             console.log("atualizando meus personagens")
             setMyCharas(updatedMyCharas);
-        };
-
-        if (flag1 == 0) {
-            updateMyCharasArray();
-            sessionsMutation.mutate();
-            setFlag1(1);
-        }
-    }, [flag1]);
-
-    const [allCharas,setAllCharas] = useState<CharacterRegister[]>([]);
-
-      const allCharasMutation = useMutation({
-        mutationKey: ["getCampaignCharacters"],
-        mutationFn: getCampaignCharacters, 
-        onSuccess: async (data) => {
-            console.log(data)
-            setAllCharas(data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != userId).sort((a, b) => {
-                return a.id - b.id;
-            }));
-
-            const updatedOtherCharas = [];
-
-            for (let c of allCharas || []) {
-                const f = await getImage(c.id_foto);
-                updatedOtherCharas.push({ id: c.id, foto: f });
-            }
-
-            console.log("atualizando os outros personagens")
-            setOtherCharas(updatedOtherCharas);
-
-            console.log(updatedOtherCharas);
+            console.log(updatedMyCharas);
         },
         onError: (error) => {
           console.log(error);
@@ -125,10 +82,46 @@ export const CampaignPagePlayer = () => {
       });
 
     useEffect(() => {
+        if (flag1 == 0) {
+            myCharasMutation.mutate();
+            sessionsMutation.mutate();
+            setFlag1(1);
+        }
+    }, [flag1]);
+
+    const allCharasMutation = useMutation({
+    mutationKey: ["personagensCampanha"],
+    mutationFn: getCampaignCharacters, 
+    onSuccess: async (data) => {
+        console.log(data)
+        const filteredData = data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != userId).sort((a, b) => {
+            return a.id - b.id;
+        })
+
+        console.log('coisa filtrada:')
+        console.log(filteredData)
+        console.log(userId);
+
+        const updatedOtherCharas = [];
+
+        for (let c of filteredData || []) {
+            const f = await getImage(c.id_foto);
+            updatedOtherCharas.push({ id: c.id, foto: f });
+        }
+
+        console.log("atualizando os outros personagens")
+        setOtherCharas(updatedOtherCharas);
+
+        console.log(updatedOtherCharas);
+    },
+    onError: (error) => {
+        console.log(error);
+    },
+    });
+
+    useEffect(() => {
         if (flag2 < 2) {
-            userMutation.mutate();
             allCharasMutation.mutate();
-            //updateOtherCharasArray();
             sessionsMutation.mutate();
             setFlag2(flag2+1);
         }

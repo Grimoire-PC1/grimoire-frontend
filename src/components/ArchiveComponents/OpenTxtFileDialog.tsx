@@ -1,25 +1,70 @@
 import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { Box,Editable,Flex,IconButton,Text} from "@chakra-ui/react";
 import { LuSave, LuTrash2 } from 'react-icons/lu';
+import { File } from '@/interfaces/Models';
+import { createFile, deleteFile, updateFile } from '@/services/campaignService';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { toaster,Toaster } from '../ui/toaster';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    file:unknown;
+    handleConfirm: (open: boolean) => void;
+    file:File;
 }
 
 export const OpenTxtFileDialog = ({
     open,
     handleClose,
+    handleConfirm,
     file,
 }: DialogLgProps) => {
 
-    const file_criador = true; //futuramente não vai ser um boolean, vai ser um id e teremos que comparar o id do criador com o id do usuário
-    const file_conteudo = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ipsum massa, ornare quis turpis a, laoreet scelerisque est. Aliquam nec aliquam enim. Fusce pharetra faucibus pretium. Mauris erat dolor, bibendum et auctor ultricies, pulvinar a turpis. Vestibulum non nisl luctus, mattis lorem volutpat, luctus nisi. Duis pretium nulla non nibh consequat suscipit. Nunc dignissim vitae diam non lobortis. Suspendisse nec est ac eros eleifend rutrum sit amet eget ex. Vestibulum a dui nibh. Quisque ante leo, pharetra et purus in, elementum elementum nisl. Proin elementum imperdiet dignissim. Proin luctus nibh in urna malesuada, ut ultricies lorem sagittis. Fusce lobortis cursus elit eu venenatis. Curabitur blandit imperdiet risus in finibus. Suspendisse consequat rutrum quam, sed pharetra tellus suscipit condimentum. Vivamus nibh orci, sodales ullamcorper accumsan quis, venenatis in nisl.
+    const file_criador = sessionStorage.getItem('isGameMaster');
+    
+    const [titulo,setTitulo] = useState(file.nome);
+    const [conteudo,setConteudo] = useState(file.conteudo);
 
-In ut lorem nisi. Phasellus lacus est, vehicula vitae finibus sed, laoreet sed odio. Phasellus scelerisque purus lorem. Nam in sollicitudin ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas tempus ante aliquam mattis pulvinar. Etiam ut rutrum nunc. Fusce lorem mauris, convallis et orci ac, eleifend efficitur orci. Quisque nec enim eget risus volutpat dictum id vitae tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ipsum massa, ornare quis turpis a, laoreet scelerisque est. Aliquam nec aliquam enim. Fusce pharetra faucibus pretium. Mauris erat dolor, bibendum et auctor ultricies, pulvinar a turpis. Vestibulum non nisl luctus, mattis lorem volutpat, luctus nisi. Duis pretium nulla non nibh consequat suscipit. Nunc dignissim vitae diam non lobortis. Suspendisse nec est ac eros eleifend rutrum sit amet eget ex. Vestibulum a dui nibh. Quisque ante leo, pharetra et purus in, elementum elementum nisl. Proin elementum imperdiet dignissim. Proin luctus nibh in urna malesuada, ut ultricies lorem sagittis. Fusce lobortis cursus elit eu venenatis. Curabitur blandit imperdiet risus in finibus. Suspendisse consequat rutrum quam, sed pharetra tellus suscipit condimentum. Vivamus nibh orci, sodales ullamcorper accumsan quis, venenatis in nisl.
+    const mutationEdit = useMutation({
+        mutationKey: ["updateFile"],
+        mutationFn: updateFile, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Arquivo modificado com sucesso!",
+                type: "success",
+            })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema durante a edição do arquivo",
+            type: "error",
+            })
+        },
+        });
 
-In ut lorem nisi. Phasellus lacus est, vehicula vitae finibus sed, laoreet sed odio. Phasellus scelerisque purus lorem. Nam in sollicitudin ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas tempus ante aliquam mattis pulvinar. Etiam ut rutrum nunc. Fusce lorem mauris, convallis et orci ac, eleifend efficitur orci. Quisque nec enim eget risus volutpat dictum id vitae tellus.`
+    const mutationDelete = useMutation({
+        mutationKey: ["deleteFile"],
+        mutationFn: deleteFile, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Arquivo excluído com sucesso!",
+                type: "success",
+            })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema durante a deleção do arquivo",
+            type: "error",
+            })
+        },
+        });
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -39,24 +84,27 @@ In ut lorem nisi. Phasellus lacus est, vehicula vitae finibus sed, laoreet sed o
                             {
                                 file_criador ?
                                 <div>
-                                    <Editable.Root p={2} fontSize={"2xl"} defaultValue={file.nome}>
+                                    <Editable.Root p={2} fontSize={"2xl"} value={titulo} onInput={e => setTitulo(e.target.value)}>
                                         <Editable.Preview />
                                         <Editable.Input  />
                                     </Editable.Root>
-                                    <Editable.Root p={2} className='text' defaultValue={file_conteudo}>
+                                    <Editable.Root p={2} className='text' value={conteudo} onInput={e => setConteudo(e.target.value)}>
                                         <Editable.Preview />
                                         <Editable.Textarea h={"40vh"} maxH={"40vh"}  />
                                     </Editable.Root>
                             
                                     <Flex mt={8} gapX={1} justifyContent={"end"}>
-                                        <IconButton aria-label="Salvar alterações"> <LuSave/> </IconButton>
-                                        <IconButton aria-label="Apagar"> <LuTrash2/> </IconButton>
+                                        <IconButton onClick={()=>mutationEdit.mutate({  id_arquivo:file.id,
+                                                                                        novo_conteudo: conteudo,
+                                                                                        novo_nome:titulo,
+                                        })} aria-label="Salvar alterações"> <LuSave/> </IconButton>
+                                        <IconButton onClick={()=>mutationDelete.mutate(file.id)} aria-label="Apagar"> <LuTrash2/> </IconButton>
                                     </Flex>
                                 </div>
                                 :
                                 <div>
                                     <Text fontSize={"2xl"}>{file.nome}</Text>
-                                    <Text mt={2}>{file_conteudo}</Text>
+                                    <Text mt={2}>{file.conteudo}</Text>
                                 </div>
                             }
                         </Box>
@@ -65,6 +113,7 @@ In ut lorem nisi. Phasellus lacus est, vehicula vitae finibus sed, laoreet sed o
                 </Box>
             </div>
         </div>
+        <Toaster/>
     </Dialog>
     )
 }

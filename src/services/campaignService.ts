@@ -1,8 +1,8 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
-import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab } from "@/interfaces/Models";
-import { CreateNewCampaignPayload, GetFolderPayload, NewFolderPayload, TemporaryCampaignPayload, UpdateFolderPayload } from "@/interfaces/ServicePayload";
+import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File } from "@/interfaces/Models";
+import { CreateNewCampaignPayload, GetFilesPayload, GetFolderPayload, NewFilePayload, NewFolderPayload, TemporaryCampaignPayload, UpdateFilePayload, UpdateFolderPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
 
@@ -78,9 +78,7 @@ export const getCampaignCharacters = async() =>{
         `/${ENDPOINT.GET_CAMPAIGN_CHARACTERS}`,
         { params: { id_campanha: parseInt(id||"")} }
     )
-
-    console.log("a porra dos personagens:")
-    console.log(data);
+    
     return data;
 }
 
@@ -158,3 +156,47 @@ export const getFolders = async(payload:GetFolderPayload) => {
     return data;
 }
 
+export const getFiles = async(payload:GetFilesPayload) => {
+    const { data } = await axiosInstace.get<File[]>(
+        `/${ENDPOINT.GET_FILES}`,
+        { params: { id_campanha: payload.id_campanha} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const createFile = async(payload:NewFilePayload) => {
+
+    const { data } = await axiosInstace.post<File>(
+        `/${ENDPOINT.CREATE_FILE}`,
+        payload,
+        { params: { id_pacote_pai: payload.id_pacote_pai, tipo_arquivo: payload.tipo_arquivo} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const updateFile = async(payload:UpdateFilePayload) => {
+
+    const { data } = await axiosInstace.put<File>(
+        `/${ENDPOINT.UPDATE_FILE}`,
+        payload,
+        { params: { id_arquivo:payload.id_arquivo} }
+    )
+
+    console.log(data)
+    return data;
+}
+
+export const deleteFile = async(id:number) => {
+
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_FILE}`,
+        { params: { id_arquivo:id} }
+    )
+
+    console.log(data)
+    return data;
+}

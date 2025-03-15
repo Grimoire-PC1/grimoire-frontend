@@ -4,20 +4,131 @@ import { Form } from 'react-router-dom';
 import { FileUploadDropzone, FileUploadList, FileUploadRoot, FileUploadTrigger } from '../ui/file-upload';
 import { LuSave, LuTrash2 } from 'react-icons/lu';
 import { HiUpload } from 'react-icons/hi';
+import { File } from '@/interfaces/Models';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toaster, Toaster } from '../ui/toaster';
+import { updateFile, deleteFile } from '@/services/campaignService';
 
 export interface DialogLgProps {
     open:boolean,
     handleClose: (open: boolean) => void;
-    file:unknown;
+    handleConfirm: (open: boolean) => void;
+    file:File;
 }
 
 export const OpenImgFileDialog = ({
     open,
     handleClose,
+    handleConfirm,
     file
 }: DialogLgProps) => {
 
-    const file_criador = true;
+    const file_criador = sessionStorage.getItem('isGameMaster');
+    const [img,setImg] = useState("")
+    const [titulo,setTitulo] = useState(file.nome);
+    const [conteudo,setConteudo] = useState(file.conteudo);
+
+    const mutationEdit = useMutation({
+        mutationKey: ["updateFile"],
+        mutationFn: updateFile, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Arquivo modificado com sucesso!",
+                type: "success",
+            })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema durante a edição do arquivo",
+            type: "error",
+            })
+        },
+        });
+    
+    const mutationDelete = useMutation({
+        mutationKey: ["deleteFile"],
+        mutationFn: deleteFile, 
+        onSuccess: (data) => {
+            console.log(data)
+            toaster.create({
+                description: "Arquivo excluído com sucesso!",
+                type: "success",
+            })
+            handleConfirm(false);
+        },
+        onError: (error) => {
+            console.log(error);
+            toaster.create({
+            description: "Houve um problema durante a deleção do arquivo",
+            type: "error",
+            })
+        },
+        });
+
+    const getImage = async (id:string) => {
+        const res = await fetch(`http://localhost:8081/get/${id}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          setImg(data.image)
+          console.log(data)
+    }
+
+    if(!img || img == "") {
+        getImage(file.conteudo)
+    }
+
+    const handleImageSubmit = async () =>{
+        if(img) {
+          const res = await fetch(`http://localhost:8081/update/${file.conteudo}`, {
+            method:"PATCH",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({image: img})
+          })
+          const data = await res.json()
+          console.log(data)
+        }
+    }
+
+    const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
+        const reader = new FileReader()
+        if(file) {
+          reader.readAsDataURL(file)
+          const data: string | ArrayBuffer | null = await new Promise((resolve,reject) => {
+            reader.onload = ()=> resolve(reader.result)
+            reader.onerror = (err) => reject(err)
+          })
+          return data
+        }
+    }
+
+    const handleUploadImage = async (e: any) => {
+        console.log(e.acceptedFiles[0])
+        const file = e.acceptedFiles[0]
+        
+        const conversionResult: string | ArrayBuffer | null | undefined = await imagebase64(file)
+        if(typeof conversionResult === "string") {
+            const image: string = conversionResult
+            setImg(image)
+            console.log(image)
+        }
+    }
+
+    async function modifyFile(){
+        await handleImageSubmit();
+        await mutationEdit.mutate({  id_arquivo:file.id,
+            novo_nome:titulo,
+            });
+    }
 
     return(
 <Dialog open={open} onClose={handleClose} className="relative z-10">
@@ -37,32 +148,31 @@ export const OpenImgFileDialog = ({
                             {
                                 file_criador ?
                                 <div>
-                                    <Editable.Root p={2} fontSize={"2xl"} defaultValue={file.nome}>
+                                    <Editable.Root p={2} fontSize={"2xl"} value={titulo} onInput={e => setTitulo(e.target.value)}>
                                         <Editable.Preview />
                                         <Editable.Input  />
                                     </Editable.Root>
-                                    <Image mt={2} fit={"contain"} w={"full"} src="../../../src/assets/login_image.png"/>
+                                    <Image rounded={"xl"} mt={2} fit={"contain"} w={"full"} src={img}/>
                             
                                     
-                                    <Flex mt={8} gapX={2} justifyContent={"space-between"}>
-                                        <FileUploadRoot>
+                                    <Flex mt={4} gapX={2} justifyContent={"space-between"}>
+                                        <FileUploadRoot  onFileChange={handleUploadImage}>
                                             <FileUploadTrigger asChild>
                                                 <Button variant="outline" size="sm">
                                                 <HiUpload /> Modificar imagem
                                                 </Button>
                                             </FileUploadTrigger>
-                                            <FileUploadList />
                                         </FileUploadRoot>
                                         <Flex gapX={1}>
-                                            <IconButton aria-label="Salvar alterações"> <LuSave/> </IconButton>
-                                            <IconButton aria-label="Apagar"> <LuTrash2/> </IconButton>
-                                        </Flex>
+                                            <IconButton onClick={()=>modifyFile()} aria-label="Salvar alterações"> <LuSave/> </IconButton>
+                                                <IconButton onClick={()=>mutationDelete.mutate(file.id)} aria-label="Apagar"> <LuTrash2/> </IconButton>
+                                            </Flex>
                                     </Flex>
                                 </div>
                                 :
                                 <div>
                                     <Text fontSize={"2xl"}>{file.nome}</Text>
-                                    <Image mt={4} fit={"contain"} w={"full"} src="../../../src/assets/login_image.png"/>
+                                    <Image mt={4} fit={"contain"} w={"full"} src={img}/>
                                 </div>
                             }
                         
@@ -72,6 +182,7 @@ export const OpenImgFileDialog = ({
                 </Box>
             </div>
         </div>
+        <Toaster/>
     </Dialog>
     )
 }

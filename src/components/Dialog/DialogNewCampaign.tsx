@@ -39,7 +39,6 @@ export const DialogNewCampaign = ({
       };
 
     async function navigateNewCampaign(){
-        //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
         console.log(selectedSystem)
         const resImg = await fetch("http://localhost:8081/upload", {
             method:"POST",

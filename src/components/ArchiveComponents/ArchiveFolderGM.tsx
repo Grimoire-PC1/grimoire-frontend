@@ -12,9 +12,9 @@ import { NewImgFileDialog } from "./NewImgFileDialog";
 import { NewItemFileDialog } from "./NewItemFileDialog";
 import { NewSheetFileDialog } from "./NewSheetFileDialog";
 import { ArchiveFileComponent } from "./ArchiveFileComponent";
-import { Folder } from "@/interfaces/Models";
+import { File, Folder } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
-import { getFolders } from "@/services/campaignService";
+import { getFiles, getFolders } from "@/services/campaignService";
 
 export interface ArchiveGMProps {
     campaign: string;
@@ -32,13 +32,30 @@ export const ArchiveFolderGM = ({
 
     const [campaign_folders, setFolders] = useState<Folder[]>([]);
     const [flag,setFlag] = useState(0);
+    const [files, setFiles] = useState<File[]>([]);
 
     const foldersMutation = useMutation({
         mutationKey: ["getFolders"],
         mutationFn: getFolders,
         onSuccess: (data) => {
           console.log(data)
-          setFolders(data);
+          setFolders(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+
+    const filesMutation = useMutation({
+        mutationKey: ["getFiles"],
+        mutationFn: getFiles,
+        onSuccess: (data) => {
+          console.log(data)
+          setFiles(data.sort((a, b) => {
+            return a.id - b.id;
+        }));
         },
         onError: (error) => {
           console.log(error);
@@ -47,12 +64,12 @@ export const ArchiveFolderGM = ({
       
     useEffect(() => {
         if(flag < 2){
-            foldersMutation.mutate({id_campanha:parseInt(campaign)});
+            foldersMutation.mutate({id_campanha:parseInt(campaign), id_pacote_pai: folder.id});
+            filesMutation.mutate({id_campanha:parseInt(campaign)});
+            console.log(files);
             setFlag(flag+1);
         }
     }, [flag]);
-
-    //const files = [{nome: "Ficha P1", pasta: "P1", tipo: "FICHA"}, {nome: "Cajado", pasta: "P1", tipo: "ITEM"},{nome: "Pista 1", pasta: "Public", tipo: "IMAGEM"},{nome: "Documento 1", pasta: "Public", tipo: "TEXTO"}]
 
     function goToFolder(f:Folder){
         console.log(f);
@@ -61,8 +78,6 @@ export const ArchiveFolderGM = ({
         location.reload();
     }
 
-    const files = [{nome: "Ficha P1", pasta: "Private", tipo: "FICHA"}, {nome: "Cajado", pasta: "Private", tipo: "ITEM"},{nome: "Pista 1", pasta: "Private", tipo: "IMAGEM"},{nome: "Documento 1", pasta: "Private", tipo: "TEXTO"}]
-    
     function goBack(){
         if(folder.id_pacote_pai != null){
             goToFolder(campaign_folders.filter((f) => f.id === folder.id_pacote_pai)[0]) /* depois mudar simplesmente para folder.id_pacote_pai, que vai ter uma relação com outro folder */
@@ -82,7 +97,8 @@ export const ArchiveFolderGM = ({
 
 
     function fecharEforcar(){
-        foldersMutation.mutate({id_campanha:parseInt(campaign)});
+        foldersMutation.mutate({id_campanha:parseInt(campaign), id_pacote_pai: folder.id});
+        filesMutation.mutate({id_campanha:parseInt(campaign), id_pacote_pai: folder.id});
         setShowNewFolder(false);
         setShowNewTXT(false);
         setShowNewIMG(false);
@@ -134,14 +150,14 @@ export const ArchiveFolderGM = ({
 
             <Box mt={6} maxH={"70vh"} gap={"4"} overflowY={"auto"}>
                 <Flex alignItems={"end"} flexWrap={"wrap"} gap={4}>
-                <For each={campaign_folders.filter((f) => f.id_pacote_pai === folder.id)}>
+                <For each={campaign_folders}>
                     {(f)=><Box onClick={()=>goToFolder(f)} cursor={"pointer"} w={"100px"} placeItems={"center"}>
                                     {f.publica ? <LuFolder size={48} strokeWidth={1.25}/> : <LuFolderLock size={48} strokeWidth={1.25}/>}
                                     <Text mt={3} textAlign={"center"}>{f.nome}</Text>
                                 </Box>}
                 </For>
-                <For each={files.filter((f) => f.pasta === folder.nome)}>
-                    {(file)=><ArchiveFileComponent campaign="" folderId={folder.nome} file={file}/>}
+                <For each={files.filter((f) => f.id_pacote_pai === folder.id)}>
+                    {(file)=><ArchiveFileComponent handleConfirm={fecharEforcar} campaign={campaign} folderId={folder.nome} file={file}/>}
                 </For>
                 </Flex>
             </Box>
@@ -150,8 +166,8 @@ export const ArchiveFolderGM = ({
             <DeleteSubFolderDialog open={showDeleteFolder} handleConfirm={goBack} handleClose={setShowDeleteFolder} pastaId={folder.id} pastaNome={folder.nome}/>
             <EditSubFolderDialog open={showEditFolder} handleConfirm={mudarTitulo} handleClose={setShowEditFolder} pastaId={folder.id} pastaNome={folder.nome}/>
         
-            <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} pastaId={String(folder.id)}/>
-            <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} pastaId={String(folder.id)}/>
+            <NewTxtFileDialog open={showNewTXT} handleClose={setShowNewTXT} handleConfirm={fecharEforcar} pastaId={folder.id}/>
+            <NewImgFileDialog open={showNewIMG} handleClose={setShowNewIMG} handleConfirm={fecharEforcar} pastaId={folder.id}/>
             <NewItemFileDialog open={showNewItem} handleClose={setShowNewItem} pastaId={String(folder.id)}/>
             <NewSheetFileDialog open={showNewSheet} handleClose={setShowNewSheet} pastaId={String(folder.id)}/>
         </div>

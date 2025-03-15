@@ -5,17 +5,20 @@ import { OpenTxtFileDialog } from "./OpenTxtFileDialog";
 import { OpenImgFileDialog } from "./OpenImgFileDialog";
 import { OpenItemFileDialog } from "./OpenItemFileDialog";
 import { useNavigate } from "react-router-dom";
+import { File } from "@/interfaces/Models";
 
 export interface ArchiveGMProps {
     campaign: string; //depois mudar pra Campaign
     folderId:string;
-    file: unknown; //mudar para File depois
+    file: File; //mudar para File depois
+    handleConfirm: (open: boolean) => void;
 }
 
 export const ArchiveFileComponent = ({
     campaign,
     folderId,
-    file
+    file,
+    handleConfirm
 }: ArchiveGMProps) => {
     const navigate = useNavigate();
 
@@ -23,7 +26,7 @@ export const ArchiveFileComponent = ({
     const [showIMG,setShowIMG] = useState(false);
     const [showItem,setShowItem] = useState(false);
 
-    function openFile(f:unknown){
+    function openFile(f:File){
         switch (f.tipo){
             case 'TEXTO': {
                 setShowTXT(true);
@@ -37,7 +40,7 @@ export const ArchiveFileComponent = ({
                 setShowItem(true);
                 break;
             }
-            case 'FICHA': {
+            case 'PERSONAGEM': {
                 sessionStorage.setItem('fichaAtual',file.nome);
                 navigate(`/grimoire/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
                 break;
@@ -54,14 +57,14 @@ export const ArchiveFileComponent = ({
                         {file.tipo === 'TEXTO' ? <LuFileText/> : 
                         file.tipo === 'IMAGEM' ? <LuFileImage/> : 
                         file.tipo === 'ITEM' ? <LuBackpack/> : 
-                        file.tipo === 'FICHA' ? <LuUserRoundPen/> : 
+                        file.tipo === 'PERSONAGEM' ? <LuUserRoundPen/> : 
                         <LuFile/>}  
                         </IconButton>
                 <Text textAlign={"center"}>{file.nome}</Text>
             </Box>
 
-            <OpenTxtFileDialog open={showTXT} handleClose={setShowTXT} file={file}/>
-            <OpenImgFileDialog open={showIMG} handleClose={setShowIMG} file={file}/>
+            <OpenTxtFileDialog handleConfirm={handleConfirm} open={showTXT} handleClose={setShowTXT} file={file}/>
+            <OpenImgFileDialog handleConfirm={handleConfirm} open={showIMG} handleClose={setShowIMG} file={file}/>
             <OpenItemFileDialog open={showItem} handleClose={setShowItem} file={file}/>
         </div>
     )

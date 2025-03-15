@@ -10,12 +10,21 @@ import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { useState } from "react";
+import { useUserStore } from "@/stores/user/user.store";
+import { useQuery } from "@tanstack/react-query";
+import { getUserId } from "@/services/userService";
 export default function CampaignPage(){
 
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    
+    const {data: userId} = useQuery({
+        queryKey: ["getUserId"],
+        queryFn: getUserId
+    })
+    console.log(userId);
 
     const [img,setImg] = useState("")
-    
+     
     const getImage = async () => {
         const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
             method:"GET",
@@ -82,7 +91,7 @@ export default function CampaignPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                            <CampaignPagePlayer></CampaignPagePlayer>
+                                            <CampaignPagePlayer userId={userId||0}></CampaignPagePlayer>
                                         </div>
                                     </div> 
                                 </div>

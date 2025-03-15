@@ -59,7 +59,7 @@ export default function CampaignArchiveFolder(){
                             </div>
                             <div className="col-span-9">
                                 <div>
-                                    <ArchiveFolderGM folder={folder} campaign={campaign.id_campanha}/>
+                                    <ArchiveFolderGM folder={folder} campaign={campaign.id}/>
                                 </div>
                                 
                                 {

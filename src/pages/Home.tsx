@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
@@ -60,11 +60,14 @@ export default function Home() {
         nome: infoUsuario?.nome,
         id_foto: infoUsuario?.id_foto
     }
-
+    console.log(userObject);
+    /*
     if(useUserStore.getState().user == undefined) {
         useUserStore.getState().setUser(userObject);
-        console.log(useUserStore.getState())
+        console.log(userObject);
+        console.log(useUserStore.getState().user)
     }
+        */
 
     if(campanhasCriadas != undefined){
         useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
@@ -77,6 +80,19 @@ export default function Home() {
     if(sistemasUsuario != undefined){
         useUserStore.getState().setUserSystems(sistemasUsuario);
     }
+
+    const [flagProfile,setFlagProfile] = useState(0);
+
+    useEffect(() => {
+        if(flagProfile < 4){
+            useUserStore.getState().setUser(userObject);
+            console.log('perfil:')
+            console.log(userObject);
+            sessionStorage.setItem('myId',String(userObject.id));
+            console.log(useUserStore.getState())
+            setFlagProfile(flagProfile+1);
+        }
+    }, [flagProfile]);
 
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)

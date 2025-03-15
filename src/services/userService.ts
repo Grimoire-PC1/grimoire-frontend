@@ -25,8 +25,16 @@ export const getUser = async () => {
     const { data } = await axiosInstace.get<SignInResponse>(
         `/${ENDPOINT.GET_USER}`
     );
- 
+    
     return data;
+}
+
+export const getUserId = async () => {
+    const { data } = await axiosInstace.get<SignInResponse>(
+        `/${ENDPOINT.GET_USER}`
+    );
+    
+    return data.id;
 }
 
 export const updateUser = async (id: string) => {

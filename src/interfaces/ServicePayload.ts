@@ -1,4 +1,4 @@
-import { SheetSubTabType, SystemType } from "./Models";
+import { FileType, SheetSubTabType, SystemType } from "./Models";
 
 export type SignUpPayload = {
     login: string;
@@ -184,4 +184,23 @@ export type UpdateFolderPayload = {
 export type GetFolderPayload = {
     id_campanha:number;
     id_pacote_pai?: number;
+}
+
+export type GetFilesPayload = {
+    id_campanha:number;
+    id_pacote_pai?: number;
+}
+
+export type NewFilePayload = {
+    id_pacote_pai: number;
+    tipo_arquivo: FileType;
+    nome: string;
+    conteudo: string;
+}
+
+export type UpdateFilePayload = {
+    id_arquivo:number;
+    novo_id_pacote_pai?: number;
+    novo_nome?:string;
+    novo_conteudo?:string;
 }

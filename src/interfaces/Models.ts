@@ -115,3 +115,13 @@ export type Folder = {
     nome: string;
     publica: boolean;
 }
+
+export type File = {
+    id: number;
+    id_pacote_pai: number|null;
+    nome: string;
+    tipo: FileType;
+    conteudo: string;
+}
+
+export type FileType = "TEXTO" | "ITEM" | "IMAGEM" | "PERSONAGEM";
