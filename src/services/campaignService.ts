@@ -82,6 +82,17 @@ export const getCampaignCharacters = async() =>{
     return data;
 }
 
+export const getCampaignOtherCharacters = async() =>{
+    let id = sessionStorage.getItem('currentCampaignId')
+    console.log(id);
+    const { data } = await axiosInstace.get<CharacterRegister[]>(
+        `/${ENDPOINT.GET_CAMPAIGN_OTHER_CHARACTERS}`,
+        { params: { id_campanha: parseInt(id||"")} }
+    )
+    
+    return data;
+}
+
 export const getCampaignSheetTemplateTabs = async() =>{
     let campaignId = sessionStorage.getItem('currentCampaignId')
     const { data } = await axiosInstace.get<SheetTab[]>(

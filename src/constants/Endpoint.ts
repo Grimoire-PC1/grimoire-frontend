@@ -43,6 +43,7 @@ export const ENDPOINT = {
     DELETE_MECHANIC: "mechanic/delete",
 
     GET_CAMPAIGN_CHARACTERS: "character/get/campaign",
+    GET_CAMPAIGN_OTHER_CHARACTERS: "character/get/campaign/others",
     CREATE_CHARACTER: "character/register",
     UPDATE_CHARACTER: "character/update",
     DELETE_CHARACTER: "character/delete",
