@@ -32,11 +32,16 @@ export const getAllUserPlayedCampaigns = async () => {
 }
 
 export const getCampaignById = async (campaignId: string) => {
-    const { data } = await axiosInstace.get<Campaign>(
+    const { data } = await axiosInstace.get<GetCampaigsResponse>(
         `/${ENDPOINT.GET_CAMPAIGN_BY_ID}/${campaignId}`
     )
 
-    return data
+    const arrayedCampaigns: Campaign[] = [];
+    data.forEach((item) => {
+        arrayedCampaigns.push(item);
+    }) 
+
+    return arrayedCampaigns;
 }
 
 export const createNewCampaign = async(newCampaign: CreateNewCampaignPayload) => {
@@ -82,17 +87,6 @@ export const getCampaignCharacters = async() =>{
     return data;
 }
 
-export const getCampaignOtherCharacters = async() =>{
-    let id = sessionStorage.getItem('currentCampaignId')
-    console.log(id);
-    const { data } = await axiosInstace.get<CharacterRegister[]>(
-        `/${ENDPOINT.GET_CAMPAIGN_OTHER_CHARACTERS}`,
-        { params: { id_campanha: parseInt(id||"")} }
-    )
-    
-    return data;
-}
-
 export const getCampaignSheetTemplateTabs = async() =>{
     let campaignId = sessionStorage.getItem('currentCampaignId')
     const { data } = await axiosInstace.get<SheetTab[]>(
@@ -112,6 +106,13 @@ export const getCampaignSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
     return data;
 }
 
+export const enterCampaign = async(id_campanha:number) =>{
+    const { data } = await axiosInstace.post<string>(
+        `/${ENDPOINT.ENTER_CAMPAIGN}`,
+        { params: { id_campanha: id_campanha} }
+    )
+    return data;
+}
 
 export const leaveCampaign = async(id_campanha:number) =>{
     const { data } = await axiosInstace.delete<string>(

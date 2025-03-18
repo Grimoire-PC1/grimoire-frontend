@@ -8,10 +8,17 @@ import { useState } from "react";
 import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { SystemPageNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageNoEditComponent";
+import { System, User } from "@/interfaces/Models";
+import { useUserStore } from "@/stores/user/user.store";
 
 export default function SystemPage(){
 
     const [isOwner, setIsOwner] = useState(true);
+
+    const user = useUserStore.getState().user
+    console.log(user)
+
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
 
     return(
         <Presence 
@@ -22,15 +29,15 @@ export default function SystemPage(){
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                     <div>
-                        <SystemHeader  system="meu sistema"/>
+                        <SystemHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarSystem system=""></SidebarSystem>
+                                <SidebarSystem></SidebarSystem>
                             </div>
                             <div className="col-span-9">
                                 <div>
                                     {
-                                        isOwner ?
+                                        system.id_criador == user?.id ?
                                         <SystemPageComponent/>
                                         :
                                         <SystemPageNoEditComponent system={"sistema de outra pessoa"}/>

@@ -1,6 +1,6 @@
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
-import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns } from "@/services/campaignService";
+import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns, getCampaignById } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
@@ -12,12 +12,11 @@ import { useEffect, useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
-import { CharacterProfile } from "@/components/CharacterProfile/CharacterProfile";
 import { UserSettingsDialogSm } from "@/components/Dialog/DialogSm";
 import { DialogNewCampaign } from "@/components/Dialog/DialogNewCampaign";
 import { useUserStore } from "@/stores/user/user.store";
 import { CreateNewSystemPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
-import { SystemType, User } from "@/interfaces/Models";
+import { Campaign, SystemType, User } from "@/interfaces/Models";
 import { createNewSystem, getAllUserCreatedSystems } from "@/services/systemService";
 import { getUser } from "@/services/userService";
 import { SystemListCard } from "@/components/system/SystemListCard";
@@ -50,7 +49,7 @@ export default function Home() {
         queryFn: getAllUserCreatedSystems
     })
 
-    const userObject: User = {
+    let userObject: User = {
         createdCampaign: campanhasCriadas,
         playedCampaign: campanhasJogadas,
         characters: personagens,
@@ -60,14 +59,6 @@ export default function Home() {
         nome: infoUsuario?.nome,
         id_foto: infoUsuario?.id_foto
     }
-    console.log(userObject);
-    /*
-    if(useUserStore.getState().user == undefined) {
-        useUserStore.getState().setUser(userObject);
-        console.log(userObject);
-        console.log(useUserStore.getState().user)
-    }
-        */
 
     if(campanhasCriadas != undefined){
         useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
@@ -85,6 +76,16 @@ export default function Home() {
 
     useEffect(() => {
         if(flagProfile < 4){
+            userObject = {
+                createdCampaign: campanhasCriadas,
+                playedCampaign: campanhasJogadas,
+                characters: personagens,
+                id: infoUsuario?.id,
+                login: infoUsuario?.login,
+                email: infoUsuario?.email,
+                nome: infoUsuario?.nome,
+                id_foto: infoUsuario?.id_foto
+            }
             useUserStore.getState().setUser(userObject);
             console.log('perfil:')
             console.log(userObject);
@@ -105,8 +106,10 @@ export default function Home() {
     function logout(){
         navigate("/grimoire/");
     }
-    function validateIdCampanha(){
-        if(idcampanha == '123456'){
+    async function validateIdCampanha(){
+        const campanhaIngressada = await getCampaignById(idcampanha)
+        if(campanhaIngressada.length !== 0) {
+            
             setidcampanhavalido(true) //depois mudar pra uma verificação real
             navigate("/grimoire/campaign");
         }else{
@@ -257,7 +260,7 @@ export default function Home() {
 
 
                 <DialogNewCampaign open={openNewCampaign} handleClose={setOpenNewCampaign}/>
-                <DialogLg title="Defina as leis do seu universo" description="Comece uma nova história com um dos sistemas que você já cadastrou no Grimoire, ou procure algo novo entre os sistemas públicos criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
+                <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
 
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                     

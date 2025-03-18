@@ -43,7 +43,6 @@ export const ENDPOINT = {
     DELETE_MECHANIC: "mechanic/delete",
 
     GET_CAMPAIGN_CHARACTERS: "character/get/campaign",
-    GET_CAMPAIGN_OTHER_CHARACTERS: "character/get/campaign/others",
     CREATE_CHARACTER: "character/register",
     UPDATE_CHARACTER: "character/update",
     DELETE_CHARACTER: "character/delete",
@@ -63,6 +62,7 @@ export const ENDPOINT = {
     UPDATE_SHEET_CONTENT: "character-sheet-content/update",
     CREATE_SHEET_CONTENT: "character-sheet-content/register",
 
+    ENTER_CAMPAIGN: "participant/register",
     LEAVE_CAMPAIGN: "participant/delete",
 
     CREATE_FOLDER: "campaign-package/register",

@@ -13,3 +13,5 @@ export type GetCampaigsResponse = Campaign[];
 export type GetCharactersResponse = Character[];
 
 export type GetSystemsResponse = System[];
+
+export type PostParticipanteResponse = 
