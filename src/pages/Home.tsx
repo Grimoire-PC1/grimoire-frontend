@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
@@ -24,76 +24,72 @@ import { SystemListCard } from "@/components/system/SystemListCard";
 export default function Home() {
     const navigate = useNavigate();
 
-    const {data: infoUsuario} = useQuery({
+    const {data: infoUsuario, isLoading: loadingInfoUser} = useQuery({
         queryKey: ["infoUsuario"],
         queryFn: getUser
     })
 
-    const {data: campanhasCriadas} = useQuery({
+    const {data: campanhasCriadas, isLoading: loadingCreatedCampaigns} = useQuery({
         queryKey: ["userCreatedCampaigns"],
         queryFn: getAllUserCreatedCampaigns
     })
     
-    const {data: campanhasJogadas} = useQuery({
+    const {data: campanhasJogadas, isLoading: loadingPlayedCampaigns} = useQuery({
         queryKey: ["userPlayedCampaigns"],
         queryFn: getAllUserPlayedCampaigns
     })
 
-    const {data: personagens} = useQuery({
+    const {data: personagens, isLoading: loadingPlayerCharacters} = useQuery({
         queryKey: ["userCharacters"],
         queryFn: getAllUserCharacters
     })
 
-    const {data: sistemasUsuario} = useQuery({
+    const {data: sistemasUsuario, isLoading: loadingUserSystems} = useQuery({
         queryKey: ["userSystems"],
         queryFn: getAllUserCreatedSystems
     })
 
+    const isEverythingLoaded = !loadingInfoUser && 
+                            !loadingCreatedCampaigns && 
+                            !loadingPlayedCampaigns && 
+                            !loadingPlayerCharacters && 
+                            !loadingUserSystems;
+
     let userObject: User = {
-        createdCampaign: campanhasCriadas,
-        playedCampaign: campanhasJogadas,
-        characters: personagens,
-        id: infoUsuario?.id,
-        login: infoUsuario?.login,
-        email: infoUsuario?.email,
-        nome: infoUsuario?.nome,
-        id_foto: infoUsuario?.id_foto
-    }
-
-    if(campanhasCriadas != undefined){
-        useUserStore.getState().setCreatedCampaigns(campanhasCriadas);
-    }
-
-    if(campanhasJogadas != undefined){
-        useUserStore.getState().setPlayedCampaigns(campanhasJogadas);
-    }
-
-    if(sistemasUsuario != undefined){
-        useUserStore.getState().setUserSystems(sistemasUsuario);
-    }
-
-    const [flagProfile,setFlagProfile] = useState(0);
+        createdCampaign: campanhasCriadas ?? [],
+        playedCampaign: campanhasJogadas ?? [],
+        characters: personagens ?? [],
+        id: infoUsuario?.id ?? 0,
+        login: infoUsuario?.login ?? "",
+        email: infoUsuario?.email ?? "",
+        nome: infoUsuario?.nome ?? "",
+        id_foto: infoUsuario?.id_foto ?? ""
+    };
 
     useEffect(() => {
-        if(flagProfile < 4){
+        if (isEverythingLoaded && infoUsuario) {
             userObject = {
-                createdCampaign: campanhasCriadas,
-                playedCampaign: campanhasJogadas,
-                characters: personagens,
-                id: infoUsuario?.id,
-                login: infoUsuario?.login,
-                email: infoUsuario?.email,
-                nome: infoUsuario?.nome,
-                id_foto: infoUsuario?.id_foto
-            }
+                createdCampaign: campanhasCriadas ?? [],
+                playedCampaign: campanhasJogadas ?? [],
+                characters: personagens ?? [],
+                id: infoUsuario.id ?? 0,
+                login: infoUsuario.login ?? "",
+                email: infoUsuario.email ?? "",
+                nome: infoUsuario.nome ?? "",
+                id_foto: infoUsuario.id_foto ?? ""
+            };
             useUserStore.getState().setUser(userObject);
-            console.log('perfil:')
-            console.log(userObject);
-            sessionStorage.setItem('myId',String(userObject.id));
-            console.log(useUserStore.getState())
-            setFlagProfile(flagProfile+1);
+            useUserStore.getState().setCreatedCampaigns(campanhasCriadas ?? []);
+            useUserStore.getState().setPlayedCampaigns(campanhasJogadas ?? []);
+            useUserStore.getState().setUserSystems(sistemasUsuario ?? []);
+
+            console.log('Perfil atualizado:', userObject);
+            sessionStorage.setItem('myId', String(userObject.id));
+            console.log(JSON.stringify(userObject))
+            sessionStorage.setItem("userObject", JSON.stringify(userObject))
+            console.log(JSON.parse(sessionStorage.getItem("userObject")||''))
         }
-    }, [flagProfile]);
+    }, [isEverythingLoaded, infoUsuario, campanhasCriadas, campanhasJogadas, personagens, sistemasUsuario]);
 
     const [openDialogSm, setOpenDialogSm] = useState(false)
     const [openDialogLg, setOpenDialogLg] = useState(false)

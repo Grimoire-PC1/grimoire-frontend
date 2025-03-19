@@ -1,16 +1,28 @@
 import { Text,Image, Button, Box,} from "@chakra-ui/react";
 import { useState } from "react";
 import { DialogUserCampaigns } from "../system/DialogUserCampaigns";
+import { System, User } from "@/interfaces/Models";
 
-export interface SystemPageComponentProps {
-    system: string; //depois mudar pra System
-}
+export const SystemPageNoEditComponent = () => {
+    
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
 
-export const SystemPageNoEditComponent = ({
-    system,
-}: SystemPageComponentProps) => {
-    const system_image = "";
-    const system_desc = 'Meu sistema é muito legal e essa é a descrição dele muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito Meu sistema é muito legal e essa é a descrição dele muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito muito ' //pegar a descrição do sistema
+    const [img,setImg] = useState("")
+
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          setImg(data.image)
+    }
+
+    if(!img || img == "") {
+        getImage()
+    }
 
     const [openDialogLg, setOpenDialogLg] = useState(false)
 
@@ -21,14 +33,14 @@ export const SystemPageNoEditComponent = ({
                 <div className="grid grid-cols-2 margin-top-xs">
                     <div>
                         {
-                            system_image == "" ?
+                            img == "" ?
                             <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950"></Image>
                             :
-                            <Image rounded={"xl"} w={"36vw"} h={"36vh"}></Image>
+                            <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950" src={img}></Image>
                         }
                     </div>
                     <div className="padding-left grid place-content-between">
-                        <Text className="text" textAlign={"justify"}>{system_desc}</Text>
+                        <Text className="text" textAlign={"justify"}>{system.descricao}</Text>
                         
                     </div>
                 </div>
@@ -38,7 +50,7 @@ export const SystemPageNoEditComponent = ({
                 </Box>
             
             </div>
-            <DialogUserCampaigns open={openDialogLg} handleClose={setOpenDialogLg} user="" system={system}/>
+            <DialogUserCampaigns open={openDialogLg} handleClose={setOpenDialogLg} system={system}/>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { SheetSubTab, SheetTab, System, SystemMechanic, SystemRule, SystemType } from "@/interfaces/Models";
+import { SheetSubTab, SheetTab, System, SystemMechanic, SystemRule, SystemType, User } from "@/interfaces/Models";
 import { CreateNewCampaignPayload, CreateNewSystemPayload, CreateSheetTabPayload, TemporarySystemPayload } from "@/interfaces/ServicePayload";
 import { createNewCampaign } from "@/services/campaignService";
 import { createMechanic, createNewSystem, createRule, createSheetTemplateSubTab, createSheetTemplateTab, getSystemMechanics, getSystemRules, getSystemSheetTemplateSubTabs, getSystemSheetTemplateTabs } from "@/services/systemService";
@@ -21,7 +21,7 @@ export const DialogUserCampaigns = ({
     open,
     handleClose
 }: SystemListCardProps) => {
-    const user = useUserStore.getState().user
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'')
 
     let ownSystem = false; 
 

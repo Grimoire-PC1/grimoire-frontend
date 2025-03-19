@@ -9,13 +9,12 @@ import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { SystemPageNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageNoEditComponent";
 import { System, User } from "@/interfaces/Models";
-import { useUserStore } from "@/stores/user/user.store";
 
 export default function SystemPage(){
 
     const [isOwner, setIsOwner] = useState(true);
 
-    const user = useUserStore.getState().user
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'')
     console.log(user)
 
     let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
@@ -40,7 +39,7 @@ export default function SystemPage(){
                                         system.id_criador == user?.id ?
                                         <SystemPageComponent/>
                                         :
-                                        <SystemPageNoEditComponent system={"sistema de outra pessoa"}/>
+                                        <SystemPageNoEditComponent/>
 
                                     }
                                 </div>

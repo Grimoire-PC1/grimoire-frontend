@@ -8,13 +8,14 @@ import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageSheetNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageSheetNoEditComponent";
-import { System } from "@/interfaces/Models";
+import { System, User } from "@/interfaces/Models";
 
 export default function SystemPageSheet(){
  
     const [isOwner, setIsOwner] = useState(true);
 
     let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'');
 
     return(
         <Presence 
@@ -24,23 +25,23 @@ export default function SystemPageSheet(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }}  maxH={"100vh"} overflowY={"hidden"} >
                     <div>
-                        <SystemHeader  system="meu sistema"/>
+                        <SystemHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarSystem system=""></SidebarSystem>
+                                <SidebarSystem></SidebarSystem>
                             </div>
                             <div className="col-span-9">
                                 <div>
                                     {
-                                        isOwner ?
+                                        system.id_criador == user?.id ?
                                     <SystemPageSheetComponent   title="COMO SEUS JOGADORES PODEM CONSTRUIR PERSONAGENS ÚNICOS?" 
                                                                 subtitle="Crie um modelo de ficha para dar vida aos personagens dentro do seu sistema" 
-                                                                system={String(system.id)}/>
+                                                                system={system}/>
 
                                                                 :
                                                                 
                                     <SystemPageSheetNoEditComponent   title="DESCUBRA COMO CRIAR PERSONAGENS ÚNICOS"
-                                                                system={String(system.id)}/>                                    
+                                                                system={system}/>                                    
                                     }
                                 </div>
                             </div>

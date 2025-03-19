@@ -8,12 +8,13 @@ import { IconButton } from "@chakra-ui/react";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageRulesNoEditComponent";
-import { System } from "@/interfaces/Models";
+import { System, User } from "@/interfaces/Models";
 
 export default function SystemPageRules(){
 
     let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
-
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'');
+    
     const [isOwner, setIsOwner] = useState(true);
 
     return(
@@ -24,15 +25,15 @@ export default function SystemPageRules(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} maxH={"100vh"} overflowY={"hidden"} >
                     <div>
-                        <SystemHeader  system="meu sistema"/>
+                        <SystemHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarSystem system=""></SidebarSystem>
+                                <SidebarSystem></SidebarSystem>
                             </div>
                             <div className="col-span-9">
                                 <div>
                                     {
-                                        isOwner ?
+                                        system.id_criador == user?.id ?
                                     <SystemPageRulesComponent   title="COMO SEU SISTEMA CONTA UMA HISTÓRIA?" 
                                                                 subtitle="Adicione regras para situar o mestre e os jogadores de como utilizar seu sistema" 
                                                                 system={String(system.id)}

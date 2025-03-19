@@ -5,14 +5,12 @@ import { CharacterSheetNoEditField } from "./CharacterSheetNoEditField";
 
 export interface CharacterSheetSectionProps {
     sectionTitle: string; // mudar para o tipo CharacterSheetSection depois. O tipo CharacterSheetSection contém id, título e um array de CharacterSheetField associado a ele
-    sectionId: string;
-    fields: string; //CharacterSheetField[];
+    sectionId: number;
 }
 
 export const CharacterSheetNoEditSection = ({
     sectionTitle,
     sectionId,
-    fields
 }: CharacterSheetSectionProps) => {
     
     return(
@@ -20,12 +18,11 @@ export const CharacterSheetNoEditSection = ({
             <CardRoot size={"sm"} cursor={"pointer"}>
                 <CardBody>
                     <AccordionRoot collapsible cursor={"pointer"}>
-                        <AccordionItem cursor={"pointer"} key={sectionId} value={sectionId}>
+                        <AccordionItem cursor={"pointer"} key={sectionId} value={String(sectionId)}>
                         <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
                             <LuUserRoundPen /> {sectionTitle}
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
-                            {fields /* fazer um For e criar componentes CharacterSheetFields para cada field em fields*/}
                             <CharacterSheetNoEditField fieldId="2" fieldTitle="Aparência" fieldType="StringLonga"/>
                             <CharacterSheetNoEditField fieldId="1" fieldTitle="Espécie" fieldType="StringCurta"/>
                             <CharacterSheetNoEditField fieldId="3" fieldTitle="Idade" fieldType="Numerico"/>

@@ -1,7 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
 import LoginPage from "../pages/Login";
-import SignUpPage from "../pages/Singup";
 import Home from "@/pages/Home";
 import CampaignPage from "@/pages/CampaignPage";
 import CampaignSystemPage from "@/pages/CampaignSystemPage";

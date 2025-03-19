@@ -8,11 +8,12 @@ import { IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { SystemPageMechanicsComponent } from "@/components/SystemComponents/SystemPageMechanicsComponent";
 import { SystemPageMechanicsNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageMechanicsNoEditComponent";
-import { System } from "@/interfaces/Models";
+import { System, User } from "@/interfaces/Models";
 
 export default function SystemPageMechanics(){
 
     let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'');
     
     const [isOwner, setIsOwner] = useState(true);
     
@@ -24,15 +25,15 @@ export default function SystemPageMechanics(){
         >
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} maxH={"100vh"} overflowY={"hidden"} >
                     <div>
-                        <SystemHeader  system="meu sistema"/>
+                        <SystemHeader/>
                         <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                             <div className="col-span-2 sticky">
-                                <SidebarSystem system=""></SidebarSystem>
+                                <SidebarSystem></SidebarSystem>
                             </div>
                             <div className="col-span-9">
                                 <div>
                                     {
-                                        isOwner ?
+                                        system.id_criador == user?.id ?
                                     <SystemPageMechanicsComponent   title="COMO JOGAR USANDO SEU SISTEMA?" 
                                                                 subtitle="Crie mecânicas únicas e personalizadas para diferentes situações que os jogadores podem vir a enfrentar." 
                                                                 system={String(system.id)}
