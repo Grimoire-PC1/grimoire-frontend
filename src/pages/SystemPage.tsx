@@ -14,10 +14,10 @@ export default function SystemPage(){
 
     const [isOwner, setIsOwner] = useState(true);
 
-    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'')
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'{}')
     console.log(user)
 
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
 
     return(
         <Presence 

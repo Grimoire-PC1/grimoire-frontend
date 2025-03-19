@@ -1,6 +1,6 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
-import { GetCampaigsResponse } from "../interfaces/ServiceResponse";
+import { GetCampaigsResponse, PostParticipanteResponse } from "../interfaces/ServiceResponse";
 import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File, Item } from "@/interfaces/Models";
 import { CreateNewCampaignPayload, GetFilesPayload, GetFolderPayload, NewFilePayload, NewFolderPayload, NewItemPayload, TemporaryCampaignPayload, UpdateFilePayload, UpdateFolderPayload, UpdateItemPayload } from "@/interfaces/ServicePayload";
 
@@ -34,6 +34,19 @@ export const getAllUserPlayedCampaigns = async () => {
 export const getCampaignById = async (campaignId: string) => {
     const { data } = await axiosInstace.get<GetCampaigsResponse>(
         `/${ENDPOINT.GET_CAMPAIGN_BY_ID}/${campaignId}`
+    )
+
+    const arrayedCampaigns: Campaign[] = [];
+    data.forEach((item) => {
+        arrayedCampaigns.push(item);
+    }) 
+
+    return arrayedCampaigns;
+}
+
+export const getParticipatingCampaignById = async (campaignId: string) => {
+    const { data } = await axiosInstace.get<GetCampaigsResponse>(
+        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}/${campaignId}`
     )
 
     const arrayedCampaigns: Campaign[] = [];
@@ -107,9 +120,9 @@ export const getCampaignSheetTemplateSubTabs = async(id_aba_ficha:number) =>{
 }
 
 export const enterCampaign = async(id_campanha:number) =>{
-    const { data } = await axiosInstace.post<string>(
-        `/${ENDPOINT.ENTER_CAMPAIGN}`,
-        { params: { id_campanha: id_campanha} }
+    console.log(id_campanha)
+    const { data } = await axiosInstace.post<PostParticipanteResponse>(
+        `/${ENDPOINT.ENTER_CAMPAIGN}?id_campanha=${id_campanha}`
     )
     return data;
 }

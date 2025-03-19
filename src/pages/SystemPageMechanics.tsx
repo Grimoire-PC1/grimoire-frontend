@@ -12,8 +12,8 @@ import { System, User } from "@/interfaces/Models";
 
 export default function SystemPageMechanics(){
 
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
-    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'{}');
     
     const [isOwner, setIsOwner] = useState(true);
     

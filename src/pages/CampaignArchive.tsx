@@ -12,7 +12,7 @@ import { ArchiveGM } from "@/components/ArchiveComponents/ArchiveGM";
 import { ArchivePlayer } from "@/components/ArchiveComponents/ArchivePlayer";
 
 export default function CampaignArchive(){
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
 
     const [img,setImg] = useState("")
     

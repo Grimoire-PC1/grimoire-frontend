@@ -36,7 +36,7 @@ export const CampaignPageGM = () => {
       },
     });
 
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
 
     const [img,setImg] = useState("")
 

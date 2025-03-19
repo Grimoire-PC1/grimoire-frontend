@@ -14,4 +14,9 @@ export type GetCharactersResponse = Character[];
 
 export type GetSystemsResponse = System[];
 
-export type PostParticipanteResponse = 
+export type PostParticipanteResponse = {
+    id_usuario: Number,
+    id_campanha: Number,
+    nome_usuario: string,
+    id_foto_usuario: string
+}

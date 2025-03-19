@@ -7,7 +7,7 @@ import { Presence } from "@chakra-ui/react/presence";
 
 export default function CampaignSystemMechanics(){
     
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
     
     return(
         <Presence 

@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserId } from "@/services/userService";
 export default function CampaignPage(){
 
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
     
     const {data: userId} = useQuery({
         queryKey: ["getUserId"],

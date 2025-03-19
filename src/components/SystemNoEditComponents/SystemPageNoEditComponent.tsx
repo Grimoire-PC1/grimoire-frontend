@@ -5,7 +5,7 @@ import { System, User } from "@/interfaces/Models";
 
 export const SystemPageNoEditComponent = () => {
     
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
 
     const [img,setImg] = useState("")
 

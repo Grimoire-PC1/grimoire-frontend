@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const CampaignHeaderPlayer = () => {
 
-    const c = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
+    const c = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}')
     const titulo = c.titulo
 
     return(

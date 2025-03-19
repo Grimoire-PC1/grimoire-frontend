@@ -21,13 +21,6 @@ export const DialogUserCampaigns = ({
     open,
     handleClose
 }: SystemListCardProps) => {
-    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'')
-
-    let ownSystem = false; 
-
-    if(system.id_criador === user?.id) {
-        ownSystem = true; 
-    }
 
     let systemCopy: System;
     const navigate = useNavigate();
@@ -119,7 +112,9 @@ export const DialogUserCampaigns = ({
         const data = await resImg.json()
         console.log(data.data._id)
         
-        if(!ownSystem) {
+        const user: User = JSON.parse(sessionStorage.getItem("userObject")||'{}')
+
+        if(system.id_criador !== user?.id) {
             await copySystem();
 
             const newCampaignPayload: CreateNewCampaignPayload = {

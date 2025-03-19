@@ -17,7 +17,7 @@ export const SystemPageComponent = () => {
 
     const [,forceUpdate] = useReducer(x=>x+1,0); 
     console.log(sessionStorage.getItem('currentSystem'))
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
 
     const [img,setImg] = useState("")
 

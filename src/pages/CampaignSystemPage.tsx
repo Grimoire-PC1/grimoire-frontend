@@ -22,7 +22,7 @@ export default function CampaignSystemPage(){
         queryFn: getUser
         })
 
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
 
     const [openDialogLg, setOpenDialogLg] = useState(false)
 

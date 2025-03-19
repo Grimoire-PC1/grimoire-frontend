@@ -17,7 +17,7 @@ export interface PageProps {
 export const CampaignPagePlayer = ({
     userId
 }: PageProps) => {
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}')
     const [sessoesDaCampanha,setSessoes] = useState<Session[]>();
 
     const sessionsMutation = useMutation({

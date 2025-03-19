@@ -19,7 +19,7 @@ export default function CampaignCharacterSheet(){
 
     const characterId = sessionStorage.getItem('fichaAtual');
     const characterName = sessionStorage.getItem('fichaAtualNome');
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
     const isGameMaster = sessionStorage.getItem('isGameMaster');
 
     const [img,setImg] = useState("")

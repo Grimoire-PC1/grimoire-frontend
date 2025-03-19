@@ -7,10 +7,11 @@ export const CampaignHeader = () => {
     const navigate = useNavigate();
 
     function logout(){
+        sessionStorage.removeItem("grimoireToken")
         navigate("/grimoire/"); 
     }
 
-    const c = JSON.parse(sessionStorage.getItem('currentCampaign')||'')
+    const c = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}')
     const titulo = c.titulo
 
     return(

@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function CampaignArchiveFolder(){
     
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
     console.log(campaign);
 
     const [img,setImg] = useState("")
@@ -40,7 +40,7 @@ export default function CampaignArchiveFolder(){
     
     //const [isGameMaster,setIsGameMaster] = useState((user?.id === parseInt(campaign.id_mestre)));
     
-    const folder = JSON.parse(sessionStorage.getItem('pastaAtual')||'');
+    const folder = JSON.parse(sessionStorage.getItem('pastaAtual')||'{}');
 
     return(
         <Presence 

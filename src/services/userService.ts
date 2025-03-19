@@ -4,11 +4,15 @@ import { SignInResponse } from "../interfaces/ServiceResponse";
 import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
 
 export const authenticateUser = async (credentials: SignInPayload) => {
-    console.log(credentials)
+    const encodedCredentials: string = btoa(`${credentials.login}:${credentials.senha}`);
+    const authorization = `Basic ${encodedCredentials}`
+    console.log(authorization)
     const { data } = await axiosInstace.post<string>(
         `/${ENDPOINT.SIGN_IN}`,
-        credentials
+        {},
+        { headers: { Authorization: authorization }, withCredentials:true }
     )
+    sessionStorage.setItem("grimoireToken", data)
 }
 
 export const createUser = async (body: SignUpPayload) => {

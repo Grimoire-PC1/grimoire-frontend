@@ -20,7 +20,7 @@ export default function CampaignSystemSheet(){
         queryKey: ["getUser"],
         queryFn: getUser
         })
-    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'');
+    const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
 
     const [img,setImg] = useState("")
     

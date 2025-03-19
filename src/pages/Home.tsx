@@ -1,6 +1,6 @@
 import { CampaignCard } from "@/components/CampaignCard/CampaignCard";
 import { Avatar } from "@/components/ui/avatar";
-import { getAllUserCreatedCampaigns, getAllUserPlayedCampaigns, getCampaignById } from "@/services/campaignService";
+import { enterCampaign, getAllUserCreatedCampaigns, getAllUserPlayedCampaigns, getCampaignById, getParticipatingCampaignById } from "@/services/campaignService";
 import { ClientOnly, Skeleton, IconButton, Separator, Button, Presence, Input, Alert, For, Center, Flex, MenuRoot, MenuTrigger, MenuContent, MenuItem, DialogRoot, DialogTrigger, DialogContent } from "@chakra-ui/react";
 import { Box} from "@chakra-ui/react/box";
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
@@ -20,6 +20,7 @@ import { Campaign, SystemType, User } from "@/interfaces/Models";
 import { createNewSystem, getAllUserCreatedSystems } from "@/services/systemService";
 import { getUser } from "@/services/userService";
 import { SystemListCard } from "@/components/system/SystemListCard";
+import { toaster,Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -87,7 +88,6 @@ export default function Home() {
             sessionStorage.setItem('myId', String(userObject.id));
             console.log(JSON.stringify(userObject))
             sessionStorage.setItem("userObject", JSON.stringify(userObject))
-            console.log(JSON.parse(sessionStorage.getItem("userObject")||''))
         }
     }, [isEverythingLoaded, infoUsuario, campanhasCriadas, campanhasJogadas, personagens, sistemasUsuario]);
 
@@ -100,17 +100,41 @@ export default function Home() {
     const [openNewCampaign,setOpenNewCampaign] = useState(false);
 
     function logout(){
+        sessionStorage.removeItem("grimoireToken")
         navigate("/grimoire/");
     }
     async function validateIdCampanha(){
-        const campanhaIngressada = await getCampaignById(idcampanha)
+        try {
+            await enterCampaign(parseInt(idcampanha));
+            toaster.create({description: `Campanha ingressada com sucesso!`,
+                type: "success",
+                })
+            const participatingCampaigns = await getParticipatingCampaignById(idcampanha);
+            let campaign;
+            for(let i = 0; i < participatingCampaigns.length; i++) {
+                if(participatingCampaigns[i].id === idcampanha) {
+                    campaign = participatingCampaigns[i];
+                    break;
+                }
+            }
+            sessionStorage.setItem('currentCampaign', JSON.stringify(campaign))
+            navigate("/grimoire/campaign");
+        } catch(error) {
+            console.log(error)
+            toaster.create({description: `Ocorreu um erro ao tentar participar da campanha`,
+                            type: "error",
+                            })
+        }
+
+        /*
         if(campanhaIngressada.length !== 0) {
-            
+            enterCampaign(idcampanha)
             setidcampanhavalido(true) //depois mudar pra uma verificação real
             navigate("/grimoire/campaign");
         }else{
             setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
         }
+        */
     }
 
     async function navigateNewSystem(){
@@ -316,6 +340,7 @@ export default function Home() {
                 <ToggleTheme/>
                 
             </Box>
+            <Toaster />
         </Presence>
     )
 }

@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { System } from "@/interfaces/Models";
 
 export const SystemHeader = () => {    
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
     
     const navigate = useNavigate();
 
     function logout(){
+        sessionStorage.removeItem("grimoireToken")
         navigate("/grimoire/");
     }
 

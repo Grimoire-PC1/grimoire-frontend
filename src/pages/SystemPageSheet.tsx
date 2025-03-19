@@ -14,8 +14,8 @@ export default function SystemPageSheet(){
  
     const [isOwner, setIsOwner] = useState(true);
 
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'');
-    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'');
+    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
+    const user: User = JSON.parse(sessionStorage.getItem("userObject")||'{}');
 
     return(
         <Presence 
