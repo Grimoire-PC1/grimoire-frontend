@@ -79,10 +79,12 @@ export default function Home() {
                 nome: infoUsuario.nome ?? "",
                 id_foto: infoUsuario.id_foto ?? ""
             };
+
             useUserStore.getState().setUser(userObject);
             useUserStore.getState().setCreatedCampaigns(campanhasCriadas ?? []);
             useUserStore.getState().setPlayedCampaigns(campanhasJogadas ?? []);
             useUserStore.getState().setUserSystems(sistemasUsuario ?? []);
+            getImage()
 
             console.log('Perfil atualizado:', userObject);
             sessionStorage.setItem('myId', String(userObject.id));
@@ -98,6 +100,7 @@ export default function Home() {
     const [showUserSettings, setShowUserSettings] = useState(false);
     const [selectedField, setSelectedField] = useState('')
     const [openNewCampaign,setOpenNewCampaign] = useState(false);
+    const [img, setImg] = useState("")
 
     function logout(){
         sessionStorage.removeItem("grimoireToken")
@@ -125,16 +128,6 @@ export default function Home() {
                             type: "error",
                             })
         }
-
-        /*
-        if(campanhaIngressada.length !== 0) {
-            enterCampaign(idcampanha)
-            setidcampanhavalido(true) //depois mudar pra uma verificação real
-            navigate("/grimoire/campaign");
-        }else{
-            setidcampanhavalido(!idcampanhavalido) //depois mudar pra uma verificação real
-        }
-        */
     }
 
     async function navigateNewSystem(){
@@ -183,6 +176,18 @@ export default function Home() {
         setSelectedField(campo);
         setShowUserSettings(true);
     }
+     
+    const getImage = async () => {
+        const res = await fetch(`http://localhost:8081/get/${infoUsuario?.id_foto}`, {
+            method:"GET",
+            headers: {
+              "content-type" : "application/json"
+            }
+          })
+          const data = await res.json()
+          console.log(data)
+          setImg(data.image)
+    }
 
     return(
         <Presence 
@@ -193,16 +198,15 @@ export default function Home() {
             <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                 <div className="header margin-sides flex place-content-between items-center" >
-                    <span className="header-title agreloy">{userObject.login}'s Grimoire</span>
+                    <span className="header-title agreloy">{userObject.nome}'s Grimoire</span>
                     <div className="grid grid-cols-2 gap-x-4">
 
                     <MenuRoot>
                         <MenuTrigger asChild>
-                        <Avatar className="cursor-pointer" size={"lg"} name="Usuário" />
+                        <Avatar className="cursor-pointer" size={"lg"} name="Usuário" src={img}/>
                         </MenuTrigger>
                         <MenuContent mt={14} mr={4} position={"absolute"}>
                             <MenuItem onClick={()=>userSettings('nome')} cursor={"pointer"} value="nome">Mudar nome</MenuItem>
-                            <MenuItem onClick={()=>userSettings('username')} cursor={"pointer"} value="username">Mudar username</MenuItem>
                             <MenuItem onClick={()=>userSettings('senha')} cursor={"pointer"} value="senha">Mudar senha</MenuItem>
                             <MenuItem onClick={()=>userSettings('e-mail')} cursor={"pointer"} value="e-mail">Mudar e-mail</MenuItem>
                             <MenuItem onClick={()=>userSettings('foto')} cursor={"pointer"} value="foto">Mudar foto de perfil</MenuItem>

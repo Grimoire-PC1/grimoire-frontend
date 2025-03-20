@@ -80,7 +80,10 @@ export type UpdateRulePayload = {
 }
 
 export type UpdateUserPayload = {
-
+    nova_senha: string,
+    novo_email: string,
+    novo_nome: string,
+    id_nova_foto: string
 }
 
 export type NewSessionPayload = {

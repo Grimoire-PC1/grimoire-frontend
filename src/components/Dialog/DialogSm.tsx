@@ -1,9 +1,14 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Alert, Box, Button, Input, Presence } from "@chakra-ui/react";
-import { Form } from 'react-router-dom';
+import { Form, Navigate, useNavigate } from 'react-router-dom';
 import { PasswordInput } from '../ui/password-input';
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from '../ui/file-upload';
 import { HiUpload } from "react-icons/hi"
+import { useState } from 'react';
+import { User } from '@/interfaces/Models';
+import { authenticateUser, deleteUser, updateUser } from '@/services/userService';
+import { toaster, Toaster } from '../ui/toaster';
+import { UpdateUserPayload } from '@/interfaces/ServicePayload';
 
 
 export interface UserSettingsDialogSmProps {
@@ -17,6 +22,121 @@ export const UserSettingsDialogSm = ({
     handleClose,
     campo
 }: UserSettingsDialogSmProps) => {
+
+    const navigate = useNavigate();
+    const [valor, setValor] = useState("");
+    const [img, setImg] = useState("");
+    let user: User = JSON.parse(sessionStorage.getItem("userObject")||"{}")
+
+    const [senha, setSenha] = useState("");
+    const [confirmacaoSenha, setConfirmacaoSenha] = useState("");
+
+    const updateValue = async () => {
+        let updateUserPayload: UpdateUserPayload;
+        if(campo === "nome") {
+            updateUserPayload = {
+                novo_nome: valor,
+                nova_senha: senha,
+                novo_email: user.email||'',
+                id_nova_foto: user.id_foto||'',
+            }
+            await updateUser(updateUserPayload);
+        } else if (campo == "senha") {
+            updateUserPayload = {
+                novo_nome: user.nome||'',
+                nova_senha: valor,
+                novo_email: user.email||'',
+                id_nova_foto: user.id_foto||'',
+            }
+            await updateUser(updateUserPayload);
+        } else if (campo == "e-mail") {
+            updateUserPayload = {
+                novo_nome: user.nome||'',
+                nova_senha: senha,
+                novo_email: valor,
+                id_nova_foto: user.id_foto||'',
+            }
+            await updateUser(updateUserPayload);
+        } else {
+            await deleteUser();
+            sessionStorage.removeItem("grimoireToken")
+            navigate("/grimoire/");
+        }
+    }
+    // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+    const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
+        const reader = new FileReader()
+        if(file) {
+          reader.readAsDataURL(file)
+          const data: string | ArrayBuffer | null = await new Promise((resolve,reject) => {
+            reader.onload = ()=> resolve(reader.result)
+            reader.onerror = (err) => reject(err)
+          })
+          return data
+        }
+      }
+      
+      const handleUploadImage = async (e: any) => {
+        console.log(e.acceptedFiles[0])
+        const file = e.acceptedFiles[0]
+        
+        const conversionResult: string | ArrayBuffer | null | undefined = await imagebase64(file)
+        if(typeof conversionResult === "string") {
+            const image: string = conversionResult
+            setImg(image)
+            console.log(image)
+        }
+      }
+
+      /*
+      const fetchImage = async() =>{
+        const res = await fetch("http://localhost:8081")
+        const data = await res.json()
+        setAllImage(data.data)
+      }
+      */
+    
+      const handleImageSubmit = async () =>{
+        if(img) {
+          const res = await fetch(`http://localhost:8081/update/${user?.id_foto}`, {
+            method:"PATCH",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({image: img})
+          })
+          const data = await res.json()
+          console.log(data)
+          if(data.success){
+            alert(data.message)
+          }
+        }
+      }
+    // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+
+    const formSubmission = async () => {
+        const senhaConfere = senha === confirmacaoSenha;
+        if (senhaConfere) {
+            try {
+                const login = user.login||''
+                await authenticateUser({login:login, senha:senha})
+                if(campo === "foto") {
+                    await handleImageSubmit();
+                } else {
+                    await updateValue();
+                }
+                toaster.create({description: `Operação realizada com sucesso!`,
+                    type: "success",
+                    })
+            } catch (error) {
+                console.log(error)
+                toaster.create({description: `Ocorreu um erro ao atualizar seus dados.`,
+                                type: "error",
+                                })
+            }
+        }
+    }
+
     return(
     <Dialog open={open} onClose={handleClose} className="relative z-10">
         <DialogBackdrop
@@ -35,7 +155,6 @@ export const UserSettingsDialogSm = ({
                                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                     <DialogTitle className="text-base text-large font-semibold ">
                                         {campo === 'nome' ? "Alterar o nome exibido no seu perfil"
-                                        :campo === 'username' ? "Alterar o seu username"
                                         :campo === 'senha' ? "Alterar sua senha"
                                         :campo === 'e-mail' ? "Alterar seu e-mail"
                                         :campo === 'foto' ? "Alterar sua foto de perfil"
@@ -49,8 +168,7 @@ export const UserSettingsDialogSm = ({
                                     <Form>
                                         {
                                             campo === 'nome' || campo === 'username' || campo === 'senha' || campo === 'e-mail' ? 
-                                                <Input mt={"8"} mb={"2"} required resize="none" placeholder={ campo === 'nome' ? "Novo nome"
-                                                                                                            :campo === 'username' ? "Novo username"
+                                                <Input mt={"8"} mb={"2"} required value={valor} onChange={(e) => setValor(e.target.value)} resize="none" placeholder={ campo === 'nome' ? "Novo nome"
                                                                                                             :campo === 'senha' ? "Nova senha"
                                                                                                             :campo === 'e-mail' ? "Novo endereço de e-mail"
                                                                                                             : ""
@@ -59,7 +177,7 @@ export const UserSettingsDialogSm = ({
                                             
                                             campo === 'foto' ?
 
-                                            <FileUploadRoot>
+                                            <FileUploadRoot maxFiles={1} onFileChange={handleUploadImage}>
                                             <FileUploadTrigger asChild>
                                                 <Button mb={"2"} mt={"4"} w={"full"} variant="outline" size="sm">
                                                 <HiUpload /> Upload file
@@ -73,11 +191,11 @@ export const UserSettingsDialogSm = ({
                                             <div className='m-b'></div>
                                         }
                                         
-                                        <PasswordInput placeholder='Confirme com sua senha'></PasswordInput>
+                                        <PasswordInput required placeholder='Confirme com sua senha' value={senha} onChange={(e) => setSenha(e.target.value)}></PasswordInput>
                                         <br></br>
-                                        <PasswordInput mt={"2"} placeholder='Repita sua senha'></PasswordInput>
+                                        <PasswordInput required mt={"2"} placeholder='Repita sua senha' value={confirmacaoSenha} onChange={(e) => setConfirmacaoSenha(e.target.value)}></PasswordInput>
                                     </Form>
-                                    <Button mt={"4"} mb={"4"}>Alterar</Button>
+                                    <Button mt={"4"} mb={"4"} onClick={formSubmission}>Alterar</Button>
                                 </div>
                                 
                             <Presence 
@@ -94,6 +212,7 @@ export const UserSettingsDialogSm = ({
                         </Box>
                         </div>
                     </div>
+        <Toaster/>
     </Dialog>
     )
 }

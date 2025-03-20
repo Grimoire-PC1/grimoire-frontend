@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { SignInResponse } from "../interfaces/ServiceResponse";
-import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
+import { SignInPayload, SignUpPayload, UpdateUserPayload } from "@/interfaces/ServicePayload";
 
 export const authenticateUser = async (credentials: SignInPayload) => {
     const encodedCredentials: string = btoa(`${credentials.login}:${credentials.senha}`);
@@ -41,17 +41,19 @@ export const getUserId = async () => {
     return data.id;
 }
 
-export const updateUser = async (id: string) => {
-    const { data } = await axiosInstace.get<string>(
-        `/${ENDPOINT.GET_CAMPAIGN_BY_ID}/${id}`
+export const updateUser = async (body: UpdateUserPayload) => {
+    console.log(body)
+    const { data } = await axiosInstace.put<string>(
+        `/${ENDPOINT.UPDATE_USER}`,
+        body
     )
 
     return data
 }
 
-export const deleteUser = async(id: string) => {
-    const { data } = await axiosInstace.post<string>(
-        `/${ENDPOINT.GET_USER_PLAYED_CAMPAIGNS}`,
+export const deleteUser = async() => {
+    const { data } = await axiosInstace.delete<string>(
+        `/${ENDPOINT.DELETE_USER}`,
     )
 
     return data;
