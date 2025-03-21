@@ -1,7 +1,7 @@
 import { Text,Separator, CardBody, CardHeader, CardRoot, CardTitle, Center, Flex, For, Box, Button,} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useMutation,} from "@tanstack/react-query";
-import { getCampaignCharacters } from "@/services/campaignService";
+import { getCampaignCharacters, getCampaignOtherCharacters } from "@/services/campaignService";
 import { Avatar } from "../ui/avatar";
 import { getUserCharacters } from "@/services/characterService";
 import { getCampaignSessions } from "@/services/sessionService";
@@ -90,11 +90,11 @@ export const CampaignPagePlayer = ({
     }, [flag1]);
 
     const allCharasMutation = useMutation({
-    mutationKey: ["personagensCampanha"],
-    mutationFn: getCampaignCharacters, 
+    mutationKey: ["personagensDosOutrosCampanha"],
+    mutationFn: getCampaignOtherCharacters, 
     onSuccess: async (data) => {
         console.log(data)
-        const filteredData = data.filter((c) => c.id_usuario != c.id_campanha_mestre && c.id_usuario != userId).sort((a, b) => {
+        const filteredData = data.filter((c) => c.id_usuario != c.id_campanha_mestre).sort((a, b) => {
             return a.id - b.id;
         })
 
