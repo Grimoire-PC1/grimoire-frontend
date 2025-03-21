@@ -65,7 +65,7 @@ export default function CampaignSystemPage(){
                             </div>
                             <div className="col-span-9">
                                 <div className="grid h-[85vh] grid-cols-1 content-between">
-                                    <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
+                                    <DialogLg title="Defina as leis do seu universo" description="Comece uma nova história com um dos sistemas que você já cadastrou no Grimoire, ou procure algo novo entre os sistemas públicos criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg>
                                     <Box>
                                         <SystemPageRulesComponent   title="REGRAS DO SISTEMA" 
                                                                     subtitle="Adicione ou modifique regras para situar os jogadores de como o sistema funciona" 

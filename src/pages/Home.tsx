@@ -284,7 +284,7 @@ export default function Home() {
 
 
                 <DialogNewCampaign open={openNewCampaign} handleClose={setOpenNewCampaign}/>
-                <DialogLg title="Defina as leis do seu universo" description="Comece sua nova história com um dos sistemas que você já cadastrou no seu Grimoire, ou procure por sistemas criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg> {/* depois mudar pra pegar os sistemas do usuario + os sistemas publicos */}
+                <DialogLg title="Defina as leis do seu universo" description="Comece uma nova história com um dos sistemas que você já cadastrou no Grimoire, ou procure algo novo entre os sistemas públicos criados pela comunidade!" open={openDialogLg} handleClose={setOpenDialogLg} systems={[]}></DialogLg>
 
                 <div className="place-content-around grid grid-cols-11 gap-x-8 content-spacing">
                     
