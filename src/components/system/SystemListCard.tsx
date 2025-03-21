@@ -37,6 +37,7 @@ export const SystemListCard = ({
     
     const navigateToSystemPage = () => {
         sessionStorage.setItem('currentSystem', JSON.stringify(system))
+        sessionStorage.setItem('systemId', String(system.id))
         navigate("/grimoire/system")
     }
 

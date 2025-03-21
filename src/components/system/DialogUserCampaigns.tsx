@@ -145,6 +145,7 @@ export const DialogUserCampaigns = ({
             .setCreatedCampaigns([...useUserStore.getState().createdCampaigns, data]);
             console.log(data)
             sessionStorage.setItem('currentCampaignId', data.id);
+            sessionStorage.setItem('currentCampaign', JSON.stringify(data))
             navigate("/grimoire/campaign");
         },
         onError: (error) => {
