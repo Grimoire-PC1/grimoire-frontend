@@ -97,6 +97,8 @@ export const getCampaignCharacters = async() =>{
         { params: { id_campanha: parseInt(id||"")} }
     )
     
+    console.log('oi, peguei os personagens')
+    console.log(data);
     return data;
 }
 

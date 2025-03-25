@@ -1,13 +1,14 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import {Box, Button, createListCollection, Flex, For, Group, IconButton,Image,Tag,Text,} from "@chakra-ui/react";
-import { useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { CharacterProfile } from '../CharacterProfile/CharacterProfile';
 import { LuPlus,LuUser } from 'react-icons/lu';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
 import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsNextTrigger, StepsPrevTrigger, StepsRoot } from '../ui/steps';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getCampaignCharacters } from '@/services/campaignService';
 import { Avatar } from '../ui/avatar';
+import { CharacterRegister } from '@/interfaces/Models';
 
 
 export interface UserSettingsDialogSmProps {
@@ -35,6 +36,10 @@ export const PlayableMechanicCard = ({
         foto:any;
     }
 
+    const [allCharas,setAllCharas] = useState<CharacterRegister[]>([]);
+    const [flagTabs,setFlagTabs] = useState(0);
+
+    /*
     const {data: allCharas} = useQuery({
         queryKey: ["getCampaignCharacters"],
         queryFn: getCampaignCharacters
@@ -42,6 +47,28 @@ export const PlayableMechanicCard = ({
       allCharas?.sort((a, b) => {
           return a.id - b.id;
       });
+      */
+
+      const mutation = useMutation({
+        mutationKey: ["getCampaignCharacters"],
+        mutationFn: getCampaignCharacters,
+        onSuccess: (data) => {
+            console.log(data)
+            setAllCharas(data.sort((a, b) => {
+                return a.id - b.id;
+            }));
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+
+    useEffect(() => {
+        if(flagTabs < 2){
+            mutation.mutate();
+            setFlagTabs(flagTabs+1);
+        }
+    }, [flagTabs, mutation]);
 
     //const allCharacters = ['P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1','P1','P2','NPC1',] //getCharacters da campanha
 
@@ -53,7 +80,7 @@ export const PlayableMechanicCard = ({
           itemToString: (item) => item.nome,
           itemToValue: (item) => item.nome,
         })
-      }, [])
+      }, [allCharas])
 
     const allActions = useMemo(()=>{
         return createListCollection({
@@ -89,9 +116,9 @@ export const PlayableMechanicCard = ({
 
     const charactersCollection = useMemo(()=>{
         return createListCollection({
-            items: characters,
-            itemToString: (item) => item.nome,
-            itemToValue: (item) => item.nome,
+            items: characters.map((c) => c.nome),
+            itemToString: (item) => item,
+            itemToValue: (item) => item,
           })
         }, [characters]
     )
@@ -128,6 +155,9 @@ export const PlayableMechanicCard = ({
     }
 
     function proximaRodada(){
+        setChosenAction([])
+        setChosenReaction([])
+        setCharacter([]);
         setRound(0);
     }
 
@@ -264,8 +294,8 @@ export const PlayableMechanicCard = ({
                                                                 </SelectTrigger>
                                                                 <SelectContent  w={"200px"} maxH={"200px"}>
                                                                     {charactersCollection.items.map((character) => (
-                                                                    <SelectItem onClick={()=>chosenCharacter.push(character.nome)} cursor={"pointer"} item={character.nome} key={character.nome}>
-                                                                        {character.nome}
+                                                                    <SelectItem onClick={()=>chosenCharacter.push(character)} cursor={"pointer"} item={character} key={character}>
+                                                                        {character}
                                                                     </SelectItem>
                                                                     ))}
                                                                 </SelectContent>

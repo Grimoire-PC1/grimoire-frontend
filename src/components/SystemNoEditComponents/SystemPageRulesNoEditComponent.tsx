@@ -1,7 +1,6 @@
 import { Text,Flex,Grid, For, } from "@chakra-ui/react";
 import { RulesNoEditCard } from "../RulesCard/RulesNoEditCard";
 import { useQuery } from "@tanstack/react-query";
-import { getSystemRules } from "@/services/systemService";
 import { getCampaignRules } from "@/services/campaignService";
 
 export interface SystemPageComponentProps {

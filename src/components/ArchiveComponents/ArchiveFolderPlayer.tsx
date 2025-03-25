@@ -141,7 +141,7 @@ export const ArchiveFolderPlayer = ({
             </Flex>
 
             <Box mt={6} maxH={"70vh"} gap={"4"} overflowY={"auto"}>
-                <Flex alignItems={"end"} flexWrap={"wrap"} gap={4}>
+                <Flex flexWrap={"wrap"} gap={4}>
                 <For each={campaign_folders.filter((f) => f.id_pacote_pai === folder.id)}>
                     {(folder)=><Box onClick={()=>goToFolder(folder)} cursor={"pointer"} w={"100px"} placeItems={"center"}>
                                     {folder.publica ? <LuFolder size={48} strokeWidth={1.25}/> : <LuFolderLock size={48} strokeWidth={1.25}/>}
