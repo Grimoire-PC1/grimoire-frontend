@@ -1,4 +1,4 @@
-import { Text,Image, Button, Box,} from "@chakra-ui/react";
+import { Text,Image, Button, Box, Skeleton,} from "@chakra-ui/react";
 import { useState } from "react";
 import { DialogUserCampaigns } from "../system/DialogUserCampaigns";
 import { System, User } from "@/interfaces/Models";
@@ -34,7 +34,7 @@ export const SystemPageNoEditComponent = () => {
                     <div>
                         {
                             img == "" ?
-                            <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950"></Image>
+                            <Skeleton rounded={"xl"} w={"36vw"} h={"36vh"} />
                             :
                             <Image rounded={"xl"} w={"36vw"} h={"36vh"} className="bg-purple-950" src={img}></Image>
                         }

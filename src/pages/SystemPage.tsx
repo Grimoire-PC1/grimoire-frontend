@@ -5,8 +5,6 @@ import { SystemHeader } from "@/components/SystemComponents/SystemHeader";
 import { SidebarSystem } from "@/components/SystemComponents/SidebarSystem";
 import { SystemPageComponent } from "@/components/SystemComponents/SystemPageComponent";
 import { useState } from "react";
-import { IconButton } from "@chakra-ui/react";
-import { LuArrowRightLeft } from "react-icons/lu";
 import { SystemPageNoEditComponent } from "@/components/SystemNoEditComponents/SystemPageNoEditComponent";
 import { System, User } from "@/interfaces/Models";
 
@@ -17,7 +15,9 @@ export default function SystemPage(){
     const user: User = JSON.parse(sessionStorage.getItem("userObject")||'{}')
     console.log(user)
 
-    let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
+    const system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
+
+    sessionStorage.setItem('currentCampaignId','0');
 
     return(
         <Presence 
@@ -44,10 +44,6 @@ export default function SystemPage(){
                                     }
                                 </div>
                                 <ToggleTheme/>
-                                
-                                <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsOwner(!isOwner)} variant="outline" size="sm">
-                                    {<LuArrowRightLeft />}
-                                </IconButton>
                             </div>
                         </div>
                     </div>

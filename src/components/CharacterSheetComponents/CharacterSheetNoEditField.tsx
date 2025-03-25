@@ -24,7 +24,7 @@ export const CharacterSheetNoEditField = ({
                     </Text>
                     <div className="col-span-5">
                         {
-                            fieldType === 'StringLonga' ?
+                            fieldType === 'TEXTO' ?
                                 <div>
                                     <Textarea disabled maxH={"200px"} minH={"40px"} resize={"vertical"}></Textarea>
                                 </div>
@@ -34,7 +34,7 @@ export const CharacterSheetNoEditField = ({
                                     <Input disabled></Input>
                                 </div>
                             :
-                            fieldType === 'Numerico' ?
+                            fieldType === 'INTEIRO' ?
                                 <div>
                                     <NumberInputRoot disabled>
                                         <NumberInputField disabled></NumberInputField>

@@ -1,9 +1,6 @@
-import { Text, Flex, Grid, IconButton, For,  } from "@chakra-ui/react";
-import { LuPlus } from "react-icons/lu";
+import { Text, Flex, Grid, For,  } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MechanicsCard } from "../MechanicsCard/MechanicsCard";
-import { MechanicsCardDialog } from "../MechanicsCard/MechanicsCardDialog";
-import { MechanicsNoEditCard } from "../MechanicsCard/MechanicsNoEditCard";
 import { SystemMechanic } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getSystemMechanics } from "@/services/systemService";

@@ -51,10 +51,6 @@ export default function SystemPageMechanics(){
                     </div>
             </Box>
             <ToggleTheme/>
-                                                        
-            <IconButton className="left-bottom" bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} onClick={()=>setIsOwner(!isOwner)} variant="outline" size="sm">
-                {<LuArrowRightLeft />}
-            </IconButton>
         </Presence>
     )
 }
