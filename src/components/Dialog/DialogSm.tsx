@@ -62,6 +62,8 @@ export const UserSettingsDialogSm = ({
             sessionStorage.removeItem("grimoireToken")
             navigate("/grimoire/");
         }
+
+        handleClose(false);
     }
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
