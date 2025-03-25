@@ -8,6 +8,7 @@ import { Dialog, DialogBackdrop, DialogPanel, } from '@headlessui/react'
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
+import { Toaster, toaster } from "../ui/toaster";
 
 
 export interface SystemListCardProps {
@@ -71,6 +72,10 @@ export const DialogUserCampaigns = ({
             systemCopy = await createNewSystem(temporaryJson)
         } catch (error) {
             console.log(error);
+            toaster.create({
+                description: `Houve um problema durante cópia do sistema`,
+                type: "error",
+                })
         }
 
         sessionStorage.setItem('systemId',String(system.id))
@@ -102,6 +107,10 @@ export const DialogUserCampaigns = ({
     async function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
         //navigate("/grimoire/campaign");
+        toaster.create({
+                        description: `Criando uma cópia privada do sistema...`,
+                        type: "loading",
+                        })
         const resImg = await fetch("http://localhost:8081/upload", {
             method:"POST",
             headers: {
@@ -132,6 +141,10 @@ export const DialogUserCampaigns = ({
                 descricao: '',
             }
             newCampaign.mutate(newCampaignPayload)
+            toaster.create({
+                description: `Criando uma sua campanha...`,
+                type: "loading",
+                })
         }
         
     }
@@ -150,6 +163,10 @@ export const DialogUserCampaigns = ({
         },
         onError: (error) => {
             console.log(error);
+            toaster.create({
+                description: `Houve um problema durante a criação da campanha`,
+                type: "error",
+                })
         },
     });
 
@@ -184,6 +201,7 @@ export const DialogUserCampaigns = ({
                     </Box>
                     </div>
                 </div>
+                <Toaster/>
             </Dialog>
     )
 }
