@@ -1,7 +1,7 @@
 import { ENDPOINT } from "../constants/Endpoint";
 import axiosInstace from "./axios";
 import { GetCampaigsResponse, PostParticipanteResponse } from "../interfaces/ServiceResponse";
-import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File, Item } from "@/interfaces/Models";
+import { Campaign, CharacterRegister, Folder, SheetSubTab, SheetTab, File, Item, SystemRule } from "@/interfaces/Models";
 import { CreateNewCampaignPayload, GetFilesPayload, GetFolderPayload, NewFilePayload, NewFolderPayload, NewItemPayload, TemporaryCampaignPayload, UpdateFilePayload, UpdateFolderPayload, UpdateItemPayload } from "@/interfaces/ServicePayload";
 
 export const getAllUserCreatedCampaigns = async () => {
@@ -282,5 +282,14 @@ export const updateItem = async(payload:UpdateItemPayload) => {
     )
 
     console.log(data)
+    return data;
+}
+
+export const getCampaignRules = async() =>{
+    const campaignId = sessionStorage.getItem('currentCampaignId')
+    const { data } = await axiosInstace.get<SystemRule[]>(
+        `/${ENDPOINT.GET_CAMPAIGN_RULES}?id_campanha=${campaignId}`
+    )
+
     return data;
 }

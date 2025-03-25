@@ -28,6 +28,7 @@ export const ENDPOINT = {
     DELETE_SYSTEM: "engine/delete",
 
     GET_SYSTEM_RULES: "engine-rule/get",
+    GET_CAMPAIGN_RULES: "engine-rule/get/campaign",
     CREATE_SYSTEM_RULE: "engine-rule/register",
     UPDATE_SYSTEM_RULE: "engine-rule/update",
     DELETE_SYSTEM_RULE: "engine-rule/delete",
