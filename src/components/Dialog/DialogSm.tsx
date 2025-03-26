@@ -41,6 +41,8 @@ export const UserSettingsDialogSm = ({
                 id_nova_foto: user.id_foto||'',
             }
             await updateUser(updateUserPayload);
+            handleClose(false);
+            location.reload();
         } else if (campo == "senha") {
             updateUserPayload = {
                 novo_nome: user.nome||'',
@@ -49,6 +51,8 @@ export const UserSettingsDialogSm = ({
                 id_nova_foto: user.id_foto||'',
             }
             await updateUser(updateUserPayload);
+            handleClose(false);
+            location.reload();
         } else if (campo == "e-mail") {
             updateUserPayload = {
                 novo_nome: user.nome||'',
@@ -57,6 +61,8 @@ export const UserSettingsDialogSm = ({
                 id_nova_foto: user.id_foto||'',
             }
             await updateUser(updateUserPayload);
+            handleClose(false);
+            location.reload();
         } else {
             await deleteUser();
             sessionStorage.removeItem("grimoireToken")
@@ -64,6 +70,7 @@ export const UserSettingsDialogSm = ({
         }
 
         handleClose(false);
+        location.reload();
     }
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
@@ -130,6 +137,8 @@ export const UserSettingsDialogSm = ({
                 toaster.create({description: `Operação realizada com sucesso!`,
                     type: "success",
                     })
+            handleClose(false);
+            location.reload();
             } catch (error) {
                 console.log(error)
                 toaster.create({description: `Ocorreu um erro ao atualizar seus dados.`,
