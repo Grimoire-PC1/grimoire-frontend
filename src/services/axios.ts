@@ -1,7 +1,7 @@
-import { useUserStore } from "../stores/user/user.store";
+import { URL_CONSTS } from "@/constants/url";
 import axios, { AxiosError } from "axios";
 
-const api_url = import.meta.env.VITE_API_URL ??  "http://localhost:8082/" // "https://grimoire/grimoire-backend/api/"; //
+const api_url = URL_CONSTS.BACKEND // import.meta.env.VITE_API_URL ??  "http://localhost:8082/" // "https://grimoire/grimoire-backend/api/"; //
 
 export const axiosInstace = axios.create({
   baseURL: api_url,
