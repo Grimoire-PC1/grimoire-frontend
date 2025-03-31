@@ -210,7 +210,7 @@ export default function LoginPage() {
         
       <Flex>
         <div className="w-2/5 h-[100vh]">
-          <Image height={"100vh"} w={"40vw"} src="/src/assets/login_image.png"></Image>
+          <Image height={"100vh"} w={"40vw"} src="/login_image.png"></Image>
         </div>
 
         <Separator orientation="vertical" size={"md"} height={"100"} />
