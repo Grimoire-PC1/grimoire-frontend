@@ -162,7 +162,7 @@ export const PlayableMechanicCard = ({
     }
 
     const getImage = async (id:string) => {
-        const res = await fetch(`http://localhost:8081/get/${id}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${id}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

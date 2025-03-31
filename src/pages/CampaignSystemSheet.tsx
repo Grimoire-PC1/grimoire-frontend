@@ -13,6 +13,7 @@ import { SystemPageSheetComponent } from "@/components/SystemComponents/SystemPa
 import { SystemPagePlayerSheetComponent } from "@/components/SystemNoEditComponents/SystemPagePlayerSheetComponent";
 import { getUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function CampaignSystemSheet(){
 
@@ -25,7 +26,7 @@ export default function CampaignSystemSheet(){
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${campaign.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

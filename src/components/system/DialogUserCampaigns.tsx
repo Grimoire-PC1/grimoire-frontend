@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
 import { Toaster, toaster } from "../ui/toaster";
+import { URL_CONSTS } from "@/constants/url";
 
 
 export interface SystemListCardProps {
@@ -35,7 +36,7 @@ export const DialogUserCampaigns = ({
 
     async function copySystem(){
         
-        const resOriginImg = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+        const resOriginImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${system?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"
@@ -44,7 +45,7 @@ export const DialogUserCampaigns = ({
           const originRes = await resOriginImg.json()
           const originImg = originRes.image
 
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
                 "content-type" : "application/json"
@@ -111,7 +112,7 @@ export const DialogUserCampaigns = ({
                         description: `Criando uma cópia privada do sistema...`,
                         type: "loading",
                         })
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
                 "content-type" : "application/json"

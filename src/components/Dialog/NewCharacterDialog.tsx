@@ -5,6 +5,7 @@ import { Toaster,toaster } from '../ui/toaster';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createCharacter } from '@/services/characterService';
+import { URL_CONSTS } from '@/constants/url';
 
 
 export interface DialogCampaignCodeProps {
@@ -26,7 +27,7 @@ export const NewCharacterDialog = ({
     const [flag,setFlag] = useState(0);
 
     const createImage = async () => {
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
             "content-type" : "application/json"

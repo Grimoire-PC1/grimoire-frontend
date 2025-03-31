@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
 import { updateFile, deleteFile, getCampaignCharacters } from '@/services/campaignService';
+import { URL_CONSTS } from '@/constants/url';
 
 export interface DialogLgProps {
     open:boolean,
@@ -42,7 +43,7 @@ export const OpenNPCFileDialog = ({
         });
 
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${idFoto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${idFoto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

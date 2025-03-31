@@ -14,6 +14,7 @@ import { ArchiveFolderPlayer } from "@/components/ArchiveComponents/ArchiveFolde
 import { getUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
 import { ArchiveCharacterSheet } from "@/components/ArchiveComponents/ArchiveCharacterSheet";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function CampaignCharacterSheet(){
 
@@ -25,7 +26,7 @@ export default function CampaignCharacterSheet(){
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${campaign.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

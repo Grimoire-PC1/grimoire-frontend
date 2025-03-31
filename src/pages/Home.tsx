@@ -21,6 +21,7 @@ import { createNewSystem, getAllUserCreatedSystems } from "@/services/systemServ
 import { getUser } from "@/services/userService";
 import { SystemListCard } from "@/components/system/SystemListCard";
 import { toaster,Toaster } from "@/components/ui/toaster";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -131,7 +132,7 @@ export default function Home() {
     }
 
     async function navigateNewSystem(){
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
               "content-type" : "application/json"
@@ -178,7 +179,7 @@ export default function Home() {
     }
      
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${infoUsuario?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${infoUsuario?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

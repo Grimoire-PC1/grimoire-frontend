@@ -10,6 +10,7 @@ import { updateSystem } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
 import { DialogDeleteSystem } from "../Dialog/DialogDeleteSystem";
 import { LuCamera, LuSave, LuTrash2 } from "react-icons/lu";
+import { URL_CONSTS } from "@/constants/url";
  
 export const SystemPageComponent = () => {
 
@@ -123,7 +124,7 @@ export const SystemPageComponent = () => {
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${system?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"
@@ -173,7 +174,7 @@ export const SystemPageComponent = () => {
       const handleImageSubmit = async () =>{
         if(img) {
           console.log(system)
-          const res = await fetch(`http://localhost:8081/update/${system?.id_foto}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${system?.id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

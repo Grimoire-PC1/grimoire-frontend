@@ -13,6 +13,7 @@ import { ArchiveFolderGM } from "@/components/ArchiveComponents/ArchiveFolderGM"
 import { ArchiveFolderPlayer } from "@/components/ArchiveComponents/ArchiveFolderPlayer";
 import { getUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function CampaignArchiveFolder(){
     
@@ -22,7 +23,7 @@ export default function CampaignArchiveFolder(){
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${campaign.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

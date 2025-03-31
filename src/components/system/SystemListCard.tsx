@@ -4,6 +4,7 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { DialogUserCampaigns } from "./DialogUserCampaigns";
+import { URL_CONSTS } from "@/constants/url";
 
 
 export interface SystemListCardProps {
@@ -21,7 +22,7 @@ export const SystemListCard = ({
     const [img,setImg] = useState("")
         
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${system?.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

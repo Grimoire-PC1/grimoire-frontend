@@ -12,6 +12,7 @@ import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { useMutation } from "@tanstack/react-query";
 import { authenticateUser, createUser } from "@/services/userService";
 import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ export default function LoginPage() {
     console.log(value)
     console.log(signUpForm['login'])
     if(value == signUpForm['login'] && checkSignUpParameters() && checkEqualPassword()) {
-      const resImg = await fetch("http://localhost:8081/upload", {
+      const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
         method:"POST",
         headers: {
           "content-type" : "application/json"

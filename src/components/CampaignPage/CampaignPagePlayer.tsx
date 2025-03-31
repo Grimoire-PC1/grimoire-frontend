@@ -9,6 +9,7 @@ import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCar
 import { useNavigate } from "react-router-dom";
 import { DialogLeaveCampaign } from "../Dialog/DialogLeaveCampaign";
 import { Session } from "@/interfaces/Models";
+import { URL_CONSTS } from "@/constants/url";
 
 export interface PageProps {
     userId:number;
@@ -47,7 +48,7 @@ export const CampaignPagePlayer = ({
 
 
     const getImage = async (id:string) => {
-        const res = await fetch(`http://localhost:8081/get/${id}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${id}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

@@ -9,6 +9,7 @@ import { User } from '@/interfaces/Models';
 import { authenticateUser, deleteUser, updateUser } from '@/services/userService';
 import { toaster, Toaster } from '../ui/toaster';
 import { UpdateUserPayload } from '@/interfaces/ServicePayload';
+import { URL_CONSTS } from '@/constants/url';
 
 
 export interface UserSettingsDialogSmProps {
@@ -107,7 +108,7 @@ export const UserSettingsDialogSm = ({
     
       const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${user?.id_foto}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${user?.id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

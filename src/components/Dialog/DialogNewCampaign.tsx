@@ -8,6 +8,7 @@ import { CreateNewCampaignPayload } from '@/interfaces/ServicePayload';
 import { createFolder, createNewCampaign } from '@/services/campaignService';
 import { useState } from 'react';
 import { System } from '@/interfaces/Models';
+import { URL_CONSTS } from '@/constants/url';
 
 export interface DialogCampaignCodeProps {
     open:boolean,
@@ -40,7 +41,7 @@ export const DialogNewCampaign = ({
 
     async function navigateNewCampaign(){
         console.log(selectedSystem)
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
               "content-type" : "application/json"

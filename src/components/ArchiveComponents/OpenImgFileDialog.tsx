@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
 import { updateFile, deleteFile } from '@/services/campaignService';
+import { URL_CONSTS } from '@/constants/url';
 
 export interface DialogLgProps {
     open:boolean,
@@ -69,7 +70,7 @@ export const OpenImgFileDialog = ({
         });
 
     const getImage = async (id:string) => {
-        const res = await fetch(`http://localhost:8081/get/${id}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${id}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"
@@ -86,7 +87,7 @@ export const OpenImgFileDialog = ({
 
     const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${file.conteudo}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${file.conteudo}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

@@ -10,6 +10,7 @@ import { Campaign, CharacterRegister, SheetTab } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getCampaignCharacters, getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
+import { URL_CONSTS } from "@/constants/url";
 
 export interface SystemPageComponentProps {
     campaign: Campaign;
@@ -83,7 +84,7 @@ export const ArchiveCharacterSheet = ({
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${displayCharacter.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${displayCharacter.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"
@@ -126,7 +127,7 @@ export const ArchiveCharacterSheet = ({
       
       const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${displayCharacter.id_foto}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${displayCharacter.id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

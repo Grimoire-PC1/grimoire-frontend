@@ -2,6 +2,7 @@ import { Text,Image, Button, Box, Skeleton,} from "@chakra-ui/react";
 import { useState } from "react";
 import { DialogUserCampaigns } from "../system/DialogUserCampaigns";
 import { System, User } from "@/interfaces/Models";
+import { URL_CONSTS } from "@/constants/url";
 
 export const SystemPageNoEditComponent = () => {
     
@@ -10,7 +11,7 @@ export const SystemPageNoEditComponent = () => {
     const [img,setImg] = useState("")
 
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${system?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${system?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

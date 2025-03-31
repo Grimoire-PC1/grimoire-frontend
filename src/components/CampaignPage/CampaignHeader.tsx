@@ -4,6 +4,7 @@ import { Avatar } from "../ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserSettingsDialogSm } from "../Dialog/DialogSm";
+import { URL_CONSTS } from "@/constants/url";
 
 export const CampaignHeader = () => {
     const [img, setImg] = useState("");
@@ -22,7 +23,7 @@ export const CampaignHeader = () => {
     const titulo = c.titulo
 
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${user?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${user?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

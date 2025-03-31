@@ -10,6 +10,7 @@ import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
 import { useState } from "react";
 import { ArchiveGM } from "@/components/ArchiveComponents/ArchiveGM";
 import { ArchivePlayer } from "@/components/ArchiveComponents/ArchivePlayer";
+import { URL_CONSTS } from "@/constants/url";
 
 export default function CampaignArchive(){
     const campaign = JSON.parse(sessionStorage.getItem('currentCampaign')||'{}');
@@ -17,7 +18,7 @@ export default function CampaignArchive(){
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${campaign.id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"

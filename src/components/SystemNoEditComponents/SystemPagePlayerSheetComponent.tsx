@@ -10,6 +10,7 @@ import { NewCharacterDialog } from "../Dialog/NewCharacterDialog";
 import { Avatar } from "../ui/avatar";
 import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
+import { URL_CONSTS } from "@/constants/url";
 
 export const SystemPagePlayerSheetComponent = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0);
@@ -83,7 +84,7 @@ export const SystemPagePlayerSheetComponent = () => {
     const [img,setImg] = useState("")
 
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${characters[0].id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${characters[0].id_foto}`, {
             method:"GET",
             headers: {
                 "content-type" : "application/json"
@@ -131,7 +132,7 @@ export const SystemPagePlayerSheetComponent = () => {
       
       const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${characters[0].id_foto}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${characters[0].id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

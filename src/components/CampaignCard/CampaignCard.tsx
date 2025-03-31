@@ -1,3 +1,4 @@
+import { URL_CONSTS } from "@/constants/url";
 import { Campaign } from "@/interfaces/Models"
 import { useUserStore } from "@/stores/user/user.store";
 import {CardBody, CardRoot, Image, Skeleton, Text } from "@chakra-ui/react"
@@ -55,7 +56,7 @@ export const CampaignCard = ({
     const [img,setImg] = useState("")
     
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${campaign?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${campaign?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

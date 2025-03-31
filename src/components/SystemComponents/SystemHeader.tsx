@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { System } from "@/interfaces/Models";
 import { useState } from "react";
 import { UserSettingsDialogSm } from "../Dialog/DialogSm";
+import { URL_CONSTS } from "@/constants/url";
 
 export const SystemHeader = () => {    
     let system: System = JSON.parse(sessionStorage.getItem('currentSystem')||'{}');
@@ -21,7 +22,7 @@ export const SystemHeader = () => {
     }
 
     const getImage = async () => {
-        const res = await fetch(`http://localhost:8081/get/${user?.id_foto}`, {
+        const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${user?.id_foto}`, {
             method:"GET",
             headers: {
               "content-type" : "application/json"

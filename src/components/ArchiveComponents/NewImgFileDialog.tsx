@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { createFile } from '@/services/campaignService';
 import { Toaster, toaster } from '../ui/toaster';
 import { HiUpload } from 'react-icons/hi';
+import { URL_CONSTS } from '@/constants/url';
 
 export interface DialogLgProps {
     open:boolean,
@@ -28,7 +29,7 @@ export const NewImgFileDialog = ({
     const [flag,setFlag] = useState(0);
 
     const createImage = async () => {
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
             "content-type" : "application/json"
@@ -49,7 +50,7 @@ export const NewImgFileDialog = ({
 
     const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${imgId}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${imgId}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

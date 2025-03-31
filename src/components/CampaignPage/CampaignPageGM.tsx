@@ -14,6 +14,7 @@ import { DialogDeleteCampaign } from "../Dialog/DialogDeleteCampaign";
 import { PinnedDiaryListCardNoEdit } from "../PinnedDiaryView/PinnedDiaryListCardNoEdit";
 import { CharacterRegister, Session } from "@/interfaces/Models";
 import { LuCamera, LuSave, LuTrash2 } from "react-icons/lu";
+import { URL_CONSTS } from "@/constants/url";
 
 export const CampaignPageGM = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0); 
@@ -123,7 +124,7 @@ export const CampaignPageGM = () => {
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     const getImage = async (id:string) => {
-      const res = await fetch(`http://localhost:8081/get/${id}`, {
+      const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${id}`, {
           method:"GET",
           headers: {
             "content-type" : "application/json"
@@ -135,7 +136,7 @@ export const CampaignPageGM = () => {
   }
 
   const getPlayerImage = async (id:string) => {
-    const res = await fetch(`http://localhost:8081/get/${id}`, {
+    const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/get/${id}`, {
         method:"GET",
         headers: {
           "content-type" : "application/json"
@@ -241,7 +242,7 @@ export const CampaignPageGM = () => {
     
       const handleImageSubmit = async () =>{
         if(img) {
-          const res = await fetch(`http://localhost:8081/update/${campaign?.id_foto}`, {
+          const res = await fetch(`${URL_CONSTS.IMAGEMANAGER}/update/${campaign?.id_foto}`, {
             method:"PATCH",
             headers: {
               "content-type" : "application/json"

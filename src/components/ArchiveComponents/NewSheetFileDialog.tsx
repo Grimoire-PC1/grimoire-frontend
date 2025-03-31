@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
 import { createCharacter } from '@/services/characterService';
 import { createFile } from '@/services/campaignService';
+import { URL_CONSTS } from '@/constants/url';
 
 export interface DialogLgProps {
     open:boolean,
@@ -29,7 +30,7 @@ export const NewSheetFileDialog = ({
     const [flag,setFlag] = useState(0);
 
     const createImage = async () => {
-        const resImg = await fetch("http://localhost:8081/upload", {
+        const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
             headers: {
             "content-type" : "application/json"
