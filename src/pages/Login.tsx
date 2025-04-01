@@ -220,7 +220,7 @@ export default function LoginPage() {
             <Text mt={"28"} className="subtitle">START YOUR</Text>
             <Text mt={"-10"} className="agreloy title">Grimoire</Text>
 
-            <Box h={"45vh"} alignContent={"center"}>
+            <Box h={"full"} alignContent={"center"}>
               <Presence
                 present={!showSignInForm && !showSignUpForm}
                 animationName={{ _open: "fade-in" }}
