@@ -17,59 +17,59 @@ import CampaignCharacterSheet from "@/pages/CampaignCharacterSheet";
 
 export const PublicRoutes: RouteObject[] = [
   {
-    path: "/grimoire/",
+    path: "/",
     element: <LoginPage />,
   },
   {
-    path: "/grimoire/home",
+    path: "/home",
     element: <Home />,
   },
   {
-    path: "/grimoire/campaign",
+    path: "/campaign",
     element: <CampaignPage />
   },
   {
-      path: "/grimoire/campaign/system",
+      path: "/campaign/system",
       element: <CampaignSystemPage />
   },
   {
-      path: "/grimoire/campaign/sheet",
+      path: "/campaign/sheet",
       element: <CampaignSystemSheet />
   },
   {
-      path: "/grimoire/campaign/sheet/:id",
+      path: "/campaign/sheet/:id",
       element: <CampaignCharacterSheet/>
   },
   {
-      path: "/grimoire/campaign/mechanics",
+      path: "/campaign/mechanics",
       element: <CampaignSystemMechanics />
   },
   {
-      path: "/grimoire/campaign/journal",
+      path: "/campaign/journal",
       element: <CampaignJournal />
   },
   {
-      path: "/grimoire/campaign/archive",
+      path: "/campaign/archive",
       element: <CampaignArchive />
   },
   {
-      path: "/grimoire/campaign/archive/:id",
+      path: "/campaign/archive/:id",
       element: <CampaignArchiveFolder/>
   },
   {
-      path: "/grimoire/system",
+      path: "/system",
       element: <SystemPage />
   },
   {
-      path: "/grimoire/system/rules",
+      path: "/system/rules",
       element: <SystemPageRules />
   },
   {
-      path: "/grimoire/system/sheet",
+      path: "/system/sheet",
       element: <SystemPageSheet />
   },
   {
-      path: "/grimoire/system/mechanics",
+      path: "/system/mechanics",
       element: <SystemPageMechanics />
   },
   {
@@ -78,27 +78,27 @@ export const PublicRoutes: RouteObject[] = [
       
       /*  
       {
-        path: "/grimoire/home",
+        path: "/home",
         element: <Home />,
       },
       {
-        path: "/grimoire/campaign",
+        path: "/campaign",
         element: <CampaignPage />,
         children: [
             {
-                path: "/grimoire/campaign/system",
+                path: "/campaign/system",
                 element: <CampaignSystemPage />
             },
             {
-                path: "/grimoire/campaign/diary",
+                path: "/campaign/diary",
                 element: <CampaignDiaryPage />
             },
             {
-                path: "/grimoire/campaign/archive",
+                path: "/campaign/archive",
                 element: <CampaignArchivePage />
             },
             {
-                path: "/grimoire/campaign/dungeon",
+                path: "/campaign/dungeon",
                 element: <CampaignDungeonPage />
             }
         ]

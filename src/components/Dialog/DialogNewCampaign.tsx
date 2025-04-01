@@ -40,6 +40,7 @@ export const DialogNewCampaign = ({
       };
 
     async function navigateNewCampaign(){
+        sessionStorage.setItem('isGameMaster',"true");
         console.log(selectedSystem)
         const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
             method:"POST",
@@ -90,7 +91,7 @@ export const DialogNewCampaign = ({
 
 
 
-            navigate("/grimoire/campaign");
+            navigate("/campaign");
         },
         onError: (error) => {
           console.log(error);

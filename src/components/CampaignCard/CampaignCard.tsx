@@ -50,7 +50,7 @@ export const CampaignCard = ({
 
         console.log('campanha atual:')
         console.log(sessionStorage.getItem('currentCampaign'))
-        navigate("/grimoire/campaign");
+        navigate("/campaign");
     }
 
     const [img,setImg] = useState("")

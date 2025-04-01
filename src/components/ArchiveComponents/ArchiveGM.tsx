@@ -41,7 +41,7 @@ export const ArchiveGM = ({
     function goToFolder(folder:Folder){ //mudar para o tipo folder depois
         console.log(folder);
         sessionStorage.setItem('pastaAtual',JSON.stringify(folder));
-        navigate(`/grimoire/campaign/archive/${(folder.nome).toLowerCase()}`)
+        navigate(`/campaign/archive/${(folder.nome).toLowerCase()}`)
     }
 
     const [showNewFolder,setShowNewFolder] = useState(false);

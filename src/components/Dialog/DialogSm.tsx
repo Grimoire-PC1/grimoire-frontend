@@ -67,7 +67,7 @@ export const UserSettingsDialogSm = ({
         } else {
             await deleteUser();
             sessionStorage.removeItem("grimoireToken")
-            navigate("/grimoire/");
+            navigate("/");
         }
 
         handleClose(false);

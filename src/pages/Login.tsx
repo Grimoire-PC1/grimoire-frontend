@@ -94,7 +94,7 @@ export default function LoginPage() {
     mutationKey: ["authenticateUser"],
     mutationFn: authenticateUser,
     onSuccess: () => {
-      navigate("/grimoire/home");
+      navigate("/home");
     },
     onError: (error) => {
       console.log(error);
@@ -193,7 +193,7 @@ export default function LoginPage() {
     onSuccess: () => {
       authenticateUser({login: signInForm['login'], senha: signUpForm['senha']})
       window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
-      navigate("/grimoire/home");
+      navigate("/home");
     },
     onError: (error) => {
       console.log(error);
@@ -217,9 +217,8 @@ export default function LoginPage() {
         <div className="w-3/5 padding">
 
           <div className="text-center margin">
-            <span className="subtitle">START YOUR</span>
-            <p></p>
-            <span className="agreloy title">Grimoire</span>
+            <Text mt={"28"} className="subtitle">START YOUR</Text>
+            <Text mt={"-10"} className="agreloy title">Grimoire</Text>
 
             <Box h={"45vh"} alignContent={"center"}>
               <Presence
@@ -243,8 +242,7 @@ export default function LoginPage() {
                   <br></br>
                   <PasswordInput resize="none" placeholder="senha" onChange={passwordSignInChange}></PasswordInput>
                 </Form>
-                <br></br>
-                <Button onClick={submitLogin} className="padding-xl margin-sides">Entrar</Button>
+                <Button onClick={submitLogin} mt={4} px={16}>Entrar</Button>
                 <Text onClick={()=>signUp()} cursor={"pointer"} textDecor={"underline"} textDecorationThickness={1} mt={4}>Não tem uma conta ainda? Cadastre-se!</Text>
                 </div> 
               </Presence>
@@ -256,18 +254,18 @@ export default function LoginPage() {
               >
                           <div className="margin">
                 <Form>
-                  <Textarea resize="none" className="height" placeholder="nome" onChange={nameSignUpChange}/>
-                  <Textarea resize="none" className="height" placeholder="username" onChange={usernameSignUpChange} />
-                  <br></br>
-                  <Textarea resize="none" className="height-l" placeholder="e-mail" onChange={emailSignUpChange} />
-                  <br></br>
-                  <Box placeItems={"center"}>
-                  <Flex gapX={2} className="height-l" justifyContent={"center"}>
-                    <PasswordInput resize="none" placeholder="senha" onChange={passwordSignUpChange} />
-                    <PasswordInput resize="none" placeholder="repita sua senha" onChange={passwordConfirmationSignUpChange} />
+                  <Flex flexDirection={"column"} gap={2} maxW={"full"} justifyItems={"center"} px={16}>
+                    <Flex gap={2}>
+                  <Input resize="none" placeholder="nome" onChange={nameSignUpChange}/>
+                  <Input resize="none"placeholder="username" onChange={usernameSignUpChange} />
+                    </Flex>
+                  <Input resize="none" placeholder="e-mail" onChange={emailSignUpChange} />
+                  <Flex gap={2}>
+                  <PasswordInput resize="none" placeholder="senha" onChange={passwordSignUpChange} />
+                  <PasswordInput resize="none" placeholder="repita sua senha" onChange={passwordConfirmationSignUpChange} />
+
                   </Flex>
-                    
-                    </Box>
+                  </Flex>
                 </Form>
                 <br></br>
                 <div className="flex place-content-around margin-sides content-end">

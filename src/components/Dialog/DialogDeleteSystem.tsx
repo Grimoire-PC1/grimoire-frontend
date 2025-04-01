@@ -29,7 +29,7 @@ export const DialogDeleteSystem = ({
                         description: "Sistema deletado com sucesso!",
                         type: "success",
                         })
-            navigate('/grimoire/home');
+            navigate('/home');
         },
         onError: (error) => {
             console.log(error);

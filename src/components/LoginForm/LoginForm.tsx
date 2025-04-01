@@ -36,7 +36,7 @@ const LoginForm = () => {
       sessionStorage.setItem("tcc_user_token", data.token);
       setUser(data);
     
-      navigate("/grimoire/home")
+      navigate("/home")
 
     } catch (error) {
       

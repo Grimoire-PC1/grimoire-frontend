@@ -18,7 +18,7 @@ export const SystemHeader = () => {
 
     function logout(){
         sessionStorage.removeItem("grimoireToken")
-        navigate("/grimoire/");
+        navigate("/");
     }
 
     const getImage = async () => {

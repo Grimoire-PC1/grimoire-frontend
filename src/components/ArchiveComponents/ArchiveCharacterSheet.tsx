@@ -145,7 +145,7 @@ export const ArchiveCharacterSheet = ({
 
     function goBack(){
         const f = JSON.parse(sessionStorage.getItem('pastaAtual')||'{}');
-        navigate(`/grimoire/campaign/archive/${(f.nome).toLowerCase()}`)
+        navigate(`/campaign/archive/${(f.nome).toLowerCase()}`)
         location.reload();
     }
 

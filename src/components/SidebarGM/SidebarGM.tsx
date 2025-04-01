@@ -18,21 +18,21 @@ export const SidebarGM = () => {
     return(
         <div className="flex col-span-2">
             <div className="margin-top w-11/12 overflow-x-hidden">
-                <Button onClick={()=>navigate("/grimoire/campaign")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
+                <Button onClick={()=>navigate("/campaign")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Campanha</Button>
                 <br></br>
                 <Button onClick={()=>setGetId(true)} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Compartilhar</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
+                <Button onClick={()=>navigate("/campaign/system")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
+                <Button onClick={()=>navigate("/campaign/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
+                <Button onClick={()=>navigate("/campaign/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/journal")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
+                <Button onClick={()=>navigate("/campaign/journal")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Diário</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/campaign/archive")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
+                <Button onClick={()=>navigate("/campaign/archive")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
+                <Button onClick={()=>navigate("/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
             </div>
             <div className="w-1/12">
                 <Separator h={"80vh"} orientation={"vertical"}></Separator>

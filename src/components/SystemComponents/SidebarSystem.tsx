@@ -9,15 +9,15 @@ export const SidebarSystem = () => {
     return(
         <div className="flex col-span-2">
             <div className="margin-top w-11/12 overflow-x-hidden">
-                <Button onClick={()=>navigate("/grimoire/system")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
+                <Button onClick={()=>navigate("/system")} mt={"2%"} mb={"2%"} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Sistema</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/system/rules")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Regras</Button>
+                <Button onClick={()=>navigate("/system/rules")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Regras</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/system/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
+                <Button onClick={()=>navigate("/system/sheet")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Ficha</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/system/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
+                <Button onClick={()=>navigate("/system/mechanics")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Mecânicas</Button>
                 <br></br>
-                <Button onClick={()=>navigate("/grimoire/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
+                <Button onClick={()=>navigate("/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
             </div>
             <div className="w-1/12">
                 <Separator h={"80vh"} orientation={"vertical"}></Separator>

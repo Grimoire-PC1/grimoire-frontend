@@ -149,7 +149,7 @@ export const CampaignPagePlayer = ({
                                 <Center>
                                     <Flex wrap="wrap" mt='1'>
                                         <For each={myCharas}>
-                                            {(item) => <Box cursor={"pointer"} onClick={()=>navigate("/grimoire/campaign/sheet")}><Avatar size={"xl"} m={1} src={item.foto}/></Box>}
+                                            {(item) => <Box cursor={"pointer"} onClick={()=>navigate("/campaign/sheet")}><Avatar size={"xl"} m={1} src={item.foto}/></Box>}
                                         </For>
                                     </Flex>
                                 </Center>

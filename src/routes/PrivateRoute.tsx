@@ -5,7 +5,7 @@ export const PrivateRoute = () => {
   const user = useUserStore((state) => state.user);
 
   if (!user) {
-    return <Navigate to="/grimoire/" />;
+    return <Navigate to="/" />;
   }
 
   return <Outlet />;

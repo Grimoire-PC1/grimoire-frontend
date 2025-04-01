@@ -30,7 +30,7 @@ export const DialogLeaveCampaign = ({
                         description: "Você saiu da campanha!",
                         type: "success"
                         })
-            navigate('/grimoire/home');
+            navigate('/home');
         },
         onError: (error) => {
             console.log(error);

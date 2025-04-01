@@ -53,7 +53,7 @@ export const ArchiveFileComponent = ({
                 sessionStorage.setItem('fichaAtual',file.conteudo);
                 sessionStorage.setItem('fichaAtualNome',file.nome);
                 if(sessionStorage.getItem('isGameMaster') === "true"){
-                    navigate(`/grimoire/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
+                    navigate(`/campaign/sheet/${file.nome}`); //pode ser o id ao inves do nome, tanto faz
                 }else{
                     setShowNPC(true);
                 }

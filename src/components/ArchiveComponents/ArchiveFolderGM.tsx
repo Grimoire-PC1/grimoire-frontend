@@ -90,7 +90,7 @@ export const ArchiveFolderGM = ({
     function goToFolder(f:Folder){
         console.log(f);
         sessionStorage.setItem('pastaAtual',JSON.stringify(f));
-        navigate(`/grimoire/campaign/archive/${(f.nome).toLowerCase()}`);
+        navigate(`/campaign/archive/${(f.nome).toLowerCase()}`);
         location.reload();
     }
 
@@ -98,7 +98,7 @@ export const ArchiveFolderGM = ({
         if(folder.id_pacote_pai != null){
             goToFolder(campaign_folders.filter((f) => f.id === folder.id_pacote_pai)[0]) /* depois mudar simplesmente para folder.id_pacote_pai, que vai ter uma relação com outro folder */
         }else{
-            navigate(`/grimoire/campaign/archive`)
+            navigate(`/campaign/archive`)
         }
     }
 

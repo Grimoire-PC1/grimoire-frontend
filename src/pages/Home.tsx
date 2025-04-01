@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLogOut } from "react-icons/lu";
 import { Form, useNavigate } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { DialogLg } from "@/components/Dialog/DialogLg";
 import { ToggleTheme } from "@/components/ToggleTheme/ToggleTheme";
 import { getAllUserCharacters } from "@/services/characterService";
@@ -25,6 +25,7 @@ import { URL_CONSTS } from "@/constants/url";
 
 export default function Home() {
     const navigate = useNavigate();
+    const [,forceUpdate] = useReducer(x=>x+1,0); 
 
     const {data: infoUsuario, isLoading: loadingInfoUser} = useQuery({
         queryKey: ["infoUsuario"],
@@ -105,7 +106,7 @@ export default function Home() {
 
     function logout(){
         sessionStorage.removeItem("grimoireToken")
-        navigate("/grimoire/");
+        navigate("/");
     }
     async function validateIdCampanha(){
         try {
@@ -113,6 +114,7 @@ export default function Home() {
             toaster.create({description: `Campanha ingressada com sucesso!`,
                 type: "success",
                 })
+            /*
             const participatingCampaigns = await getParticipatingCampaignById(idcampanha);
             let campaign;
             for(let i = 0; i < participatingCampaigns.length; i++) {
@@ -122,7 +124,12 @@ export default function Home() {
                 }
             }
             sessionStorage.setItem('currentCampaign', JSON.stringify(campaign))
-            navigate("/grimoire/campaign");
+            navigate("/campaign");
+            */
+
+           forceUpdate();
+           setOpenDialogSm(false);
+           //location.reload();
         } catch(error) {
             console.log(error)
             toaster.create({description: `Ocorreu um erro ao tentar participar da campanha`,
@@ -166,7 +173,7 @@ export default function Home() {
         onSuccess: (data) => {
             sessionStorage.setItem('currentSystem', JSON.stringify(data))
             console.log(data)
-            navigate("/grimoire/system");
+            navigate("/system");
         },
         onError: (error) => {
           console.log(error);

@@ -107,7 +107,7 @@ export const DialogUserCampaigns = ({
 
     async function navigateNewCampaign(){
         //fazer com que essa função crie um novo objeto campanha associado ao usuário como mestre
-        //navigate("/grimoire/campaign");
+        //navigate("/campaign");
         toaster.create({
                         description: `Criando uma cópia privada do sistema...`,
                         type: "loading",
@@ -160,7 +160,7 @@ export const DialogUserCampaigns = ({
             console.log(data)
             sessionStorage.setItem('currentCampaignId', data.id);
             sessionStorage.setItem('currentCampaign', JSON.stringify(data))
-            navigate("/grimoire/campaign");
+            navigate("/campaign");
         },
         onError: (error) => {
             console.log(error);

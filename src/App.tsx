@@ -17,7 +17,7 @@ function App() {
       element: (
         <Navigate
           to={
-            user ? "/grimoire/home" : "/grimoire"
+            user ? "/home" : "/"
           }
           replace
         />

@@ -29,7 +29,7 @@ export const DialogDeleteCampaign = ({
                         description: "Campanha deletada com sucesso!",
                         type: "success",
                         })
-            navigate('/grimoire/home');
+            navigate('/home');
         },
         onError: (error) => {
             console.log(error);
