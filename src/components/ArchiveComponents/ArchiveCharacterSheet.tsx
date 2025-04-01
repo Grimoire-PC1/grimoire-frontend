@@ -146,7 +146,7 @@ export const ArchiveCharacterSheet = ({
     function goBack(){
         const f = JSON.parse(sessionStorage.getItem('pastaAtual')||'{}');
         navigate(`/campaign/archive/${(f.nome).toLowerCase()}`)
-        location.reload();
+        //location.reload();
     }
 
     return(

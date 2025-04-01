@@ -85,7 +85,7 @@ export const ArchiveFolderGM = ({
             console.log(files);
             setFlag(flag+1);
         }
-    }, [flag]);
+    }, [campaign, files, filesMutation, flag, folder.id, foldersMutation, itemsMutation]);
 
     function goToFolder(f:Folder){
         console.log(f);

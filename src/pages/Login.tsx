@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authenticateUser, createUser } from "@/services/userService";
 import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
 import { URL_CONSTS } from "@/constants/url";
+import { Toaster, toaster } from "@/components/ui/toaster";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -77,6 +78,10 @@ export default function LoginPage() {
   };
 
   const submitLogin = (e:any) => {
+    toaster.create({
+                        description: "Carregando seu Grimório...",
+                        type: "loading",
+                    })
     if(signInForm['login'] != undefined && signUpForm['login'] != ""
     && signInForm['senha'] != undefined && signInForm['senha'] != "") {
       const signInPayload: SignInPayload = {
@@ -98,6 +103,10 @@ export default function LoginPage() {
     },
     onError: (error) => {
       console.log(error);
+      toaster.create({
+                          description: "Ops! Não foi possível carregar seu Grimório. Tente mais tarde!",
+                          type: "error",
+                      })
     },
   });
 
@@ -142,6 +151,10 @@ export default function LoginPage() {
   }
 
   const usernameConfirmation = async (e: any) => {
+    toaster.create({
+                        description: "Carregando seu Grimório...",
+                        type: "loading",
+                    })
     const value = e.target.value;
     console.log(value)
     console.log(signUpForm['login'])
@@ -197,6 +210,10 @@ export default function LoginPage() {
     },
     onError: (error) => {
       console.log(error);
+      toaster.create({
+                          description: "Ops! Não foi possível criar um Grimório para você.",
+                          type: "error",
+                      })
     },
   });
 
@@ -283,6 +300,7 @@ export default function LoginPage() {
 
       </Flex>
       </Box>
+      <Toaster/>
     </Presence>
   );
 }

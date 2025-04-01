@@ -81,7 +81,7 @@ export const ArchiveFolderPlayer = ({
             itemsMutation.mutate(campaign);
             setFlag(flag+1);
         }
-    }, [flag]);
+    }, [campaign, filesMutation, flag, folder.id, foldersMutation, itemsMutation]);
 
     function goToFolder(f:Folder){ //mudar para o tipo folder depois
         console.log(f);
