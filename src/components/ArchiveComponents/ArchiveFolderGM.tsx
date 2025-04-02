@@ -147,7 +147,7 @@ export const ArchiveFolderGM = ({
                         </IconButton>
                     </MenuTrigger>
                     <MenuContent>
-                        <MenuItem onClick={()=>setShowNewFolder(true)}  cursor={"pointer"} value="novaPasta">Nova pasta</MenuItem>
+                        {/*<MenuItem onClick={()=>setShowNewFolder(true)}  cursor={"pointer"} value="novaPasta">Nova pasta</MenuItem>*/}
                         <MenuRoot positioning={{ placement: "right-start", gutter: 10 }}>
                         <MenuTriggerItem value="novoArquivo">Novo arquivo</MenuTriggerItem>
                         <MenuContent>

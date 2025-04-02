@@ -160,7 +160,8 @@ export const DialogUserCampaigns = ({
             console.log(data)
             sessionStorage.setItem('currentCampaignId', data.id);
             sessionStorage.setItem('currentCampaign', JSON.stringify(data))
-            navigate("/campaign");
+            window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
+            //navigate("/campaign");
         },
         onError: (error) => {
             console.log(error);
@@ -192,7 +193,7 @@ export const DialogUserCampaigns = ({
                             </div>
                             </div>
                             <Form>
-                                <Input mb={"2"} onChange={setCampaignTitle} required placeholder="Título da campanha"/>
+                                <Input mt={4} onChange={setCampaignTitle} required placeholder="Título da campanha"/>
                             </Form>
                             <Flex justifyContent={"center"}>
                                 <Button mb={"4"} className="margin-top" onClick={()=>navigateNewCampaign()} >Criar campanha</Button>
