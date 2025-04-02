@@ -206,9 +206,9 @@ export default function LoginPage() {
     mutationFn: createUser,
     onSuccess: async () => {
       authenticateUser({login: signInForm['login'], senha: signUpForm['senha']})
-      //window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
+      window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
       //await sleep(2000);
-      navigate("/home");
+      navigate("/login");
     },
     onError: (error) => {
       console.log(error);
