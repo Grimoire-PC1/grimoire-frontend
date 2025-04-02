@@ -14,7 +14,7 @@ import { authenticateUser, createUser } from "@/services/userService";
 import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
 import { URL_CONSTS } from "@/constants/url";
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { sleep } from "@/util/Util";
+import { sleep } from "@/util/utilFunctions";
 
 export default function LoginPage() {
   const navigate = useNavigate();
