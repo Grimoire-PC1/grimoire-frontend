@@ -14,6 +14,7 @@ import { authenticateUser, createUser } from "@/services/userService";
 import { SignInPayload, SignUpPayload } from "@/interfaces/ServicePayload";
 import { URL_CONSTS } from "@/constants/url";
 import { Toaster, toaster } from "@/components/ui/toaster";
+import { sleep } from "@/util/Util";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -151,14 +152,14 @@ export default function LoginPage() {
   }
 
   const usernameConfirmation = async (e: any) => {
-    toaster.create({
-                        description: "Carregando seu Grimório...",
-                        type: "loading",
-                    })
     const value = e.target.value;
     console.log(value)
     console.log(signUpForm['login'])
     if(value == signUpForm['login'] && checkSignUpParameters() && checkEqualPassword()) {
+      toaster.create({
+        description: "Carregando seu Grimório...",
+        type: "loading",
+    })
       const resImg = await fetch(`${URL_CONSTS.IMAGEMANAGER}/upload`, {
         method:"POST",
         headers: {
@@ -203,9 +204,10 @@ export default function LoginPage() {
   const sendSignUnForm = useMutation({
     mutationKey: ["createUser"],
     mutationFn: createUser,
-    onSuccess: () => {
+    onSuccess: async () => {
       authenticateUser({login: signInForm['login'], senha: signUpForm['senha']})
-      window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
+      //window.location.href = `${import.meta.env.BASE_URL}${window.location.pathname.replace(import.meta.env.BASE_URL, '')}`;
+      await sleep(2000);
       navigate("/home");
     },
     onError: (error) => {
