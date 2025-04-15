@@ -71,7 +71,7 @@ export const CampaignCard = ({
     }
 
     return(
-        <CardRoot className="margin-top" cursor={"pointer"}>
+        <CardRoot className="margin-top" cursor={"pointer"} onClick={navigateCampaignPage}>
                 {
                     img ?
                     <Image 
@@ -86,7 +86,7 @@ export const CampaignCard = ({
                     w={"full"}
                     h={"20vh"} />
                 }
-            <CardBody onClick={navigateCampaignPage}>
+            <CardBody>
                 <Text lineClamp={1} fontSize={"lg"}>{campaign.titulo}</Text>
             </CardBody>
         </CardRoot>

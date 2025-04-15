@@ -7,7 +7,6 @@ import {IconButton, Text,Image} from "@chakra-ui/react"
 import { SidebarPlayer } from "@/components/SidebarPlayer/SidebarPlayer";
 import { CampaignHeaderPlayer } from "@/components/CampaignPage/CampaignHeaderPlayer";
 import { ToggleThemeXL } from "@/components/ToggleTheme/ToggleThemeXL";
-import { LuArrowRightLeft } from "react-icons/lu";
 import { useState } from "react";
 import { SystemPageRulesComponent } from "@/components/SystemComponents/SystemPageRulesComponent";
 import { DialogLg } from "@/components/Dialog/DialogLg";
@@ -15,6 +14,7 @@ import { SystemPageRulesNoEditComponent } from "@/components/SystemNoEditCompone
 import { getUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
 import { URL_CONSTS } from "@/constants/url";
+import { CampaignSystemPageRulesPlayerComponent } from "@/components/CampaignSystemPage/CampaignSystemPageRulesPlayerComponent";
 
 export default function CampaignSystemPage(){
 
@@ -104,7 +104,7 @@ export default function CampaignSystemPage(){
                                     </div>
                                     <div className="col-span-9">
                                         <div className="h-[80vh]">
-                                                <SystemPageRulesNoEditComponent   
+                                                <CampaignSystemPageRulesPlayerComponent   
                                                                             title="REGRAS DO SISTEMA"
                                                                             subtitle={"Explore as regras que "+campaign.titulo+" utiliza para contar sua história!"}
                                                                             system={""}
