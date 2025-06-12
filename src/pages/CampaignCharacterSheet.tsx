@@ -68,7 +68,6 @@ export default function CampaignCharacterSheet(){
                             </IconButton>
                             */
                         }
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
@@ -101,7 +100,6 @@ export default function CampaignCharacterSheet(){
                             </IconButton>
                             */
                         }
-                        <ToggleThemeXL/>
                     </div>
                 }
             </Box>

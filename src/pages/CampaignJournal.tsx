@@ -27,7 +27,6 @@ export default function CampaignJournal(){
                                 <div>
                                     <Journal campaign={campaign||''}/>
                                 </div>
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>

@@ -50,7 +50,6 @@ export default function SystemPageRules(){
                         </div>
                     </div>
             </Box>
-            <ToggleTheme/>
         </Presence>
     )
 }

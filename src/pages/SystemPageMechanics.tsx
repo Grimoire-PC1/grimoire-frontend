@@ -50,7 +50,6 @@ export default function SystemPageMechanics(){
                         </div>
                     </div>
             </Box>
-            <ToggleTheme/>
         </Presence>
     )
 }

@@ -70,7 +70,6 @@ export default function CampaignArchiveFolder(){
                             </IconButton>
                             */
                         }
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
@@ -103,7 +102,6 @@ export default function CampaignArchiveFolder(){
                             </IconButton>
                             */
                         }
-                        <ToggleThemeXL/>
                     </div>
                 }
             </Box>

@@ -296,7 +296,6 @@ export default function LoginPage() {
               </Presence>
 
             </Box>
-            <ToggleTheme/>
           </div>
         </div>
 

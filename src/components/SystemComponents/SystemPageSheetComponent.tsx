@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { getSystemSheetTemplateTabs } from "@/services/systemService";
 import { CharacterSheetSectionSystem } from "../CharacterSheetComponents/CharacterSheetSectionSystem";
+import { Izinho } from "../Izinho/Izinho";
 
 export interface SystemPageComponentProps {
     system: System;
@@ -72,7 +73,10 @@ export const SystemPageSheetComponent = ({
             <div className="margin-right">
                 <Flex placeContent={"space-between"}>
                     <div>
-                        <Text className="subtitle-s">{title}</Text>
+                        <Flex gap={2} alignItems={"center"}>
+                            <Text className="subtitle-s">{title}</Text>
+                            <Izinho/>
+                        </Flex>
                         <Text className="text">{subtitle}</Text>
                     </div>
                                         

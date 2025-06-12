@@ -6,6 +6,7 @@ import { JournalNewEntry } from './JournalNewEntry';
 import { useMutation} from '@tanstack/react-query';
 import { getCampaignSessions } from '@/services/sessionService';
 import { Session } from '@/interfaces/Models';
+import { Izinho } from '../Izinho/Izinho';
 
 export interface JournalProps {
    campaign:string; //mudar para Campaign
@@ -58,8 +59,11 @@ export const Journal = ({
     return(
         <div>
             <Flex placeContent={"space-between"}>
-                <Text className="subtitle-s">REVISITE OU PLANEJE UMA SESSÃO!</Text>
-                
+                <Flex gap={2} alignItems={"center"}>
+                    <Text className="subtitle-s">REVISITE OU PLANEJE UMA SESSÃO!</Text>
+                    <Izinho/>
+                </Flex>
+
                 <IconButton onClick={()=>setNewEntry(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Novo Registro de Sessão"> 
                     <LuPlus />
                 </IconButton>

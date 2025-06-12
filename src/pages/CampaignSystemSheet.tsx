@@ -74,7 +74,6 @@ export default function CampaignSystemSheet(){
                             </IconButton>
                             */
                         }
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
@@ -110,7 +109,6 @@ export default function CampaignSystemSheet(){
                             </IconButton>
                             */
                         }
-                        <ToggleThemeXL/>
                     </div>
                 }
             </Box>

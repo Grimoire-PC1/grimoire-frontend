@@ -22,6 +22,8 @@ import { getUser } from "@/services/userService";
 import { SystemListCard } from "@/components/system/SystemListCard";
 import { toaster,Toaster } from "@/components/ui/toaster";
 import { URL_CONSTS } from "@/constants/url";
+import { Izinho } from "@/components/Izinho/Izinho";
+import { Izinho2 } from "@/components/Izinho/Izinho2";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -203,7 +205,7 @@ export default function Home() {
             animationName={{ _open: "scale-in" }}
             animationDuration="slow"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box h={"100vh"} overflowY={"hidden"} bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                 <div className="header margin-sides flex place-content-between items-center" >
                     <span className="header-title agreloy">{userObject.nome}'s Grimoire</span>
@@ -305,6 +307,12 @@ export default function Home() {
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogSm(true)}>Entrar em campanha</Button>
                                 <br></br>
                                 <Button textAlign={"left"} fontSize={"18px"} variant={"ghost"} onClick={()=> setOpenDialogLg(true)}>Sistemas disponíveis</Button>
+                                <Flex flexDir={"column"} h={"55vh"} justifyContent={"end"}>
+                                    <Flex gap={2}>
+                                        <ToggleTheme/>
+                                        <Izinho/>
+                                    </Flex>
+                                </Flex>
                             </div>
                             <div>
                                 <Separator ml={2} h={"80vh"} orientation={"vertical"}></Separator>
@@ -349,7 +357,6 @@ export default function Home() {
                             
                         </div>
                 </div>
-                <ToggleTheme/>
                 
             </Box>
             <Toaster />

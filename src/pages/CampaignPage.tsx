@@ -72,7 +72,6 @@ export default function CampaignPage(){
                             </IconButton>
                             */
                         }
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
@@ -106,8 +105,6 @@ export default function CampaignPage(){
                             </IconButton>
                             */
                         }
-                        
-                        <ToggleThemeXL/>
                     </div>
                 }
             </Box>

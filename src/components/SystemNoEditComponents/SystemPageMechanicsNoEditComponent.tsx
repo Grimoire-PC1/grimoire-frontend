@@ -4,6 +4,7 @@ import { MechanicsCard } from "../MechanicsCard/MechanicsCard";
 import { SystemMechanic } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getSystemMechanics } from "@/services/systemService";
+import { Izinho } from "../Izinho/Izinho";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -51,7 +52,10 @@ export const SystemPageMechanicsNoEditComponent = ({
             <div className="margin-right">
                 <Flex placeContent={"space-between"}>
                     <div>
-                    <Text className="subtitle-s">{title}</Text>
+                        <Flex gap={2} alignItems={"center"}>
+                            <Text className="subtitle-s">{title}</Text>
+                            <Izinho/>
+                        </Flex>
                     </div>                                      
                 </Flex>
                 <Grid maxH={maxHeight} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>

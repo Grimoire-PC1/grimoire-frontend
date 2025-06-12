@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { getCampaignCharacters, getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { URL_CONSTS } from "@/constants/url";
+import { Izinho } from "../Izinho/Izinho";
 
 export interface SystemPageComponentProps {
     campaign: Campaign;
@@ -159,7 +160,10 @@ export const ArchiveCharacterSheet = ({
                             <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
                                 <LuChevronLeft />
                             </IconButton>
-                            <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+                            <Flex gap={2} alignItems={"center"}>
+                                <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+                                <Izinho/>
+                            </Flex>
                         </Flex>
                         <Flex  gapX={2} align={"center"}>
                             <Avatar m={6} scale={1.7} size={"2xl"} src={img}></Avatar>
@@ -189,8 +193,10 @@ export const ArchiveCharacterSheet = ({
                             <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar"> 
                                 <LuChevronLeft />
                             </IconButton>
-                            <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                            
+                            <Flex gap={2} alignItems={"center"}>
+                                <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
+                                <Izinho/>
+                            </Flex>
                         </Flex>
                         <Avatar m={8} scale={2} size={"2xl"} src={img}></Avatar>
                     </Flex>

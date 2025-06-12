@@ -266,7 +266,7 @@ export const CampaignPageGM = () => {
     // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
 
     return(
-        <div className="h-[80vh] overflow-y-auto">
+        <div className="overflow-y-auto">
             <div className="margin-right">
                 <Text className="subtitle-s">PERSONALIZE SUA HISTÓRIA</Text>
                 <div className="grid grid-cols-2 margin-top-xs">

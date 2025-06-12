@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { getFolders } from "@/services/campaignService";
 import { Folder } from "@/interfaces/Models";
+import { Izinho } from "../Izinho/Izinho";
 
 export interface ArchiveGMProps {
     campaign: string;
@@ -54,7 +55,10 @@ export const ArchiveGM = ({
     return(
         <div>
             <Flex alignItems={"center"} placeContent={"space-between"}>
-                <Text className="subtitle-s">ORGANIZE TODA A SUA CAMPANHA EM UM SÓ LUGAR!</Text>
+                <Flex gap={2} alignItems={"center"}>
+                    <Text className="subtitle-s">ORGANIZE TODA A SUA CAMPANHA EM UM SÓ LUGAR!</Text>
+                    <Izinho/>
+                </Flex>
                 
                 <IconButton onClick={()=>setShowNewFolder(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Regra"> 
                     <LuPlus />

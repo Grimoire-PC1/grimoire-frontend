@@ -61,7 +61,6 @@ export default function CampaignArchive(){
                             </IconButton>
                             */
                         }
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
@@ -94,7 +93,6 @@ export default function CampaignArchive(){
                             </IconButton>
                             */
                         }
-                        <ToggleThemeXL/>
                     </div>
                 }
             </Box>

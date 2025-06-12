@@ -25,7 +25,7 @@ export default function SystemPage(){
             animationName={{ _open: "scale-in" }}
             animationDuration="slower"
         >
-            <Box bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
+            <Box h={"100vh"} overflowY={"hidden"} bg={{ base: "white", _dark: "black" }} color={{ base: "black", _dark: "white" }} >
 
                     <div>
                         <SystemHeader/>
@@ -43,7 +43,6 @@ export default function SystemPage(){
 
                                     }
                                 </div>
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>

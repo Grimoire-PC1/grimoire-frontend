@@ -48,7 +48,6 @@ export default function SystemPageSheet(){
                         </div>
                     </div>
             </Box>
-            <ToggleTheme/>
         </Presence>
     )
 }

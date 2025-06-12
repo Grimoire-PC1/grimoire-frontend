@@ -2,6 +2,7 @@ import { Text,Flex,Grid, For, } from "@chakra-ui/react";
 import { RulesNoEditCard } from "../RulesCard/RulesNoEditCard";
 import { useQuery } from "@tanstack/react-query";
 import { getSystemRules } from "@/services/systemService";
+import { Izinho } from "../Izinho/Izinho";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -30,7 +31,10 @@ export const SystemPageRulesNoEditComponent = ({
             <div className="margin-right">
                 <Flex placeContent={"space-between"}>
                     <div>
-                        <Text className="subtitle-s">{title}</Text>
+                        <Flex gap={2} alignItems={"center"}>
+                            <Text className="subtitle-s">{title}</Text>
+                            <Izinho/>
+                        </Flex>
                         {subtitle?<Text className="text">{subtitle}</Text>:<div></div>}
                     </div>
                                             

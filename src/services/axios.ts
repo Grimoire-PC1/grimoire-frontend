@@ -1,7 +1,7 @@
 import { URL_CONSTS } from "@/constants/url";
 import axios, { AxiosError } from "axios";
 
-const api_url = URL_CONSTS.BACKEND // import.meta.env.VITE_API_URL ??  "http://localhost:8082/" // "https://grimoire-backend/api/"; //
+const api_url = "http://localhost:8082/" //URL_CONSTS.BACKEND // import.meta.env.VITE_API_URL ??   "https://grimoire-backend/api/"; //
 
 export const axiosInstace = axios.create({
   baseURL: api_url,

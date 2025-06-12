@@ -30,7 +30,6 @@ export default function CampaignSystemMechanics(){
                                         maxHeight="66vh"
                                         />
                                 </div>
-                                <ToggleTheme/>
                             </div>
                         </div>
                     </div>
