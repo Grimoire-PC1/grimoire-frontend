@@ -1,7 +1,6 @@
-import { URL_CONSTS } from "@/constants/url";
 import axios, { AxiosError } from "axios";
 
-const api_url = "http://localhost:8082/" //URL_CONSTS.BACKEND // import.meta.env.VITE_API_URL ??   "https://grimoire-backend/api/"; //
+const api_url = import.meta.env.BACKEND_URL ?? "http://localhost:8082/" //URL_CONSTS.BACKEND //  "https://grimoire-backend/api/"; //
 
 export const axiosInstace = axios.create({
   baseURL: api_url,
@@ -13,7 +12,7 @@ export const axiosInstace = axios.create({
 });
 
 axiosInstace.interceptors.request.use((config) => {
-  let token = sessionStorage.getItem("grimoireToken")
+  const token = sessionStorage.getItem("grimoireToken")
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
