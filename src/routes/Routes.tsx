@@ -14,6 +14,7 @@ import CampaignJournal from "@/pages/CampaignJournal";
 import CampaignArchive from "@/pages/CampaignArchive";
 import CampaignArchiveFolder from "@/pages/CampaignArchiveFolder";
 import CampaignCharacterSheet from "@/pages/CampaignCharacterSheet";
+import CampaignSoundtrack from "@/pages/CampaignSoundtrack";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -55,6 +56,10 @@ export const PublicRoutes: RouteObject[] = [
   {
       path: "/campaign/archive/:id",
       element: <CampaignArchiveFolder/>
+  },
+  {
+      path: "/campaign/soundtrack",
+      element: <CampaignSoundtrack/>
   },
   {
       path: "/system",

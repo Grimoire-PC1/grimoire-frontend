@@ -35,8 +35,10 @@ export const SidebarGM = () => {
                 <br></br>
                 <Button onClick={()=>navigate("/campaign/archive")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Arquivo</Button>
                 <br></br>
+                <Button onClick={()=>navigate("/campaign/soundtrack")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}>Trilha Sonora</Button>
+                <br></br>
                 <Button onClick={()=>navigate("/home")} textAlign={"left"} fontSize={"18px"} variant={"ghost"}><LuCornerDownLeft /></Button>
-                <Flex flexDir={"column"} justifyContent={"end"} h={"35vh"}>
+                <Flex flexDir={"column"} justifyContent={"end"} h={"30vh"}>
                     <Flex gap={2}>
                         <ToggleTheme/>
                         <Izinho/>
