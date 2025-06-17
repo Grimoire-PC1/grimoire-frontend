@@ -3,16 +3,13 @@ import { LuListMusic, LuPause, LuPencil, LuPlay, LuPlus, LuShuffle, LuSkipBack, 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { useEffect, useReducer, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { SheetSubTab } from "@/interfaces/Models";
+import { PlaylistSubTab, SheetSubTab } from "@/interfaces/Models";
 import { getSystemSheetTemplateSubTabs } from "@/services/systemService";
-import { CharacterSheetDeleteSectionDialog } from "../CharacterSheetComponents/CharacterSheetDeleteSectionDialog";
-import { CharacterSheetEditSectionDialog } from "../CharacterSheetComponents/CharacterSheetEditSectionDialog";
-import { CharacterSheetField } from "../CharacterSheetComponents/CharacterSheetField";
-import { CharacterSheetNewFieldDialog } from "../CharacterSheetComponents/CharacterSheetNewFieldDialog";
 import { SoundtrackEditSectionDialog } from "./SoundtrackEditSectionDialog";
 import { SoundtrackDeleteSectionDialog } from "./SoundtrackDeleteSectionDialog";
 import { SoundtrackNewFieldDialog } from "./SoundtrackNewFieldDialog";
 import { SoundtrackField } from "./SoundtrackField";
+import { getPlaylistSubTabs } from "@/services/playlistService";
 
 
 export interface CharacterSheetSectionProps {
@@ -28,13 +25,13 @@ export const SoundtrackSection = ({
 }: CharacterSheetSectionProps) => {
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
-    const [campos,setCampos] = useState<SheetSubTab[]>();
+    const [campos,setCampos] = useState<PlaylistSubTab[]>();
     const [flag,setFlag] = useState(0);
     
 
     const mutation = useMutation({
         mutationKey: ["playlistsSubTabs"],
-        mutationFn: getSystemSheetTemplateSubTabs, //mudar pra getPlaylistsSubTabs ou sla
+        mutationFn: getPlaylistSubTabs,
         onSuccess: (data) => {
           console.log(data)
           setCampos(data.sort((a, b) => {
@@ -82,6 +79,7 @@ export const SoundtrackSection = ({
         alert("tocar playlist")
         setTocando(false)
         setPausado(false)
+        setAleatorio(false)
     }
 
     const voltarMusica = () => {
@@ -94,10 +92,14 @@ export const SoundtrackSection = ({
 
     const ordemAleatoriaPlaylist = () => {
         alert("tocar playlist")
+        setTocando(true)
+        setPausado(false)
+        setAleatorio(!aleatorio)
     }
 
     const [tocando,setTocando] = useState(false)
     const [pausado,setPausado] = useState(false)
+    const [aleatorio,setAleatorio] = useState(false)
     
     const [editSection,setEditSection] = useState(false);
     const [newField,setNewField] = useState(false);
@@ -110,30 +112,30 @@ export const SoundtrackSection = ({
                     <AccordionRoot collapsible cursor={"pointer"}>
                         <AccordionItem cursor={"pointer"} key={sectionId} value={String(sectionId)}>
                         <AccordionItemTrigger fontSize={"xl"} placeContent={"space-between"} cursor={"pointer"}>
-                            <LuUserRoundPen /> {sectionTitle}
+                            <LuListMusic /> {sectionTitle}
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
                             <For each={campos}>
-                                {(item) => <SoundtrackField fieldId={item.id} fieldTitle={item.nome} handleEdit={fecharEforcar}/>}
+                                {(item) => <SoundtrackField fieldId={item.id} fieldTitle={item.link} handleEdit={fecharEforcar}/>}
                             </For>
                             <Flex justifyContent={"space-between"}>
                                 <Flex gapX={2}>
-                                    <IconButton onClick={()=>voltarMusica()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>voltarMusica()}  disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSkipBack />
                                     </IconButton>
-                                    <IconButton onClick={()=>tocarPlaylist()} rounded={"full"} size={"md"} variant={tocando ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>tocarPlaylist()} disabled={tocando} rounded={"full"} size={"md"} variant={tocando ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuPlay />
                                     </IconButton>
-                                    <IconButton onClick={()=>pararPlaylist()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>pararPlaylist()} disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSquare />
                                     </IconButton>
-                                    <IconButton onClick={()=>pausarPlaylist()} rounded={"full"} size={"md"} variant={pausado ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>pausarPlaylist()} disabled={!tocando || pausado} rounded={"full"} size={"md"} variant={pausado ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuPause />
                                     </IconButton>
-                                    <IconButton onClick={()=>pularMusica()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>pularMusica()}  disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSkipForward />
                                     </IconButton>
-                                    <IconButton onClick={()=>ordemAleatoriaPlaylist()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>ordemAleatoriaPlaylist()} rounded={"full"} size={"md"} variant={aleatorio ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuShuffle />
                                     </IconButton>
                                 </Flex>

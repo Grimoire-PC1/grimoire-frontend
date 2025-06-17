@@ -228,3 +228,18 @@ export type UpdateItemPayload = {
     novo_rolar_dado:string;
     nova_quantidade:number;
 }
+
+export type UpdatePlaylistTabPayload = {
+    id:number;
+    novo_nome:string;
+}
+
+export type UpdatePlaylistSubTabPayload = {
+    id:number;
+    novo_link:string;
+}
+
+export type CreatePlaylistSubTabPayload = {
+    id_playlist:number;
+    link:string;
+}

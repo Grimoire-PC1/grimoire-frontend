@@ -138,3 +138,16 @@ export type Item = {
     rolar_dado:string;
     quantidade:number;
 }
+
+export type PlaylistTab = {
+    id:number;
+    id_campanha:number;
+    nome:string;
+}
+
+export type PlaylistSubTab = { //link
+    id:number;
+    id_playlist:number;
+    id_campanha:number;
+    link:string;
+}

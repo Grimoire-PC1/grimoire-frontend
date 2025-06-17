@@ -1,21 +1,12 @@
-import { Input, Text, Textarea, Image, Separator, Button, Center, Flex, For, Grid, IconButton,  } from "@chakra-ui/react";
-import { FileUploadRoot, FileUploadDropzone,FileUploadList } from "../ui/file-upload";
-import {RadioGroup, Radio } from "../ui/radio";
-import { AddNewCharacterProfile } from "../CharacterProfile/AddNewCharacterProfile";
-import { RulesCard } from "../RulesCard/RulesCard";
-import { CharacterSheetSection } from "../CharacterSheetComponents/CharacterSheetSection";
-import { Avatar } from "../ui/avatar";
+import { Text, Flex, For, Grid, IconButton,  } from "@chakra-ui/react";
 import { LuPlus } from "react-icons/lu";
 import { useEffect, useState } from "react";
-import { CharacterSheetDialog } from "../CharacterSheetComponents/CharacterSheetDialog";
-import { SheetTab, System } from "@/interfaces/Models";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
-import { getSystemSheetTemplateTabs } from "@/services/systemService";
-import { CharacterSheetSectionSystem } from "../CharacterSheetComponents/CharacterSheetSectionSystem";
+import { PlaylistTab } from "@/interfaces/Models";
+import { useMutation } from "@tanstack/react-query";
 import { Izinho } from "../Izinho/Izinho";
 import { SoundtrackSection } from "./SoundrackSection";
 import { SoundtrackSectionDialog } from "./SoundtrackSectionDialog";
+import { getPlaylistTabs } from "@/services/playlistService";
 
 export interface SystemPageComponentProps {
     title: string;
@@ -29,12 +20,12 @@ export const Soundtrack = ({
     campaign
 }: SystemPageComponentProps) => {
 
-    const [data, setData] = useState<SheetTab[]>();
+    const [data, setData] = useState<PlaylistTab[]>();
     const [flag,setFlag] = useState(0);
 
     const mutation = useMutation({
     mutationKey: ["playlists"],
-    mutationFn: getSystemSheetTemplateTabs, //mudar isso pra um getPlaylists ou sla
+    mutationFn: getPlaylistTabs,
     onSuccess: (data) => {
         console.log(data)
         setData(data.sort((a, b) => {

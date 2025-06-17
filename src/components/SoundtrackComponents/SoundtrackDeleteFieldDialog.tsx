@@ -1,8 +1,8 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import {Alert, Box, Button, Link,Text} from "@chakra-ui/react";
+import {Alert, Box, Button, Link } from "@chakra-ui/react";
 import { useMutation } from '@tanstack/react-query';
 import { toaster,Toaster } from '../ui/toaster';
-import { deleteSheetTemplateSubTab } from '@/services/systemService';
+import { deletePlaylistSubTab } from '@/services/playlistService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -22,8 +22,8 @@ export const SoundtrackDeleteFieldDialog = ({
 }: UserSettingsDialogSmProps) => {
 
     const mutation = useMutation({
-        mutationKey: ["deleteSubTab"],
-        mutationFn: deleteSheetTemplateSubTab,
+        mutationKey: ["deletePlaylistSubTab"],
+        mutationFn: deletePlaylistSubTab,
         onSuccess: () => {
             toaster.create({
                         description: "Música deletada com sucesso!",

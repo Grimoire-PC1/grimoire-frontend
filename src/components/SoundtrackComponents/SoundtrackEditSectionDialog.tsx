@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
 import { updateSheetTemplateTab } from '@/services/systemService';
+import { updatePlaylistTab } from '@/services/playlistService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -27,8 +28,8 @@ export const SoundtrackEditSectionDialog = ({
 
     const mutation = useMutation({
         mutationKey: ["playlistEditTab"],
-        mutationFn: updateSheetTemplateTab, //mudar pra o equivalente em playlists
-        onSuccess: (data) => {
+        mutationFn: updatePlaylistTab,
+        onSuccess: () => {
             toaster.create({
                         description: "Playlist renomeada com sucesso!",
                         type: "success",
@@ -70,7 +71,7 @@ export const SoundtrackEditSectionDialog = ({
                                     <Form>
                                         <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Nome da playlist' defaultValue={sectionName}></Input>
                                     </Form>
-                                    <Button onClick={()=>mutation.mutate({id_aba_ficha:sectionId,nome:titulo})} mt={"4"} mb={"4"}>Modificar Playlist</Button>
+                                    <Button onClick={()=>mutation.mutate({id:sectionId,novo_nome:titulo})} mt={"4"} mb={"4"}>Modificar Playlist</Button>
                                 </div>
 
                             </DialogPanel>

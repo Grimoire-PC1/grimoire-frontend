@@ -1,13 +1,10 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import {Alert, Box, Button, createListCollection, Input, Textarea} from "@chakra-ui/react";
+import { Box, Button, Input} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
-import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '../ui/select';
 import { useState } from 'react';
-import { Controller } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
-import { createSheetTemplateSubTab } from '@/services/systemService';
-import { SheetSubTabType } from '@/interfaces/Models';
+import { createPlaylistSubTab } from '@/services/playlistService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -29,8 +26,8 @@ export const SoundtrackNewFieldDialog = ({
 
     const mutation = useMutation({
     mutationKey: ["playlistCreateSubTab"],
-    mutationFn: createSheetTemplateSubTab, //mudar para o equivalente de playlists
-    onSuccess: (data) => {
+    mutationFn: createPlaylistSubTab,
+    onSuccess: () => {
         toaster.create({
                     description: "Música adicionada com sucesso!",
                     type: "success",
@@ -72,7 +69,7 @@ export const SoundtrackNewFieldDialog = ({
                                     <Form>
                                         <Input value={titulo} onInput={e => setTitulo(e.target.value)} mt={4} w={"360px"} placeholder='Link'></Input>
                                     </Form>
-                                    <Button onClick={()=>mutation.mutate({id_aba_ficha:sectionId,nome:titulo})} mt={"4"} mb={"4"}>Adicionar Música</Button>
+                                    <Button onClick={()=>mutation.mutate({id_playlist:sectionId,link:titulo})} mt={"4"} mb={"4"}>Adicionar Música</Button>
                                 </div>
 
                             </DialogPanel>

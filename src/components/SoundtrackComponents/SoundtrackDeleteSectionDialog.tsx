@@ -4,6 +4,7 @@ import { Form } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { toaster, Toaster } from '../ui/toaster';
 import { deleteSheetTemplateTab } from '@/services/systemService';
+import { deletePlaylistTab } from '@/services/playlistService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -24,7 +25,7 @@ export const SoundtrackDeleteSectionDialog = ({
 
     const mutation = useMutation({
         mutationKey: ["playlistDeleteTab"],
-        mutationFn: deleteSheetTemplateTab, //mudar para o equivalente em playlists
+        mutationFn: deletePlaylistTab,
         onSuccess: () => {
             toaster.create({
                         description: "Playlist deletada com sucesso!",
