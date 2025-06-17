@@ -1,5 +1,5 @@
-import {CardBody, CardRoot,For,IconButton, } from "@chakra-ui/react"
-import { LuPencil, LuPlus, LuTrash2, LuUserRoundPen } from "react-icons/lu";
+import {CardBody, CardRoot,Flex,For,IconButton, } from "@chakra-ui/react"
+import { LuListMusic, LuPause, LuPencil, LuPlay, LuPlus, LuShuffle, LuSkipBack, LuSkipForward, LuSquare, LuTrash2, LuUserRoundPen } from "react-icons/lu";
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from "../ui/accordion";
 import { useEffect, useReducer, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import { CharacterSheetNewFieldDialog } from "../CharacterSheetComponents/Charac
 import { SoundtrackEditSectionDialog } from "./SoundtrackEditSectionDialog";
 import { SoundtrackDeleteSectionDialog } from "./SoundtrackDeleteSectionDialog";
 import { SoundtrackNewFieldDialog } from "./SoundtrackNewFieldDialog";
+import { SoundtrackField } from "./SoundtrackField";
 
 
 export interface CharacterSheetSectionProps {
@@ -64,8 +65,40 @@ export const SoundtrackSection = ({
         //location.reload();
         handleEdit(false);
     }
-    
 
+    const tocarPlaylist = () => {
+        alert("tocar playlist")
+        setTocando(true)
+        setPausado(false)
+    }
+
+    const pausarPlaylist = () => {
+        alert("tocar playlist")
+        setTocando(false)
+        setPausado(true)
+    }
+
+    const pararPlaylist = () => {
+        alert("tocar playlist")
+        setTocando(false)
+        setPausado(false)
+    }
+
+    const voltarMusica = () => {
+        alert("tocar playlist")
+    }
+
+    const pularMusica = () => {
+        alert("tocar playlist")
+    }
+
+    const ordemAleatoriaPlaylist = () => {
+        alert("tocar playlist")
+    }
+
+    const [tocando,setTocando] = useState(false)
+    const [pausado,setPausado] = useState(false)
+    
     const [editSection,setEditSection] = useState(false);
     const [newField,setNewField] = useState(false);
     const [deleteSection,setDeleteSection] = useState(false);
@@ -81,19 +114,41 @@ export const SoundtrackSection = ({
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
                             <For each={campos}>
-                                {(item) => <CharacterSheetField fieldId={item.id} fieldTitle={item.nome} fieldType={item.tipo_sub_aba_ficha} handleEdit={fecharEforcar}/>}
+                                {(item) => <SoundtrackField fieldId={item.id} fieldTitle={item.nome} handleEdit={fecharEforcar}/>}
                             </For>
-                            <div className="flex place-content-end">
-                                <IconButton onClick={()=>setNewField(true)} rounded={"full"} size={"md"} variant={"outline"} aria-label="Novo link"> 
-                                    <LuPlus />
-                                </IconButton>
-                                <IconButton onClick={()=>setEditSection(true)}  ml={2} rounded={"full"} size={"md"} variant={"outline"} aria-label="Renomear playlist"> 
-                                    <LuPencil />
-                                </IconButton>
-                                <IconButton onClick={()=>setDeleteSection(true)} ml={2} rounded={"full"} size={"md"} variant={"outline"} aria-label="Excluir playlist"> 
-                                    <LuTrash2 />
-                                </IconButton>
-                            </div>
+                            <Flex justifyContent={"space-between"}>
+                                <Flex gapX={2}>
+                                    <IconButton onClick={()=>voltarMusica()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                        <LuSkipBack />
+                                    </IconButton>
+                                    <IconButton onClick={()=>tocarPlaylist()} rounded={"full"} size={"md"} variant={tocando ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                        <LuPlay />
+                                    </IconButton>
+                                    <IconButton onClick={()=>pararPlaylist()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                        <LuSquare />
+                                    </IconButton>
+                                    <IconButton onClick={()=>pausarPlaylist()} rounded={"full"} size={"md"} variant={pausado ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                        <LuPause />
+                                    </IconButton>
+                                    <IconButton onClick={()=>pularMusica()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                        <LuSkipForward />
+                                    </IconButton>
+                                    <IconButton onClick={()=>ordemAleatoriaPlaylist()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                        <LuShuffle />
+                                    </IconButton>
+                                </Flex>
+                                <Flex gapX={2}>
+                                    <IconButton onClick={()=>setNewField(true)} rounded={"full"} size={"md"} variant={"outline"} aria-label="Novo link"> 
+                                        <LuPlus />
+                                    </IconButton>
+                                    <IconButton onClick={()=>setEditSection(true)} rounded={"full"} size={"md"} variant={"outline"} aria-label="Renomear playlist"> 
+                                        <LuPencil />
+                                    </IconButton>
+                                    <IconButton onClick={()=>setDeleteSection(true)} rounded={"full"} size={"md"} variant={"outline"} aria-label="Excluir playlist"> 
+                                        <LuTrash2 />
+                                    </IconButton>
+                                </Flex>
+                            </Flex>
                         </AccordionItemContent>
                         </AccordionItem>
                     </AccordionRoot>
