@@ -1,4 +1,4 @@
 export const URL_CONSTS = {
-    IMAGEMANAGER: "https://grimoire-image-manager.onrender.com",
-    BACKEND: "https://grimoire-backend.onrender.com/" 
+    IMAGEMANAGER: "http://150.165.85.75/grimoire-image-manager",
+    BACKEND: "http://150.165.85.75/backend" 
 }
