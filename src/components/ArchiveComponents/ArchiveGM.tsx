@@ -7,6 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { getFolders } from "@/services/campaignService";
 import { Folder } from "@/interfaces/Models";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { archiveFolderGMText } from "../Izinho/izinhoText";
 
 export interface ArchiveGMProps {
     campaign: string;
@@ -57,7 +59,7 @@ export const ArchiveGM = ({
             <Flex alignItems={"center"} placeContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>
                     <Text className="subtitle-s">ORGANIZE TODA A SUA CAMPANHA EM UM SÓ LUGAR!</Text>
-                    <Izinho/>
+                    <Izinho1 texto={archiveFolderGMText.text1}/>
                 </Flex>
                 
                 <IconButton onClick={()=>setShowNewFolder(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Regra"> 

@@ -7,6 +7,8 @@ import { getSystemRules } from "@/services/systemService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SystemRule } from "@/interfaces/Models";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { systemComponentText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -72,7 +74,7 @@ export const SystemPageRulesComponent = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={systemComponentText.text1}/>
                         </Flex>
                         <Text className="text">{subtitle}</Text>
                     </div>

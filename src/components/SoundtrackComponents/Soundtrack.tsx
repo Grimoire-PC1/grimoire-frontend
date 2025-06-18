@@ -3,10 +3,11 @@ import { LuPlus } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { PlaylistTab } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
-import { Izinho } from "../Izinho/Izinho";
 import { SoundtrackSection } from "./SoundrackSection";
 import { SoundtrackSectionDialog } from "./SoundtrackSectionDialog";
 import { getPlaylistTabs } from "@/services/playlistService";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { soundtrackText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     title: string;
@@ -58,7 +59,7 @@ export const Soundtrack = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={soundtrackText.text1}/>
                         </Flex>
                         <Text className="text">{subtitle}</Text>
                     </div>

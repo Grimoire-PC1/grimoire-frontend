@@ -5,6 +5,8 @@ import { LuCornerDownLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho4 } from "../Izinho/Izinho4";
+import { systemSideBarText } from "../Izinho/izinhoText";
 
 export const SidebarSystem = () => {
     const navigate = useNavigate();
@@ -24,7 +26,7 @@ export const SidebarSystem = () => {
                 <Flex flexDir={"column"} h={"50vh"} justifyContent={"end"}>
                     <Flex gap={2}>
                         <ToggleTheme/>
-                        <Izinho/>
+                        <Izinho4 texto={systemSideBarText.text1} texto2={systemSideBarText.text2} texto3={systemSideBarText.text3} texto4={systemSideBarText.text4}/>
                     </Flex>
                 </Flex>
             </div>

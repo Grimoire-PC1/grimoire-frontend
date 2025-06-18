@@ -4,8 +4,9 @@ import { Button } from "@chakra-ui/react/button";
 import { Separator } from "@chakra-ui/react/separator";
 import { LuCornerDownLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { Izinho } from "../Izinho/Izinho";
 import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
+import { Izinho4 } from "../Izinho/Izinho4";
+import { campaignPlayerSideBarText } from "../Izinho/izinhoText";
 
 
 export interface SidebarPlayerProps {
@@ -32,7 +33,7 @@ export const SidebarPlayer = ({
                 <Flex flexDir={"column"} h={"52vh"} justifyContent={"end"}>
                     <Flex gap={2}>
                         <ToggleTheme/>
-                        <Izinho/>
+                        <Izinho4 texto={campaignPlayerSideBarText.text1} texto2={campaignPlayerSideBarText.text2} texto3={campaignPlayerSideBarText.text3} texto4={campaignPlayerSideBarText.text4}/>
                     </Flex>
                 </Flex>
             </div>

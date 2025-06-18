@@ -6,7 +6,8 @@ import { MechanicsCardDialog } from "../MechanicsCard/MechanicsCardDialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSystemMechanics, getSystemRules } from "@/services/systemService";
 import { SystemMechanic } from "@/interfaces/Models";
-import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { mechanicComponentText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -68,7 +69,7 @@ export const SystemPageMechanicsComponent = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={mechanicComponentText.text1}/>
                         </Flex>
                         <Text className="text">{subtitle}</Text>
                     </div>

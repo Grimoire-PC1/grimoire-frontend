@@ -14,6 +14,8 @@ import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { getSystemSheetTemplateTabs } from "@/services/systemService";
 import { CharacterSheetSectionSystem } from "../CharacterSheetComponents/CharacterSheetSectionSystem";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { characterSheetComponentText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     system: System;
@@ -75,7 +77,7 @@ export const SystemPageSheetComponent = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={characterSheetComponentText.text1}/>
                         </Flex>
                         <Text className="text">{subtitle}</Text>
                     </div>

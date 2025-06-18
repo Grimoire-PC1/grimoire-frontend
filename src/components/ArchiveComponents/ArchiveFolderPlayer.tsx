@@ -16,6 +16,8 @@ import { File, Folder, Item } from "@/interfaces/Models";
 import { useMutation } from "@tanstack/react-query";
 import { getFiles, getFolders, getItem } from "@/services/campaignService" ;
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { archiveFolderPlayerText } from "../Izinho/izinhoText";
 
 export interface ArchivePlayerProps {
     campaign: number;
@@ -123,7 +125,7 @@ export const ArchiveFolderPlayer = ({
                     </IconButton>
                     <Flex gap={2} alignItems={"center"}>
                         <Text className="subtitle-s">{folder.nome}</Text>
-                        <Izinho/>
+                        <Izinho1 texto={archiveFolderPlayerText.text1}/>
                     </Flex>
                 </Flex>
                 {/*

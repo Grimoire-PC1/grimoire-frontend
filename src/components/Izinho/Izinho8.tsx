@@ -3,18 +3,26 @@ import { LuSun, LuMoon, LuInfo, LuChartLine } from "react-icons/lu"
 import { useColorMode } from "../ui/color-mode"
 
 interface IzinhoProps {
-    texto:string;
+    texto1:string;
     texto2:string;
     texto3:string;
-    texto4:string
+    texto4:string;
+    texto5:string;
+    texto6:string;
+    texto7:string;
+    texto8:string;
 }
 
-export const Izinho4 = (
+export const Izinho8 = (
     {
-        texto,
+        texto1,
         texto2,
         texto3,
-        texto4
+        texto4,
+        texto5,
+        texto6,
+        texto7,
+        texto8
     }:IzinhoProps
 ) => {
     return(
@@ -33,10 +41,14 @@ export const Izinho4 = (
                                 <HoverCard.ArrowTip />
                             </HoverCard.Arrow>
                             <Flex flexDir={"column"} gap={2}>
-                                <Text>{texto}</Text>
+                                <Text>{texto1}</Text>
                                 <Text>{texto2}</Text>
                                 <Text>{texto3}</Text>
                                 <Text>{texto4}</Text>
+                                <Text>{texto5}</Text>
+                                <Text>{texto6}</Text>
+                                <Text>{texto7}</Text>
+                                <Text>{texto8}</Text>
                             </Flex>
                         </HoverCard.Content>
                         </HoverCard.Positioner>

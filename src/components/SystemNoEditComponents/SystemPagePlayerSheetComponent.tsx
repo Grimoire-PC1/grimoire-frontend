@@ -11,7 +11,8 @@ import { Avatar } from "../ui/avatar";
 import { getCampaignSheetTemplateTabs } from "@/services/campaignService";
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { URL_CONSTS } from "@/constants/url";
-import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { characterSheetComponentText } from "../Izinho/izinhoText";
 
 export const SystemPagePlayerSheetComponent = () => {
     const [,forceUpdate] = useReducer(x=>x+1,0);
@@ -156,7 +157,7 @@ export const SystemPagePlayerSheetComponent = () => {
                 <div>
                     <Flex gap={2} alignItems={"center"}>
                         <Text className="subtitle-s">SEUS PERSONAGENS</Text>
-                        <Izinho/>
+                        <Izinho1 texto={characterSheetComponentText.text1}/>
                     </Flex>
                     <Flex wrap="wrap" mt='1' gapX={0.5}>
                         {

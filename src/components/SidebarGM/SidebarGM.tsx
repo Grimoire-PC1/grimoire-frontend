@@ -8,6 +8,8 @@ import { DialogCampaignCode } from "../Dialog/DialogCampaignCode";
 import { Flex } from "@chakra-ui/react";
 import { Izinho } from "../Izinho/Izinho";
 import { ToggleTheme } from "../ToggleTheme/ToggleTheme";
+import { Izinho8 } from "../Izinho/Izinho8";
+import { campaignGMSideBarText } from "../Izinho/izinhoText";
 
 
 export interface SidebarGMProps {
@@ -41,7 +43,7 @@ export const SidebarGM = () => {
                 <Flex flexDir={"column"} justifyContent={"end"} h={"30vh"}>
                     <Flex gap={2}>
                         <ToggleTheme/>
-                        <Izinho/>
+                        <Izinho8 texto1={campaignGMSideBarText.text1} texto2={campaignGMSideBarText.text2} texto3={campaignGMSideBarText.text3} texto4={campaignGMSideBarText.text4} texto8={campaignGMSideBarText.text8} texto5={campaignGMSideBarText.text5} texto6={campaignGMSideBarText.text6} texto7={campaignGMSideBarText.text7}/>
                     </Flex>
                 </Flex>
             </div>

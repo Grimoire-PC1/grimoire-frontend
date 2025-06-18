@@ -22,8 +22,8 @@ import { getUser } from "@/services/userService";
 import { SystemListCard } from "@/components/system/SystemListCard";
 import { toaster,Toaster } from "@/components/ui/toaster";
 import { URL_CONSTS } from "@/constants/url";
-import { Izinho } from "@/components/Izinho/Izinho";
-import { Izinho2 } from "@/components/Izinho/Izinho2";
+import { homeText } from "@/components/Izinho/izinhoText";
+import { Izinho4 } from "@/components/Izinho/Izinho4";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -310,7 +310,7 @@ export default function Home() {
                                 <Flex flexDir={"column"} h={"55vh"} justifyContent={"end"}>
                                     <Flex gap={2}>
                                         <ToggleTheme/>
-                                        <Izinho/>
+                                        <Izinho4 texto={homeText.text1} texto2={homeText.text2} texto3={homeText.text3} texto4={homeText.text4} />
                                     </Flex>
                                 </Flex>
                             </div>

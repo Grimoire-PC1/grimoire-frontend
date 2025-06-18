@@ -12,6 +12,8 @@ import { getCampaignCharacters, getCampaignSheetTemplateTabs } from "@/services/
 import { FileUploadRoot, FileUploadTrigger } from "../ui/file-upload";
 import { URL_CONSTS } from "@/constants/url";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { archiveCharacterSheetCreatorText, archiveCharacterSheetViewerText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     campaign: Campaign;
@@ -162,7 +164,7 @@ export const ArchiveCharacterSheet = ({
                             </IconButton>
                             <Flex gap={2} alignItems={"center"}>
                                 <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                                <Izinho/>
+                                <Izinho1 texto={archiveCharacterSheetCreatorText.text1}/>
                             </Flex>
                         </Flex>
                         <Flex  gapX={2} align={"center"}>
@@ -195,7 +197,7 @@ export const ArchiveCharacterSheet = ({
                             </IconButton>
                             <Flex gap={2} alignItems={"center"}>
                                 <Text mr={2} className="subtitle-s">FICHA DE {characterName.toUpperCase()}</Text>
-                                <Izinho/>
+                                <Izinho1 texto={archiveCharacterSheetViewerText.text1}/>
                             </Flex>
                         </Flex>
                         <Avatar m={8} scale={2} size={"2xl"} src={img}></Avatar>

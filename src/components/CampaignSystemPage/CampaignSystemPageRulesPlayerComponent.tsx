@@ -3,6 +3,8 @@ import { RulesNoEditCard } from "../RulesCard/RulesNoEditCard";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignRules } from "@/services/campaignService";
 import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { systemComponentText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     system: string; //depois mudar pra System
@@ -33,7 +35,7 @@ export const CampaignSystemPageRulesPlayerComponent = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={systemComponentText.text1}/>
                         </Flex>
                         {subtitle?<Text className="text">{subtitle}</Text>:<div></div>}
                     </div>

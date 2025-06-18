@@ -5,7 +5,8 @@ import { getSystemSheetTemplateTabs } from "@/services/systemService";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { CharacterSheetSectionSystem } from "../CharacterSheetComponents/CharacterSheetSectionSystem";
-import { Izinho } from "../Izinho/Izinho";
+import { Izinho1 } from "../Izinho/Izinho1";
+import { characterSheetComponentText } from "../Izinho/izinhoText";
 
 export interface SystemPageComponentProps {
     system: System; //depois mudar pra System
@@ -50,7 +51,7 @@ export const SystemPageSheetNoEditComponent = ({
                     <div>
                         <Flex gap={2} alignItems={"center"}>
                             <Text className="subtitle-s">{title}</Text>
-                            <Izinho/>
+                            <Izinho1 texto={characterSheetComponentText.text1}/>
                         </Flex>
                         {subtitle? 
                         <Text className="text">{subtitle}</Text>
