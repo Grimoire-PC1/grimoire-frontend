@@ -142,6 +142,7 @@ export type Item = {
 export type PlaylistTab = {
     id:number;
     id_campanha:number;
+    id_campanha_mestre:number,
     nome:string;
 }
 
@@ -149,5 +150,6 @@ export type PlaylistSubTab = { //link
     id:number;
     id_playlist:number;
     id_campanha:number;
+    id_campanha_mestre: number;
     link:string;
 }

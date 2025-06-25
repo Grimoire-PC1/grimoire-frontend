@@ -8,8 +8,6 @@ import { SoundtrackSectionDialog } from "./SoundtrackSectionDialog";
 import { getPlaylistTabs } from "@/services/playlistService";
 import { Izinho1 } from "../Izinho/Izinho1";
 import { soundtrackText } from "../Izinho/izinhoText";
-import YouTubeAudioPlayer from "@/components/YoutubePlayer/YouTubeAudioPlayer"
-import { useAudioPlayer } from "@/context/AudioPlayerContext";
 
 export interface SystemPageComponentProps {
     title: string;
@@ -71,9 +69,9 @@ export const Soundtrack = ({
                     </IconButton>
                 </Flex>
                     <Grid maxH={"66vh"} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
-                        {/*<For each={data}>*/}
-                        <For each={[{nome:"jorge", id:1, id_campanha:1}]}>
-                            {(item) => <SoundtrackSection sectionTitle={item.nome} sectionId={item.id} handleEdit={fecharEforcar}/>}
+                        <For each={data}>
+                        {/*<For each={[{nome:"jorge", id:1, id_campanha:1},{nome:"regina", id:2, id_campanha:1}]}>*/}
+                            {(item) => <SoundtrackSection sectionTitle={item.nome} sectionId={item.id} campaignSectionId={item.id_campanha} handleEdit={fecharEforcar}/>}
                         </For>
                     </Grid>
             

@@ -5,6 +5,10 @@ interface AudioPlayerContextProps {
   currentIndex: number;
   videoId: string;
   isPlaying: boolean;
+  activeCampaign: number,
+  activePlaylist: number,
+  setActiveCampaign: (id:number) => void;
+  setActivePlaylist: (id:number) => void;
   setIsPlaying: (b: boolean) => void;
   next: () => void;
   previous: () => void;
@@ -18,7 +22,9 @@ const AudioPlayerContext = createContext<AudioPlayerContextProps | undefined>(un
 export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [queue, setQueueState] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [activeCampaign, setActiveCampaign] = useState<number>(0);
+  const [activePlaylist, setActivePlaylist] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const setQueue = (ids: string[]) => {
     setQueueState(ids);
@@ -52,12 +58,16 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         currentIndex,
         videoId,
         isPlaying,
+        activeCampaign,
+        activePlaylist,
         setIsPlaying,
         next,
         previous,
         shuffle,
         setQueue,
         setCurrentIndex,
+        setActiveCampaign,
+        setActivePlaylist
       }}
     >
       {children}
