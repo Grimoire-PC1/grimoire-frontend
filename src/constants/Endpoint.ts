@@ -84,11 +84,11 @@ export const ENDPOINT = {
     DELETE_ITEM: "item/delete",
 
     //endpoints de playlist
-    GET_PLAYLIST_TABS: "",
-    GET_PLAYLIST_SUB_TABS: "",
-    CREATE_PLAYLIST_TAB: "",
-    UPDATE_PLAYLIST_TAB: "",
-    DELETE_PLAYLIST_TAB: "",
-    CREATE_PLAYLIST_SUB_TAB: "",
-    DELETE_PLAYLIST_SUB_TAB: "",
+    GET_PLAYLIST_TABS: "playlist/get",
+    GET_PLAYLIST_SUB_TABS: "playlist/music/get",
+    CREATE_PLAYLIST_TAB: "playlist/register",
+    UPDATE_PLAYLIST_TAB: "playlist/update",
+    DELETE_PLAYLIST_TAB: "playlist/delete",
+    CREATE_PLAYLIST_SUB_TAB: "playlist/music/register",
+    DELETE_PLAYLIST_SUB_TAB: "playlist/music/delete",
 } as const;

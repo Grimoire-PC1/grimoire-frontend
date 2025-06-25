@@ -10,6 +10,7 @@ import { SoundtrackDeleteSectionDialog } from "./SoundtrackDeleteSectionDialog";
 import { SoundtrackNewFieldDialog } from "./SoundtrackNewFieldDialog";
 import { SoundtrackField } from "./SoundtrackField";
 import { getPlaylistSubTabs } from "@/services/playlistService";
+import { useAudioPlayer } from "@/context/AudioPlayerContext";
 
 
 export interface CharacterSheetSectionProps {
@@ -23,18 +24,29 @@ export const SoundtrackSection = ({
     sectionId,
     handleEdit
 }: CharacterSheetSectionProps) => {
+    const {
+        queue,
+        currentIndex,
+        isPlaying,
+        setIsPlaying,
+        setQueue,
+        next,
+        previous,
+        shuffle,
+        setCurrentIndex
+    } = useAudioPlayer();
     const [,forceUpdate] = useReducer(x=>x+1,0);
 
-    const [campos,setCampos] = useState<PlaylistSubTab[]>();
+    const [musics,setMusics] = useState<PlaylistSubTab[]>();
     const [flag,setFlag] = useState(0);
-    
+    const [isQueueSet, setIsQueueSet] = useState(false)
 
     const mutation = useMutation({
         mutationKey: ["playlistsSubTabs"],
         mutationFn: getPlaylistSubTabs,
         onSuccess: (data) => {
           console.log(data)
-          setCampos(data.sort((a, b) => {
+          setMusics(data.sort((a, b) => {
             return a.id - b.id;
         }));
           setFlag(1);
@@ -48,7 +60,7 @@ export const SoundtrackSection = ({
         if(flag == 0){
             mutation.mutate(sectionId);
         }
-    }, [campos]);
+    }, [musics]);
 
     function fecharEforcar(){
         mutation.mutate(sectionId);
@@ -64,39 +76,46 @@ export const SoundtrackSection = ({
     }
 
     const tocarPlaylist = () => {
-        alert("tocar playlist")
+        if(!isQueueSet) {
+            const videoIds = musicas?.map((music) => {return music.link.split("&")[0].split("https://www.youtube.com/watch?v=")[1]}) || [''];
+            console.log(videoIds)
+            setQueue(videoIds);
+            setIsQueueSet(true);
+        }
+        setIsPlaying(true)
         setTocando(true)
         setPausado(false)
     }
 
     const pausarPlaylist = () => {
-        alert("tocar playlist")
+        setIsPlaying(false)
         setTocando(false)
         setPausado(true)
     }
 
     const pararPlaylist = () => {
-        alert("tocar playlist")
+        setCurrentIndex(0)
+        setIsPlaying(false)
         setTocando(false)
         setPausado(false)
         setAleatorio(false)
     }
 
-    const voltarMusica = () => {
-        alert("tocar playlist")
-    }
-
-    const pularMusica = () => {
-        alert("tocar playlist")
-    }
-
-    const ordemAleatoriaPlaylist = () => {
-        alert("tocar playlist")
-        setTocando(true)
-        setPausado(false)
-        setAleatorio(!aleatorio)
-    }
-
+    const musicas: PlaylistSubTab[] = [
+        {
+            id:1,
+            id_playlist:1,
+            id_campanha:1,
+            link:"https://www.youtube.com/watch?v=6POZlJAZsok&list=RD6POZlJAZsok&start_radio=1",
+        },
+        {
+            id:1,
+            id_playlist:1,
+            id_campanha:1,
+            link:"https://www.youtube.com/watch?v=3-qwqrQXsXQ&list=RD3-qwqrQXsXQ&start_radio=1"
+        }
+    
+    ]
     const [tocando,setTocando] = useState(false)
     const [pausado,setPausado] = useState(false)
     const [aleatorio,setAleatorio] = useState(false)
@@ -115,27 +134,28 @@ export const SoundtrackSection = ({
                             <LuListMusic /> {sectionTitle}
                         </AccordionItemTrigger>
                         <AccordionItemContent display={"grid"} gapY={4}>
-                            <For each={campos}>
+                            {/*<For each={musics}>*/}
+                            <For each={musicas}>
                                 {(item) => <SoundtrackField fieldId={item.id} fieldTitle={item.link} handleEdit={fecharEforcar}/>}
                             </For>
                             <Flex justifyContent={"space-between"}>
                                 <Flex gapX={2}>
-                                    <IconButton onClick={()=>voltarMusica()}  disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>previous()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSkipBack />
                                     </IconButton>
-                                    <IconButton onClick={()=>tocarPlaylist()} disabled={tocando} rounded={"full"} size={"md"} variant={tocando ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>tocarPlaylist()} rounded={"full"} size={"md"} variant={tocando ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuPlay />
                                     </IconButton>
-                                    <IconButton onClick={()=>pararPlaylist()} disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>pararPlaylist()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSquare />
                                     </IconButton>
-                                    <IconButton onClick={()=>pausarPlaylist()} disabled={!tocando || pausado} rounded={"full"} size={"md"} variant={pausado ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>pausarPlaylist()} rounded={"full"} size={"md"} variant={pausado ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuPause />
                                     </IconButton>
-                                    <IconButton onClick={()=>pularMusica()}  disabled={!tocando && !pausado} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>next()} rounded={"full"} size={"md"} variant={"outline"} aria-label="Tocar Playlist"> 
                                         <LuSkipForward />
                                     </IconButton>
-                                    <IconButton onClick={()=>ordemAleatoriaPlaylist()} rounded={"full"} size={"md"} variant={aleatorio ? "solid" :"outline"} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>shuffle()} rounded={"full"} size={"md"} variant={aleatorio ? "solid" :"outline"} aria-label="Tocar Playlist"> 
                                         <LuShuffle />
                                     </IconButton>
                                 </Flex>

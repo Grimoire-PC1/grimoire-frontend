@@ -1,7 +1,7 @@
 import { URL_CONSTS } from "@/constants/url";
 import axios, { AxiosError } from "axios";
 
-const api_url = URL_CONSTS.BACKEND //"http://150.165.111.156:8080/"; //"http://localhost:8082/" //import.meta.env.VITE_BACKEND_URL ??   
+const api_url = URL_CONSTS.BACKEND // "http://localhost:8082/" //  "http://150.165.111.156:8080/"; // import.meta.env.VITE_BACKEND_URL ??   
 
 export const axiosInstace = axios.create({
   baseURL: api_url,

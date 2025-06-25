@@ -4,24 +4,22 @@ import { useAudioPlayer } from '../../context/AudioPlayerContext';
 
 const YouTubeAudioPlayer: React.FC = () => {
   const playerRef = useRef<any>(null);
-  const { videoId, isPlaying, volume } = useAudioPlayer();
+  const { videoId, isPlaying, next } = useAudioPlayer();
 
   const onReady: YouTubeProps['onReady'] = (event) => {
     playerRef.current = event.target;
-    playerRef.current.setVolume(volume);
     if (isPlaying) playerRef.current.playVideo();
     else playerRef.current.pauseVideo();
+  };
+
+  const onEnd: YouTubeProps['onEnd'] = () => {
+    next();
   };
 
   useEffect(() => {
     if (!playerRef.current) return;
     isPlaying ? playerRef.current.playVideo() : playerRef.current.pauseVideo();
   }, [isPlaying]);
-
-  useEffect(() => {
-    if (!playerRef.current) return;
-    playerRef.current.setVolume(volume);
-  }, [volume]);
 
   const opts: YouTubeProps['opts'] = {
     height: '0',
@@ -34,7 +32,7 @@ const YouTubeAudioPlayer: React.FC = () => {
     },
   };
 
-  return <YouTube videoId={videoId} opts={opts} onReady={onReady} />;
+  return <YouTube videoId={videoId} opts={opts} onReady={onReady} onEnd={onEnd} />;
 };
 
 export default YouTubeAudioPlayer;

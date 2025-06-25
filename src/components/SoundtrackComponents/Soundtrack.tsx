@@ -53,8 +53,6 @@ export const Soundtrack = ({
         setNewSection(false);
         mutation.mutate();
     }
-
-    const { videoId, setVideoId, isPlaying, setIsPlaying, volume, setVolume } = useAudioPlayer();
     
     return(
         <div className="">
@@ -71,32 +69,10 @@ export const Soundtrack = ({
                     <IconButton onClick={()=>setNewSection(true)} rounded={"full"} size={"2xl"} variant={"outline"} aria-label="Nova Aba"> 
                         <LuPlus />
                     </IconButton>
-                    <div>
-                    <p>Video atual: {"k4hjX6ZsplU"}</p>
-                    <button onClick={() => setIsPlaying(!isPlaying)}>
-                        {isPlaying ? 'Pausar' : 'Tocar'}
-                    </button>
-                    <input
-                        type="range"
-                        min={0}
-                        max={100}
-                        value={volume}
-                        onChange={(e) => setVolume(Number(e.target.value))}
-                    />
-                    <button onClick={() => setVideoId(prompt('Novo ID do vídeo YouTube:') || videoId)}>
-                        Trocar Vídeo
-                    </button>
-                    </div>
-                    {/*
-                        <div style={{ padding: 20 }}>
-                            <h1>🎧 Player de Áudio do YouTube</h1>
-                            <YouTubeAudioPlayer videoId="k4hjX6ZsplU" />
-                        </div>
-                    */}
                 </Flex>
                     <Grid maxH={"66vh"} overflowY={"auto"} className="grid-cols-2 margin-top-s" mb={12} gap={4}>
                         {/*<For each={data}>*/}
-                        <For each={[{nome:"jorge", id:1}]}>
+                        <For each={[{nome:"jorge", id:1, id_campanha:1}]}>
                             {(item) => <SoundtrackSection sectionTitle={item.nome} sectionId={item.id} handleEdit={fecharEforcar}/>}
                         </For>
                     </Grid>
