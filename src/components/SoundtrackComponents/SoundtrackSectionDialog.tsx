@@ -3,8 +3,8 @@ import {Box, Button, Input, Textarea} from "@chakra-ui/react";
 import { Form } from 'react-router-dom';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { createSheetTemplateTab } from '@/services/systemService';
 import { toaster, Toaster } from '../ui/toaster';
+import { createPlaylistTab } from '@/services/playlistService';
 
 
 export interface UserSettingsDialogSmProps {
@@ -23,7 +23,7 @@ export const SoundtrackSectionDialog = ({
 
      const mutation = useMutation({
         mutationKey: ["createTab"],
-        mutationFn: createSheetTemplateTab,
+        mutationFn: createPlaylistTab,
         onSuccess: (data) => {
             toaster.create({
                         description: "Playlist criada com sucesso!",

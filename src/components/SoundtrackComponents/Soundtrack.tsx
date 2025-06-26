@@ -51,6 +51,8 @@ export const Soundtrack = ({
         setNewSection(false);
         mutation.mutate();
     }
+
+    
     
     return(
         <div className="">

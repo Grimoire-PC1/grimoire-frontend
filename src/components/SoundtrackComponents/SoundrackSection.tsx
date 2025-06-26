@@ -85,7 +85,15 @@ export const SoundtrackSection = ({
         setActiveCampaign(campaignSectionId)
         setIsTheActivePlaylist(true)
         if(!isQueueSet) {
-            const videoIds = musics?.map((music) => {return music.link.split("&")[0].split("https://www.youtube.com/watch?v=")[1]}) || [''];
+            const videoIds = musics?.map((music) => {
+                let videoId: string = "";
+                if(music.link.startsWith("https://www.youtube.com/watch?v=")) {
+                    videoId = music.link.split("&")[0].split("https://www.youtube.com/watch?v=")[1]
+                }else if (music.link.startsWith("https://youtu.be/")){
+                    videoId = music.link.split("?")[0].split("https://youtu.be/")[1]
+                }
+                return videoId
+            }) || [''];
             console.log(videoIds)
             setQueue(videoIds);
             setIsQueueSet(true);
@@ -96,9 +104,6 @@ export const SoundtrackSection = ({
     }
 
     const pausarPlaylist = () => {
-        setActivePlaylist(0)
-        setActiveCampaign(0)
-        setIsTheActivePlaylist(false)
         setIsPlaying(false)
         setTocando(false)
         setPausado(true)
@@ -107,6 +112,7 @@ export const SoundtrackSection = ({
     const pararPlaylist = () => {
         setActivePlaylist(0)
         setActiveCampaign(0)
+        setIsQueueSet(false);
         setIsTheActivePlaylist(false)
         setCurrentIndex(0)
         setIsPlaying(false)
@@ -145,7 +151,11 @@ export const SoundtrackSection = ({
     const [editSection,setEditSection] = useState(false);
     const [newField,setNewField] = useState(false);
     const [deleteSection,setDeleteSection] = useState(false);
-    
+
+    useEffect(() => {
+        setIsTheActivePlaylist((sectionId===activePlaylist && campaignSectionId===activeCampaign) || (activePlaylist===0 && activeCampaign===0))
+    }, [activePlaylist, activeCampaign]);
+
     return(
         <div>
             <CardRoot size={"sm"} cursor={"pointer"}>
@@ -165,7 +175,7 @@ export const SoundtrackSection = ({
                                     <IconButton onClick={()=>previous()} rounded={"full"} size={"md"} variant={"outline"} disabled={!isTheActivePlaylist} aria-label="Tocar Playlist"> 
                                         <LuSkipBack />
                                     </IconButton>
-                                    <IconButton onClick={()=>tocarPlaylist()} rounded={"full"} size={"md"} variant={(isPlaying&&isTheActivePlaylist) ? "solid" :"outline"} disabled={isPlaying} aria-label="Tocar Playlist"> 
+                                    <IconButton onClick={()=>tocarPlaylist()} rounded={"full"} size={"md"} variant={(isPlaying&&isTheActivePlaylist) ? "solid" :"outline"} disabled={isPlaying&&!isTheActivePlaylist} aria-label="Tocar Playlist"> 
                                         <LuPlay />
                                     </IconButton>
                                     <IconButton onClick={()=>pararPlaylist()} rounded={"full"} size={"md"} variant={"outline"} disabled={!isTheActivePlaylist||!isPlaying} aria-label="Tocar Playlist"> 

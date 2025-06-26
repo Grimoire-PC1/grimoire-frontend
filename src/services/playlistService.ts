@@ -13,7 +13,6 @@ export const getPlaylistTabs = async() =>{
     return data;
 }
 
-
 export const getPlaylistSubTabs = async(id_playlist:number) =>{
     let campaignId = sessionStorage.getItem('currentCampaignId')
     const { data } = await axiosInstace.get<PlaylistSubTab[]>(
@@ -22,7 +21,6 @@ export const getPlaylistSubTabs = async(id_playlist:number) =>{
     )
     return data;
 }
-
 
 export const createPlaylistTab = async(payload:CreateSheetTabPayload) =>{
     let campaignId = sessionStorage.getItem('currentCampaignId')

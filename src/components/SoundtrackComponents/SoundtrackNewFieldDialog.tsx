@@ -32,6 +32,7 @@ export const SoundtrackNewFieldDialog = ({
                     description: "Música adicionada com sucesso!",
                     type: "success",
                     })
+        setTitulo("")
         handleCreate(false);
     },
     onError: (error) => {
