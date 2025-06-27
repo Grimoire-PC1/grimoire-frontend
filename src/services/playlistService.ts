@@ -65,7 +65,7 @@ export const createPlaylistSubTab = async(payload:CreatePlaylistSubTabPayload) =
 export const deletePlaylistSubTab = async(id:number) =>{
     const { data } = await axiosInstace.delete<string>(
         `/${ENDPOINT.DELETE_PLAYLIST_SUB_TAB}`,
-        { params: { id: id} }
+        { params: { id_musica: id} }
     )
 
     return data;
